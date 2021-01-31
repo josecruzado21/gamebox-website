@@ -1,0 +1,221 @@
+@charset 'utf-8';
+
+@import 'base/reset';
+@import 'base/base';
+@import 'base/typography';
+
+@import 'layout/header';
+@import 'layout/footer';
+@import 'layout/forms';
+
+$color-red:#D03737;
+$color-blue:#0C1248;
+$color-blue-second:#080421;
+
+
+.header{
+    background-color:$color-blue;
+    height:29vh;
+    width: 100%;
+    padding-top: 25px;
+    border-bottom: $color-red 3px solid;
+    padding-bottom:20px;
+    position:relative;
+    padding-bottom: 0px;
+
+    @include respond-to('tablet'){
+        height: 20vh;
+    }
+}
+
+.logo-image{
+    position:absolute;
+    top:25%;
+    left:5%;
+    width: 200px;
+}
+
+.car-user .fas{
+    color:white;
+    font-size:25px;
+    margin:7px
+}
+
+//formato del bloque que contiene al carro y el icono de usuario (para telefono) y además el texto de crear cuenta (para tablets y computadoras)
+.car-user{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position:absolute;
+    top:25%;
+    right:5%;
+    color: white;
+
+    @include respond-to('tablet'){
+        top:25%;
+        width: 25%;
+    }
+
+    @include respond-to('desktop'){
+        top:25%;
+        width: 18%;
+    }
+}
+
+//formado del texto a la derecha del icono de usario.
+.texto-bienvenida{
+    margin:0;
+    padding:0;
+    display: none;
+
+    @include respond-to('tablet'){
+        margin:0;
+        padding:0;
+        display: block;
+        padding-left: 10px;
+    }
+}
+
+.search-bar{
+    background-color: rgba(255,255,255,0.1);
+    margin:auto;
+    width: 80%;
+    margin-top:20px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 64px;
+    height: 65px;
+    padding:10px;
+    position:relative;
+
+    @include respond-to('tablet'){
+        width:35%;
+        position:absolute;
+        top:7%;
+        left:33%;
+    }
+
+    @include respond-to('desktop'){
+        left:27%;
+        width:47%;
+    }
+}
+
+.logo-icons{
+    height:30%
+}
+
+.search-bar .fas{
+    border:none;
+    color:white;
+}
+
+.search-bar input{
+    border:none;
+    font-family: 'Mulish', sans-serif;
+    background-color: rgba(255,255,255,0);
+    width:100%;
+    height: 50px;
+    border-radius: 64px;
+    color:white;
+}
+
+::placeholder{
+    color:white;
+    font-size: 20px;
+}
+
+.burger-menu{
+    padding-top: 0px;
+
+    @include respond-to('tablet'){
+        display:none;
+    }
+}
+
+//estilos al burger menu que solo se verá en la versión de teléfono (tiene fondo rojo)
+.burger-menu .fas{
+    background-color: $color-red;
+    color: white;
+    display: block;
+    margin:auto;
+    padding: 10px 0;
+    border-radius: 8px;
+    max-width: 50px;
+    text-align: center;
+    font-size:25px;
+}
+
+//estilo a la barra de menú que no se verá en la versión para teléfonos pero si de tablet en adelante.
+.menu-options{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color:white;
+    font-family: 'Mulish', sans-serif;
+    margin-top: 33px;
+    margin-bottom:0;
+    padding-bottom: 0;
+    width: 100%;
+    height: 25%;
+    text-align: center;
+    display:none;
+    padding-right: 10%;
+    background-color:$color-blue-second;
+    position:absolute;
+    bottom:0px;
+    align-items: center;
+
+    @include respond-to('tablet'){
+        display:flex;
+    }
+
+}
+
+//dandole el formato al hamburger menu que se verá en la barra de opciones para tablets y escritorio y que va a la izquierda de categorías
+.menu-options .category .burger-menu-category{
+    display: flex;
+    flex-direction: row;
+    background-color: $color-red;
+    align-items: center;
+    width: 45%;
+    justify-content: space-between;
+}
+
+//formado del cuadrante que contiene el burger meny y la palabra categorías.
+.menu-options .category{
+    display: flex;
+    flex-direction: row;
+    background-color: $color-red;
+    width: 27%;
+    height: 100%;
+    text-align: center;
+    justify-content: center;
+}
+
+
+.texto-bienvenida p{
+    @include respond-to('tablet'){
+        margin-bottom: 0px;
+    }
+}
+
+.mi-cuenta{
+    @include respond-to('tablet'){
+        font-size: 18px;
+        margin-top: 0;
+    }
+}
+
+.crear-cuenta{
+    @include respond-to('tablet'){
+        font-size: 14px;
+        margin-top: 10px;
+    }
+}
+
+}
