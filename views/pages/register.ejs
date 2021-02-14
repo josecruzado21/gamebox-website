@@ -13,45 +13,65 @@
     <title>Registro</title>
 </head>
 <body>
-    <header>
-        <%- include('../partials/header') %>
-    </header>
 
     <section class= "register">
 
 
         <article class="register-1">
-            <div class="title-register">
-                 Regístrate
-            </div>
-            <div class="welcome-register">
-                Recibirás un correo electrónico para completar la configuración en unos segundos
-            </div>
-            
+            <a href="/" target="_self" class="logoBrand">
+                <img src="static/images/logoColor.svg" alt="Ir a gamebox home">
+            </a>
+
+            <div class="formWrapper">
+
+                <div class="register-introWrapper">
+                    <h1 class="small-title-register">
+                        Regístrate
+                    </h1>
+                    <p class="register-login">
+                        Recibirás un correo electrónico para completar la configuración en unos segundos
+                    </p>
+                </div>
+
             <div class="form-register">
                 <form action="" method="POST">
-                    <input class="input-field" type="text" name="name" placeholder="Bruce Wayne">
-                    <input class="input-field" type="text" name="email" placeholder="batimail@g">
-                    <input class="input-field" type="password" name="password" placeholder="Contraseña"><i class="far fa-eye icon-eye"></i>
-                    <span class="error"></span>
-                    <p>
-                        Tu contraseña debe incluir:
-                    </p>
+             
+                    <div class="input-wrapper">
+                        <input class="input"  type="text" name="name"  placeholder=" " id="name">
+                        <label for="name" class="label">Nombre</label>
+                    </div>
 
-                    
-                    <label><input type="checkbox" name="terms" id="terms" value="terms"> Acepto <a href="#">términos y condiciones</a> del servicio</label><br>
-                    
-                    <button class="btn-create-account">Crear cuenta</button>
+                    <div class="input-wrapper">
+                        <input class="input" type="text" name="email"  placeholder=" " id="email">
+                        <label for="email" class="label">Correo electrónico</label>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input class="input" type="password" name="password" placeholder=" " id="password">
+                        <label for="password" class="label" id="label">Password</label>
+                        <span class="icon"></span>
+                    </div>
+
+
+                    <div class="checkboxWrapper">
+                        <input type="checkbox" name="terms" id="checkboxTerms" class="checkbox">
+                        <label for="checkboxTerms" class="checkboxLabel">Acepto <a class="linkNormal" href="#"> términos y condiciones </a> del servicio
+                        </label>
+                    </div>
+
+                    <button class="btn-get-in">Crear cuenta</button>
+
                 </form> 
             </div>
-    
-            <div class="no-account">
-                ¿Ya tienes cuenta? <a href="/login">Inicia sesión</a>
+
             </div>
+    
+            <p class="already-account">
+                ¿Ya tienes cuenta? <a class="linkNormal" href="/login">Inicia sesión</a>
+            </p>
         </article>
     
         <article class="register-2"> 
-            <img class="register-img"  src="static\images\ac-valhalla.png" alt="assassins creed valhalla">
             <div class="register-img-text">        
                 Únete a nuestra comunidad y accede a descuentos exclusivos
             </div>
@@ -60,9 +80,7 @@
         </section>
    
    
-    <footer>
-        <%- include('../partials/footer') %>
-    </footer>
+   
     
 </body>
 </html>

@@ -1,60 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/css/main.css">
-    <link
-    rel="stylesheet"
-    href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-    crossorigin="anonymous"
-    />
-    <title>Inicia sesion</title>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <title>Home | Gamebox</title>
 </head>
+
 <body>
-    <header>
-        <%- include('../partials/header') %>
-    </header>
-   <section class= "login">
+    <section class="login">
 
+        <article class="login-1">
+            <a href="/" target="_self" class="logoBrand">
+                <img src="static/images/logoColor.svg" alt="Ir a gamebox home">
+            </a>
 
-    <article class="login-1">
-        <div class="title-login">
-             Inicia Sesión
-        </div>
-        <div class="welcome-login">
-                ¡Bienvenido de nuevo! Ingresa con tu correo electrónico y contraseña
-        </div>
-        
-        <div class="form-login">
-            <form action="" method="POST">
-                <input class="input-field" type="text" name="email" placeholder="Correo electrónico">
-                <input class="input-field" type="password" name="password" placeholder="Contraseña"><i class="far fa-eye icon-eye"></i>
-                <span class="error"></span>
-                <a href="#">Recuperar contraseña</a>
-                <label><input type="checkbox" name="sesion" id="sesion" value="sesion"> Mantener mi sesión iniciada</label><br>
-                <button class="btn-get-in">Ingresa ahora</button>
-            </form> 
-        </div>
+            <div class="formWrapper">
+                <div class="login-introWrapper">
+                    <h1 class="small-title-login">
+                        Inicia Sesión
+                    </h1>
+                    <p class="welcome-login">
+                        ¡Bienvenido de nuevo! Ingresa con tu correo electrónico y contraseña
+                    </p>
+                </div>
 
-        <div class="no-account">
-            ¿No tienes una cuenta? <a href="/registro">Regístrate</a>
-        </div>
-    </article>
+                <div class="form-login">
+                    <form action="" method="POST">
 
-    <article class="login-2"> 
-        <img class="login-img"  src="static\images\last-of-us2.png" alt="last of us 2">
-        <div class="login-img-text">        
-            ¿Qué esperas para vivir tu próxima gran aventura?
-        </div>
-    </article>
+                        <div class="input-wrapper">
+                            <input type="text" name="email" class="input" placeholder=" " id="email">
+                            <label for="email" class="label">Correo electrónico</label>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <input class="input" type="password" name="password" placeholder=" ">
+                            <label for="password" class="label" id="label">Password</label>
+                            <span class="icon"></span>
+                        </div>
+
+                        <a class="linkSmall" href="#">Recuperar contraseña</a>
+
+                        <div class="checkboxWrapper">
+                            <input type="checkbox" name="sesion" id="checkboxSesion" class="checkbox">
+                            <label for="checkboxSesion" class="checkboxLabel">Mantener mi sesión
+                                iniciada</label>
+                        </div>
+
+                        <button class="btn-get-in">Ingresa ahora</button>
+                    </form>
+                </div>
+            </div>
+
+            <p class="no-account">¿No tienes una cuenta? <a class="linkNormal" href="/registro">Regístrate</a></p>
+        </article>
+
+        <article class="login-2">
+            <div class="login-img-text">
+                ¿Qué esperas para vivir <br> tu próxima gran aventura?
+            </div>
+        </article>
 
     </section>
-
-    <footer>
-        <%- include('../partials/footer') %>
-    </footer>
-    
 </body>
+
 </html>

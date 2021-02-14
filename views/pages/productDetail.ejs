@@ -1,26 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="static/css/main.css">
-    <link
-    rel="stylesheet"
-    href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
-    crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <title>Producto </title>
 </head>
+
 <body>
     <header>
-        <%- include('../partials/header') %>
+        <%- include('../partials/header.ejs') %>
     </header>
-   
-   
+
+    <main>
+        <section class="hero-banner">
+            <img src="static/images/last-of-us-detail.png" width="100%" alt="Cover relacionado con el juego">
+        </section>
+
+        <section class="productGroup">
+            <article class="productColumnOne">
+                <!-- Header details -->
+                <div class="productDetails-head">
+                    <img class="game-image" src="static/images/tlou2.png" alt="">
+                    <div class="infoWrapper">
+                        <h2 class="productName">The last of us part 2</h2>
+                        <p class="relaseDate">Fecha de lanzamiento Jun 19, 2020</p>
+                        <div class="metascore">
+                            <p class="metascoreNumber">
+                                93
+                            </p>
+                            <div class="metascoreLabelLink">
+                                <p class="name">Excepcional</p>
+                                <a class="reviews" href="#" target="_blank">Ver reviews</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Body details -->
+                <div class="tabsDetails">
+                    <div class="tabsHeaderLinks">
+                        <a class="tabOne" href="#">Detalles</a>
+                        <a class="tabTwo" href="#">Galería</a>
+                    </div>
+                    <div class="tabsBodyDetails">
+                        <p class="bodyParagraph">
+                            The Last of Us Part II es la secuela del juego de zombies postapocalíptico The Last of Us.
+                        </p>
+
+                        <p class="bodyTitle">Sinopsis</p>
+
+                        <p class="bodyParagraph">
+                            El juego sigue a Ellie, la niña que era la protagonista secundaria y la compañera del personaje del jugador en The Last of Us. El juego se desarrolla cinco años después del final del original. Tanto Ellie (que ahora tiene 19 años) como Joel sobrevivieron y viven en Jackson, Wyoming, donde Ellie está saliendo con otra chica, Dina. Sin embargo, los personajes tienen que lidiar con el culto malvado llamado Serafitas, que intentan sacrificar a sus antiguos miembros. Una cuestión de venganza obliga a Ellie y sus amigos a emprender un viaje a Seattle, Washington, para matar a sus enemigos. El tema principal de la trama es cómo Ellie se enfrenta a sus problemas de odio.
+                        </p>
+
+                        <p class="bodyTitle">Gameplay</p>
+
+                        <p class="bodyParagraph">
+                            A diferencia del juego original, el jugador controla a Ellie en lugar de Joel, quien ahora se convierte en su compañero controlado por IA. El juego presenta controles mejorados que incluyen nuevas opciones como gatear, esquivar y un botón de salto. Un nuevo sistema de IA permite que los adversarios humanos se comuniquen y compartan información entre ellos. El juego también presenta el modo multijugador.
+                        </p>
+                    </div>
+                    <div class="tabsBodyGallery">
+                        <!-- Agregar info después -->
+                    </div>
+                </div>
+            </article>
+
+            <article class="productColumnTwo">
+                <!-- Tarjeta con precio -->
+                <div class="productPrice">
+                    <div class="productCondition">
+                        <a href="#">Nuevo</a>
+                        <a href="#">Usado</a>
+                    </div>
+                    
+                    <div class="select-wrapper">
+                        <select class="select" name="edition" id="edition">
+                            <option value="Standard">Standard</option>
+                            <option value="Collector">Coleccionista</option>
+                            <option value="Especial">Especial</option>
+                        </select>
+                    </div>
+
+                    <div class="productPriceWrapper">
+                        <p class="labelPrice">Precio</p>
+                        <h3 class="price">$170.000</h3>
+                    </div>
+
+                    <a href="" class="btn-CTA addToCart">Añadir al carrito</a>
+                </div>
+
+                <!-- Tarjeta con informacion adicional -->
+                <div class="productAditionalDetails">
+                    <div class="tagRow">
+                        <p class="tagName">Plataformas</p>
+                        <p class="tagValue">PlayStation4, PlayStation5</p>
+                    </div>
+
+                    <div class="tagRow">
+                        <p class="tagName">Género</p>
+                        <p class="tagValue">Acción, Shooter,
+                            Aventura</p>
+                    </div>
+
+                    <div class="tagRow">
+                        <p class="tagName">Desarrollador</p>
+                        <p class="tagValue">Naughty Dog</p>
+                    </div>
+
+                    <div class="tagRow">
+                        <p class="tagName">Edad recomendada</p>
+                        <p class="tagValue">17+</p>
+                    </div>
+
+                    <span class="divider"></span>
+
+                    <div class="tagRow">
+                        <p class="tagName completeField">Tags</p>
+                        <p class="tagValue completeField">Singleplayer, Atmospheric, Survival, Stealth, Violent, Action-Adventure, exclusive, 3rd-Person Perspective, Blood, America, LGBTQ+, Role Playing Game+</p>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
     <footer>
-        <%- include('../partials/footer') %>
+        <%- include('../partials/footer.ejs') %>
     </footer>
-    
 </body>
+
 </html>

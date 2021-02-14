@@ -1,6 +1,5 @@
 //Breakpoints
-$breakpoints: (
-  'phone': (min-width: 480),
+$breakpoints: ('phone': (min-width: 480),
   'tablet': (min-width: 768px),
   'desktop': (min-width: 1024px),
   'large-screen': (min-width: 1200px),
@@ -11,23 +10,23 @@ $breakpoints: (
 /// @param {String} $breakpoint - Punto de ruptura
 /// @requires $breakpoints
 @mixin respond-to($breakpoint) {
-    $raw-query: map-get($breakpoints, $breakpoint);
-  
-    @if $raw-query {
-      $query: if(
-        type-of($raw-query) == 'string',
+  $raw-query: map-get($breakpoints, $breakpoint);
+
+  @if $raw-query {
+    $query: if(type-of($raw-query)=='string',
         unquote($raw-query),
-        inspect($raw-query)
-      );
-  
-      @media #{$query} {
-        @content;
-      }
-    } @else {
-      @error 'No se ha encontrado un valor para `#{$breakpoint}`. '
-           + 'Por favor, asegúrate que está definido en el mapa `$breakpoints`.';
+        inspect($raw-query));
+
+    @media #{$query} {
+      @content;
     }
   }
+
+  @else {
+    @error 'No se ha encontrado un valor para `#{$breakpoint}`. '
+    +'Por favor, asegúrate que está definido en el mapa `$breakpoints`.';
+  }
+}
 
 // Aqui van los estilos básicos de arranque
 
@@ -37,20 +36,25 @@ $darkBlue: #080421;
 $lightBlue: #31B7FB;
 $green: #19DD40;
 $red: #D03737;
+$darkRed: #A52727;
 $darkGrey: #333333;
 $lightGrey: #EEEEEE;
 $white:#FFFFFF;
+$yellow:#F1A72A;
 
 // Variables para texto, para verificar el peso del font-weight revisar el archivo _typography.css
-$primary-font: 'Catamaran', sans-serif;
-$secondary-font: 'Mulish', sans-serif;
+$primary-font: 'Catamaran',
+sans-serif;
+$secondary-font: 'Mulish',
+sans-serif;
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: $secondary-font;
-    font-size: 16px;
-    font-style: normal;
+  color: $darkGrey;
+  font-family: $secondary-font;
+  font-size: 16px;
+  font-style: normal;
 }

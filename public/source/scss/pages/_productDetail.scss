@@ -1,0 +1,301 @@
+.hero-banner {
+    height: 200px;
+    object-fit: contain;
+    object-position: 50% 50%;
+    overflow: hidden;
+    width: 100%;
+
+    img {
+        width: 100%;
+    }
+}
+
+.productGroup {
+    display: block;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
+}
+
+
+.productDetails-head {
+    .game-image {
+        display: block;
+        margin: 0 auto;
+        margin-top: -32px;
+        margin-bottom: 24px;
+        max-width: 120px;
+        width: 100%;
+    }
+}
+
+.infoWrapper {
+    margin-bottom: 32px;
+
+    .productName {
+        color: $blue;
+        font-family: $primary-font;
+        font-size: 32px;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 4px;
+    }
+
+    .relaseDate {
+        color: $darkGrey;
+        font-size: 1rem;
+        margin: 0;
+        margin-bottom: 24px;
+        padding: 0;
+    }
+
+    .metascore {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 24px;
+
+        .metascoreNumber {
+            background-color: $lightBlue;
+            border-radius: 8px;
+            color: $white;
+            display: inline-block;
+            font-family: $primary-font;
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1;
+            margin: 0;
+            padding: 12px 14px;
+        }
+
+        .metascoreLabelLink {
+            margin-left: 16px;
+
+            .name {
+                color: $darkGrey;
+                font-family: $primary-font;
+                font-size: 24px;
+                font-weight: 700;
+                margin: 0;
+                padding: 0;
+                padding-bottom: 8px;
+            }
+
+            .reviews {
+                @extend .linkSmall;
+
+                &:after {
+                    content: '';
+                    background-image: url('../images/iconChevronRight.svg');
+                    display: inline-block;
+                    height: 24px;
+                    margin-left: 8px;
+                    width: 24px;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}
+
+.tabsHeaderLinks {
+    display: block;
+    width: 100%;
+
+    a {
+        color: $red;
+        display: block;
+        font-family: $primary-font;
+        font-size: 24px;
+        font-weight: 700;
+        margin: 0;
+        padding: 0;
+        padding-bottom: 16px;
+        text-decoration: none;
+    }
+
+    .tabOne {
+        border-bottom: 2px solid $red;
+        width: 100%;
+    }
+
+    .tabTwo {
+        display: none;
+    }
+}
+
+.bodyParagraph {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.bodyTitle {
+    font-family: $primary-font;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.productPrice {
+    background: #FFFFFF;
+    box-shadow: 0px 0px 16px rgba(8, 4, 33, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 56px;
+    padding: 24px;
+    width: 100%;
+
+    .productCondition {
+        background-color: $lightGrey;
+        border-radius: 50px;
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 24px;
+        width: 100%;
+        
+        a {
+            color: $darkGrey;
+            font-family: $primary-font;
+            padding: 16px;
+            text-align: center;
+            text-decoration: none;
+            width: 50%;
+        }
+
+        a:first-child {
+            background-color: $lightBlue;
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+            color: $white;
+        }
+    }
+
+    .productPriceWrapper {
+        margin-bottom: 24px;
+        .labelPrice {
+            margin: 0;
+            margin-top: 24px;
+            padding: 0;
+            padding-bottom: 16px;
+        }
+        .price {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+    }
+}
+
+.productAditionalDetails {
+    background: #FFFFFF;
+    box-shadow: 0px 0px 16px rgba(8, 4, 33, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    margin: 32px 0 56px;
+    padding: 24px;
+    width: 100%;
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+
+    .tagRow {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        font-size: 16px;
+        align-items: center;
+        padding-bottom: 16px;
+
+        .tagName {
+            color: $blue;
+            width: 55%;
+        }
+
+
+        .tagValue {
+            font-size: .9rem;
+            line-height: 1.5;
+            text-align: right;
+            width: 45%;
+        }
+
+        .completeField {
+            text-align: left;
+            width: 100%;
+        }
+
+        .tagName.completeField {
+            padding-bottom: 16px;
+        }
+
+        &:last-child {
+            padding-bottom: 0;
+        }
+    }
+
+    .divider {
+        background-color: $lightGrey;
+        display: block;
+        margin: 16px 0 32px;
+        height: 1px;
+        width: 100%;
+    }
+}
+
+@include respond-to('desktop') {
+    .hero-banner {
+        height: 500px;
+        margin-bottom: 56px;
+    }
+
+    .productGroup {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        max-width: 1140px;
+        width: 100%;
+
+        .productColumnOne {
+            width: calc(65% - 16px);
+        }
+
+        .productColumnTwo {
+            width: calc(35% - 16px);
+        }
+    }
+
+    .productDetails-head {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+
+        .game-image {
+            margin: initial;
+            margin-top: 0;
+            margin-right: 24px;
+            margin-bottom: 56px;
+        }
+    }
+    
+    .infoWrapper {
+        margin-bottom: 0;
+    
+        .productName {
+            font-size: 40px;
+        }
+    }
+
+    .productPrice {
+        margin-top: -112px;
+    }
+}

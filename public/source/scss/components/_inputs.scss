@@ -1,0 +1,128 @@
+// Checkbox type Text
+
+.input-wrapper {
+    display: block;
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.input-wrapper:nth-child(3){
+    margin-bottom: 0;
+}
+
+.input {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    border: 2px solid $darkBlue;
+    border-radius: 4px;
+    outline: none;
+    padding: 16px;
+    background: none;
+}
+
+.label {
+    position: absolute;
+    left: 16px;
+    padding: 0;
+    background-color: $white;
+    color: rgba($darkGrey, .6);
+    font-size: 1rem;
+    transition: .3s;
+    transform: translateY(-50%);
+    top: 50%;
+    z-index: -1;
+}
+
+.input:focus+.label {
+    background-color: $white;
+    left: 12px;
+    color: $darkBlue;
+    font-size: .9rem;
+    font-weight: 500;
+    padding: 2px 4px;
+    top: 0;
+    z-index: 1;
+}
+
+.input:not(:placeholder-shown).input:not(:focus)+.label {
+    background-color: $white;
+    left: 12px;
+    color: $darkBlue;
+    font-size: .9rem;
+    font-weight: 500;
+    padding: 2px 4px;
+    top: 0;
+    z-index: 1;
+}
+
+.input:focus {
+    border: 2px solid $lightBlue;
+}
+
+.icon {
+    background: url('../images/iconEyeOpen.svg') 0 0 no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    display: block;
+    height: 24px;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+
+    
+}
+
+.icon-close {
+    background: url('../images/iconClose.svg');
+    background-color: $lightBlue;
+    border-color: $lightBlue;
+    height: 24px;
+    width: 24px;
+}
+
+// Checkbox
+
+.checkbox[type="checkbox"]{
+    display: none;
+}
+
+.checkboxLabel {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    position: relative;
+    vertical-align: middle;
+
+    &:before {
+        content: '';
+        display: inline-block;
+        border: 2px solid $darkBlue;
+        border-radius: 4px;
+        height: 24px;
+        margin-right: 12px;
+        vertical-align: middle;
+        width: 24px;
+        transition: all .3s;
+    }
+}
+
+.checkbox[type="checkbox"]:checked + .checkboxLabel::before {
+    background-color: $lightBlue;
+    background-image: url('../images/iconCheck.svg');
+    border-color: $lightBlue;
+}
+
+.select {
+    width: 100%;
+    height: 100%;
+    font-size: 1rem;
+    border: 2px solid $darkBlue;
+    border-radius: 4px;
+    outline: none;
+    padding: 16px;
+    background: none;
+}

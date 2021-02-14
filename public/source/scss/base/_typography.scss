@@ -1,2 +1,19 @@
 // Aqui van los estilos para textos
 @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@300;400;500;600;700;800;900&family=Mulish:wght@300;400;500;600;700;800;900&display=swap');
+
+.h4 {
+    color: #043C60;
+    font-size: 40px;
+    font-family: "Catamaran",sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0;
+    padding-bottom: 16px;
+}
+
+p {
+    font-family: $secondary-font;
+    font-style: normal;
+    font-size: 1.1rem;
+}
