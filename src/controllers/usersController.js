@@ -80,6 +80,20 @@ const usersController = {
              'title': title
          })
     },
+
+    register_new_user: (req,res)=>{
+        if(req.file){
+            var usuario_nuevo=req.body
+            usuario_nuevo.avatar=req.file.filename
+        } else{
+            usuario_nuevo.avatar='default-avatar.jpg'
+        }
+        usuario_nuevo.password=bcryptjs.hashSync(req.body.password,10)
+        User.create(usuario_nuevo)
+        res.redirect('/login')
+
+    },
+
     profile: (req, res) => {
       
         let title = 'Gamebox | Perfil ';
