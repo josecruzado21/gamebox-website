@@ -26,5 +26,6 @@ router.get('/login', guestMiddleware, usersController.login);
 router.get('/registro', guestMiddleware, usersController.register);
 router.post('/login',  usersController.loginProcess);
 router.post('/registro', upload.single('image'),usersController.register_new_user);
+router.get('/logout', usersController.logout);
 
 module.exports = router; 

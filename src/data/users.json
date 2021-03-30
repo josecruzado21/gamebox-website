@@ -158,5 +158,14 @@
   "email": "wjollandj@youtube.com",
   "password": "$2a$10$L7aDASe7qqd6V/z/pwQyf.pBeVvqLY4HS/AETaRgIXa6YJ4pylD5O",
   "avatar": "default-avatar.jpg"
+ },
+ {
+  "name": "jaime",
+  "lastName": "Rivera",
+  "email": "riverac77@gmail.com",
+  "password": "$2a$10$1A00.2ryX9qkGHrzBbcIX.WvjtSuuyNfhGh24v3jA70RVU89njcQ6",
+  "terms": "on",
+  "avatar": "1617061055771.jpg",
+  "id": 21
  }
 ]
