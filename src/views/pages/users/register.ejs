@@ -43,7 +43,7 @@
                         <label for="email" class="label">Correo electrónico</label>
                     </div>
                     <% if(locals.errors && errors.email){ %>
-                        <p>
+                        <p style="color:red;">
                             <%= errors.email.msg  %>
                         </p>
                     <% } %>
