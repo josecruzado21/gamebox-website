@@ -82,12 +82,25 @@ const usersController = {
     },
 
     register_new_user: (req,res)=>{
-        if(req.file){
-            var usuario_nuevo=req.body
+        let title = 'Gamebox | Registro ';
+        let userindb=User.findByProperty('email',req.body.email)
+        if (userindb) {
+            return res.render('pages/users/register',{'title': title,
+                errors: {
+                    email: {
+                        msg: 'Ya existe una cuenta asociada a este correo'
+                    },
+                },
+                oldData:req.body
+            });
+        }
+        var usuario_nuevo=req.body
+        if(req.file && req.file!== undefined){
             usuario_nuevo.avatar=req.file.filename
         } else{
             usuario_nuevo.avatar='default-avatar.jpg'
         }
+
         usuario_nuevo.password=bcryptjs.hashSync(req.body.password,10)
         User.create(usuario_nuevo)
         res.redirect('/login')

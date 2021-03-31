@@ -2,6 +2,7 @@ const express = require('express');
 const cartController = require('../controllers/cartController');
 const mainController = require('../controllers/mainController');
 const usersController = require('../controllers/usersController');
+const User = require('../models/User');
 const guestMiddleware = require('../middlewares/guestMiddleware');
 const path=require('path')
 const multer=require('multer')
@@ -18,7 +19,11 @@ const storage=multer.diskStorage({
     }
 });
 
-const upload=multer({storage})
+const upload=multer({storage:storage,fileFilter:function(req,file,cb){
+    if (User.findByProperty('email',req.body.email)){
+        cb(null,false)
+    }
+}})
 
 router.get('/', mainController.home);
 router.get('/carrito-de-compras', cartController.cart);

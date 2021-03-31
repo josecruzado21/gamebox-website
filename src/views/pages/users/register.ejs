@@ -42,6 +42,11 @@
                         <input class="input" type="text" name="email"  placeholder=" " id="email">
                         <label for="email" class="label">Correo electrónico</label>
                     </div>
+                    <% if(locals.errors && errors.email){ %>
+                        <p>
+                            <%= errors.email.msg  %>
+                        </p>
+                    <% } %>
 
                     <div class="input-wrapper">
                         <input class="input" type="password" name="password" placeholder=" " id="password">
