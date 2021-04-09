@@ -1,6 +1,10 @@
 
 const path = require('path');
 const fs = require('fs');
+const db = require('../database/models');
+
+const { QueryTypes } = require('sequelize');
+
 
 const productsPath = path.resolve(__dirname, '../data/products.json');
 
@@ -30,52 +34,224 @@ let productsController = {
     },
 
     list: (req, res) => {
-
-        let title = 'Gamebox | Lista de Productos ';
-
-        let products = fs.readFileSync(productsPath, 'utf-8');
-        products = JSON.parse(products);
        
-        if(products == null || products == undefined || products.length < 1){
-            res.render('pages/products/productNotFound', {
-                'title': 'Sin resultados',
-                'description':'Lo sentimos no encontramos productos'
-            })
+        let title = 'Gamebox | Lista de Productos ';
+       
+        let parentCategory = req.params.parentCategory;
+        let childCategory = req.params.childCategory;
+
+        if(parentCategory == null || parentCategory == undefined ){
+
+        let productsT = [];
+         db.sequelize.query('SELECT `Product`.`id`,' + 
+         '`Product`.`name`,' +  
+         '`Product`.`description`,' +  
+         '`Product`.`price`, ' +
+         '`Product`.`image1`, ' +
+         '`Product`.`image2`, ' +
+         '`Product`.`category`, ' +
+         '`Product`.`hasEdition`, ' +
+         '`Product`.`edition`, `Product`.`stock`, `Product`.`isNew`, ' +
+         '`Product`.`rawInfo`, ' +
+         '`Product`.`slug`, ' +
+         '`categories`.`id` AS `categories.id`, ' +
+         '`categories`.`name` AS `categories.name`, ' +
+         '`categories`.`slug` AS `categories.slug`, ' +
+         '(select name from categories as c2 where categories.parent_id = c2.id) as `categories.parent_name`,' +
+         '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
+         'FROM `products` AS `Product` ' +
+         'LEFT OUTER JOIN `categories` AS `categories` ' +
+         'ON `Product`.`category` = `categories`.`id`', {
+            type: QueryTypes.SELECT,
+            nest: true,
+            //model: db.Product,
+            //mapToModel: true // pass true here if you have any mapped fields
+          }).then(prds => {  
+              console.log('----------------productos-----------------');
+              //console.log(prds);
+              console.log(JSON.stringify(prds[0], null, 2));
+              productsT = prds;
+
+              res.render('pages/products/productList', {
+                title: title, 
+                products:prds,
+              
+                })
+          });
+        }
+
+        //Busca por categorias principales
+        if(parentCategory != null && parentCategory != undefined && (childCategory == null || childCategory == undefined)){
+
+            db.sequelize.query('SELECT `Product`.`id`,' + 
+            '`Product`.`name`,' +  
+            '`Product`.`description`,' +  
+            '`Product`.`price`, ' +
+            '`Product`.`image1`, ' +
+            '`Product`.`image2`, ' +
+            '`Product`.`category`, ' +
+            '`Product`.`hasEdition`, ' +
+            '`Product`.`edition`, `Product`.`stock`, `Product`.`isNew`, ' +
+            '`Product`.`rawInfo`, ' +
+            '`Product`.`slug`, ' +
+            '`categories`.`id` AS `categories.id`, ' +
+            '`categories`.`name` AS `categories.name`, ' +
+            '`categories`.`slug` AS `categories.slug`, ' +
+            '(select name from categories as c2 where categories.parent_id = c2.id) as `categories.parent_name`,' +
+            '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
+            'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory', 
+            
+            {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { parentCategory: parentCategory },
+             
+             }).then(prds => {  
+                 console.log('----------------productos-----------------');
+                 console.log(JSON.stringify(prds[0], null, 2));
+                 productsT = prds;
+   
+                 res.render('pages/products/productList', {
+                   title: title, 
+                   products:prds,
+                 
+                   })
+             });
+
+            
+        }
+
+        //Busca por categorias secundarias
+        if(childCategory != null && childCategory != undefined ){
+            db.sequelize.query('SELECT `Product`.`id`,' + 
+            '`Product`.`name`,' +  
+            '`Product`.`description`,' +  
+            '`Product`.`price`, ' +
+            '`Product`.`image1`, ' +
+            '`Product`.`image2`, ' +
+            '`Product`.`category`, ' +
+            '`Product`.`hasEdition`, ' +
+            '`Product`.`edition`, `Product`.`stock`, `Product`.`isNew`, ' +
+            '`Product`.`rawInfo`, ' +
+            '`Product`.`slug`, ' +
+            '`categories`.`id` AS `categories.id`, ' +
+            '`categories`.`name` AS `categories.name`, ' +
+            '`categories`.`slug` AS `categories.slug`, ' +
+            '(select name from categories as c2 where categories.parent_id = c2.id) as `categories.parent_name`,' +
+            '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
+            'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory' +
+            ' and `categories`.`slug` = :childCategory', 
+            
+            {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { parentCategory: parentCategory, childCategory: childCategory },
+             
+             }).then(prds => {  
+                 console.log('----------------productos-----------------');
+                 console.log(JSON.stringify(prds[0], null, 2));
+                 productsT = prds;
+   
+
+                 res.render('pages/products/productList', {
+                   title: title, 
+                   products:prds,
+                 
+                   })
+             });
         }
 
 
-        console.log("Params: ")
-        console.log(req.params);
+        // db.Category.findAll({
+        //     // include:[
+        //     //     {
+        //     //       model: 'Category',
+        //     //       as: 'parentCategory',
+        //     //       required: false,
+        //     //     },
+        //     //     {
+        //     //       model: 'Category',
+        //     //       as: 'subCategory',
+        //     //       required: false,
+        //     //     },
+        //     //   ]
 
-        let category = req.params.category;
+        //       include:[{association:'parentCategory'}, {association:'subCategory'}]   
+        //   }).then(cat => {
+        //     console.log('---------- categorias ------------ ');
+        //     console.log(cat);
+        //     //categories = cat
+        //   });
+         
+         
 
-            if(category !== null && category !== undefined ){
+        // db.Product.findAll({
+        //     include:[{association:'categories'}]
+        // })
+        //     .then(products => {
+
+        //         //console.log(products[0].categories)
+        //         res.render('pages/products/productList', {
+        //             title: title, 
+        //             products:products,
+                  
+        //             })
+        //     })
+
+        // ----------------------------------------------
+
+     
+
+        // let products = fs.readFileSync(productsPath, 'utf-8');
+        // products = JSON.parse(products);
+       
+        // if(products == null || products == undefined || products.length < 1){
+        //     res.render('pages/products/productNotFound', {
+        //         'title': 'Sin resultados',
+        //         'description':'Lo sentimos no encontramos productos'
+        //     })
+        // }
 
 
-            let productsFound =  products.filter(f => f.category == category);
+        // console.log("Params: ")
+        // console.log(req.params);
+
+        // let category = req.params.category;
+
+        //     if(category !== null && category !== undefined ){
+
+
+        //     let productsFound =  products.filter(f => f.category == category);
             
-            if(productsFound == null || productsFound == undefined || productsFound.length < 1){
-                res.render('pages/products/productNotFound', {
-                    'title': 'Sin resultados',
-                    'description':'Lo sentimos no encontramos productos para la categoria: ' + category
-                })
-                }
+        //     if(productsFound == null || productsFound == undefined || productsFound.length < 1){
+        //         res.render('pages/products/productNotFound', {
+        //             'title': 'Sin resultados',
+        //             'description':'Lo sentimos no encontramos productos para la categoria: ' + category
+        //         })
+        //         }
 
                 
-            console.log("Productos encontrados :" );
-            console.log(productsFound.length);
+        //     console.log("Productos encontrados :" );
+        //     console.log(productsFound.length);
 
-            products = productsFound;
-            }
+        //     products = productsFound;
+        //     }
 
 
 
-           products.sort(function(a, b){return b.id - a.id});
+        //    products.sort(function(a, b){return b.id - a.id});
 
-           res.render('pages/products/productList', {
-            title: title, 
-            products:products
-            })
+        //    res.render('pages/products/productList', {
+        //     title: title, 
+        //     products:products,
+        //     prdTest:prdTest
+        //     })
        
 
 
