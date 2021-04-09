@@ -13,14 +13,14 @@
 
     <main>
         <section class="hero-banner">
-            <img src="/images/products/<%= product.mainImage %>" width="100%" alt="Cover relacionado con el juego">
+            <img src="/images/products/<%= product.image1 %>" width="100%" alt="Cover relacionado con el juego">
         </section>
 
         <section class="productGroup">
             <article class="productColumnOne">
                 <!-- Header details -->
                 <div class="productDetails-head">
-                    <img class="game-image" src="/images/products/<%= product.secondImage %>" alt="">
+                    <img class="game-image" src="/images/products/<%= product.image2 %>" alt="">
                     <div class="infoWrapper">
                         <h2 class="productName"><%= product.name %></h2>
                         <% if(product.rawApi != null) { %>

@@ -7,30 +7,72 @@ const { QueryTypes } = require('sequelize');
 
 
 const productsPath = path.resolve(__dirname, '../data/products.json');
-
+const Category = db.Category;
+const Product = db.Product;
 
 let productsController = {
     product: (req, res) => {
         let title = 'Gamebox | ';
         let id = parseInt(req.params.id);
 
-        let products = fs.readFileSync(productsPath, 'utf-8');
-        products = JSON.parse(products);
+        let parentCategory = req.params.parentCategory;
+        let childCategory = req.params.childCategory;
+        let slugProduct = req.params.slugProduct;
 
-        let productFound = products.find( product => product.id === id);
+        let productFound = {};
 
-
-        if(productFound == null || productFound == undefined ){
-            res.render('pages/products/productNotFound', {
-                'title': 'Sin resultados',
-                'description':'Producto no encontrado'
-            })
-        }
-
-        res.render('pages/products/productDetail', {
-            title: title + productFound.name,
-            product : productFound
+        db.Product.findOne({
+            //include:[{association:'categories'}],
+            include: [{
+                model:Category,
+                as : 'categories',
+                where:{
+                    slug:childCategory
+                }
+            } ],
+            where: {
+                [db.Sequelize.Op.and]  : [{slug: slugProduct} ]
+            },
         })
+            .then(product => {
+
+                if(product == null || product == undefined ){
+                    res.render('pages/products/productNotFound', {
+                        'title': 'Sin resultados',
+                        'description':'Producto no encontrado'
+                    })
+                }
+                
+                if(product.edition){
+                    product.edition = product.edition.split(',');
+                }
+
+                console.log(product)
+                res.render('pages/products/productDetail', {
+                    title: title, 
+                    product:product,
+                  
+                    })
+            })
+
+
+        // let products = fs.readFileSync(productsPath, 'utf-8');
+        // products = JSON.parse(products);
+
+        // let productFound = products.find( product => product.id === id);
+
+
+        // if(productFound == null || productFound == undefined ){
+        //     res.render('pages/products/productNotFound', {
+        //         'title': 'Sin resultados',
+        //         'description':'Producto no encontrado'
+        //     })
+        // }
+
+        // res.render('pages/products/productDetail', {
+        //     title: title + productFound.name,
+        //     product : productFound
+        // })
     },
 
     list: (req, res) => {
@@ -42,7 +84,6 @@ let productsController = {
 
         if(parentCategory == null || parentCategory == undefined ){
 
-        let productsT = [];
          db.sequelize.query('SELECT `Product`.`id`,' + 
          '`Product`.`name`,' +  
          '`Product`.`description`,' +  
@@ -64,20 +105,30 @@ let productsController = {
          'ON `Product`.`category` = `categories`.`id`', {
             type: QueryTypes.SELECT,
             nest: true,
-            //model: db.Product,
-            //mapToModel: true // pass true here if you have any mapped fields
           }).then(prds => {  
-              console.log('----------------productos-----------------');
-              //console.log(prds);
-              console.log(JSON.stringify(prds[0], null, 2));
-              productsT = prds;
+
+              if(prds == null || prds == undefined || prds.length < 1){
+                res.render('pages/products/productNotFound', {
+                    'title': 'Sin resultados',
+                    'description':'Lo sentimos no encontramos productos'
+                })
+            }
 
               res.render('pages/products/productList', {
                 title: title, 
                 products:prds,
               
                 })
-          });
+          }).catch(error => {  
+              console.log(error.message);
+              res.render('pages/error', {
+                title: title
+            
+              
+                })
+            })
+         
+      
         }
 
         //Busca por categorias principales
@@ -110,16 +161,28 @@ let productsController = {
                replacements: { parentCategory: parentCategory },
              
              }).then(prds => {  
-                 console.log('----------------productos-----------------');
-                 console.log(JSON.stringify(prds[0], null, 2));
-                 productsT = prds;
-   
+               
+                 //console.log(JSON.stringify(prds[0], null, 2));
+
+                 if(prds == null || prds == undefined || prds.length < 1){
+                    res.render('pages/products/productNotFound', {
+                        'title': 'Sin resultados',
+                        'description':'Lo sentimos no encontramos productos'
+                    })
+                }
                  res.render('pages/products/productList', {
                    title: title, 
                    products:prds,
                  
                    })
-             });
+             }).catch(error => {  
+                console.log(error.message);
+                res.render('pages/error', {
+                  title: title
+              
+                
+                  })
+              });
 
             
         }
@@ -154,55 +217,31 @@ let productsController = {
                replacements: { parentCategory: parentCategory, childCategory: childCategory },
              
              }).then(prds => {  
-                 console.log('----------------productos-----------------');
-                 console.log(JSON.stringify(prds[0], null, 2));
-                 productsT = prds;
+
    
+                         if(prds == null || prds == undefined || prds.length < 1){
+                            res.render('pages/products/productNotFound', {
+                                'title': 'Sin resultados',
+                                'description':'Lo sentimos no encontramos productos'
+                            })
+                        }
 
                  res.render('pages/products/productList', {
                    title: title, 
                    products:prds,
                  
                    })
-             });
+
+
+             }).catch(error => {  
+                console.log(error.message);
+                res.render('pages/error', {
+                  title: title
+              
+                
+                  })
+              });
         }
-
-
-        // db.Category.findAll({
-        //     // include:[
-        //     //     {
-        //     //       model: 'Category',
-        //     //       as: 'parentCategory',
-        //     //       required: false,
-        //     //     },
-        //     //     {
-        //     //       model: 'Category',
-        //     //       as: 'subCategory',
-        //     //       required: false,
-        //     //     },
-        //     //   ]
-
-        //       include:[{association:'parentCategory'}, {association:'subCategory'}]   
-        //   }).then(cat => {
-        //     console.log('---------- categorias ------------ ');
-        //     console.log(cat);
-        //     //categories = cat
-        //   });
-         
-         
-
-        // db.Product.findAll({
-        //     include:[{association:'categories'}]
-        // })
-        //     .then(products => {
-
-        //         //console.log(products[0].categories)
-        //         res.render('pages/products/productList', {
-        //             title: title, 
-        //             products:products,
-                  
-        //             })
-        //     })
 
         // ----------------------------------------------
 
