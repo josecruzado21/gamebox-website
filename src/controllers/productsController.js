@@ -11,6 +11,9 @@ const Category = db.Category;
 const Product = db.Product;
 
 let productsController = {
+  
+    
+    
     product: (req, res) => {
         let title = 'Gamebox | ';
         let id = parseInt(req.params.id);
