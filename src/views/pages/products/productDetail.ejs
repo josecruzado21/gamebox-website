@@ -77,7 +77,7 @@
                         <a href="#">Usado</a>
                     </div>
                     
-                    <% if(product.hasEdition) { %>
+                    <% if(product.hasEdition && product.edition != null && product.edition.length > 0  ) { %>
                     <div class="select-wrapper">
                         <select class="select" name="edition" id="edition">
                             <% product.edition.forEach( edition => { %>

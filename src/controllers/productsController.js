@@ -12,8 +12,12 @@ const Category = db.Category;
 const Product = db.Product;
 
 
- function getParentCategories(){
-
+function make_slug(str)
+{
+    str = str.toLowerCase();
+    str = str.replace(/[^a-z0-9]+/g, '-');
+    str = str.replace(/^-+|-+$/g, '');
+    return str;
 }
 
 let productsController = {
@@ -355,39 +359,61 @@ let productsController = {
        let secondImage = files.find(f=>f.fieldname == 'secondImage')
        console.log(secondImage)
 
+       let editionArr = req.body.edition.split(',')
+console.log(editionArr);
+console.log(editionArr.length);
+       Product.create({
+           
+            name: req.body.name,
+            slug: req.body.slug,
+            description:req.body.description,
+            price:  Number(req.body.price),
+            image1: mainImage.originalname,
+            image2: secondImage.originalname,
+            category: req.body.subcategory,
+            hasEdition: req.body.hasEdition == 'true' ? 1 : 0,
+            edition: editionArr[0] != '' ? editionArr : null,
+            stock: req.body.stock,
+            isNew:req.body.type == 'nuevo' ? 1 : 0,
+            rawApi:null
 
-        let products = fs.readFileSync(productsPath, 'utf-8');
-        products = JSON.parse(products);
+       }).then(()=> {
+            return res.redirect("/productos/")
+        })            
+        .catch(error => res.send(error))
 
-        let product = null;
+        // let products = fs.readFileSync(productsPath, 'utf-8');
+        // products = JSON.parse(products);
 
-        let editionArr = req.body.edition.split(',')
+        // let product = null;
+
+        // let editionArr = req.body.edition.split(',')
       
-        product = {
-            'id':products.length +1,
-            'name': req.body.name,
-            'price': req.body.price,
-            'description':req.body.description,
-            'hasEdition': req.body.hasEdition == 'true' ? true : false,
-            'edition': editionArr,
-            'isNew':req.body.type == 'nuevo' ? true : false,
-            'category': req.body.category,
-            'subcategory': req.body.subcategory,
-            'stock': req.body.stock,
-            'mainImage': mainImage.originalname,
-            'secondImage': secondImage.originalname,
-            'rawApi':null
-        }
+        // product = {
+        //     'id':products.length +1,
+        //     'name': req.body.name,
+        //     'price': req.body.price,
+        //     'description':req.body.description,
+        //     'hasEdition': req.body.hasEdition == 'true' ? true : false,
+        //     'edition': editionArr,
+        //     'isNew':req.body.type == 'nuevo' ? true : false,
+        //     'category': req.body.category,
+        //     'subcategory': req.body.subcategory,
+        //     'stock': req.body.stock,
+        //     'mainImage': mainImage.originalname,
+        //     'secondImage': secondImage.originalname,
+        //     'rawApi':null
+        // }
 
-        console.log("Producto a crear: ");
-        console.log(product)
+        // console.log("Producto a crear: ");
+        // console.log(product)
 
-        products.push(product);
-        productsFinal = JSON.stringify(products);
-        fs.writeFileSync(productsPath, productsFinal);
+        // products.push(product);
+        // productsFinal = JSON.stringify(products);
+        // fs.writeFileSync(productsPath, productsFinal);
         
   
-      res.redirect("/productos/"+product.category+"/"+product.id)
+     // res.redirect("/productos/"+product.category+"/"+product.id)
     },
 
     edit: (req, res) => {

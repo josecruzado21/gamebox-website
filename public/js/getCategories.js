@@ -2,6 +2,19 @@ const category = document.querySelector('#category');
 
 const subcategory = document.querySelector('#subcategory');
 
+const nameInput = document.querySelector('#name');
+
+const slug = document.querySelector('#slug');
+
+function make_slug(str)
+{
+    str = str.toLowerCase();
+    str = str.replace(/[^a-z0-9]+/g, '-');
+    str = str.replace(/^-+|-+$/g, '');
+    return str;
+}
+
+
 fetch(location.origin+'/api/categorias/'+category.value)
 .then(response => response.json())
 .then(data => {        
@@ -41,6 +54,19 @@ category.addEventListener("change", function(e){
             subcategory.add(option, null)
         });
     });
+
+
+});
+
+nameInput.addEventListener("change", function(e){
+    let value = e.target.value;
+  
+    console.log(value);
+
+    let sValue = make_slug(value); 
+
+    console.log(sValue);
+    slug.value = sValue
 
 
 })
