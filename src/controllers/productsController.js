@@ -4,11 +4,17 @@ const fs = require('fs');
 const db = require('../database/models');
 
 const { QueryTypes } = require('sequelize');
+const { log } = require('console');
 
 
 const productsPath = path.resolve(__dirname, '../data/products.json');
 const Category = db.Category;
 const Product = db.Product;
+
+
+ function getParentCategories(){
+
+}
 
 let productsController = {
   
@@ -305,10 +311,40 @@ let productsController = {
 
         let product = null;
 
-        res.render('pages/products/productCreate', {
-            title: title,
-            product: product
-        })
+        let categories  =  {};
+
+                    //Get Categories
+                    db.sequelize.query(
+                        'select c1.id'+
+                        ', c1.name'+
+                        ', (select name from categories where c1.parent_id = categories.id) as ParentName'+
+                        ' from categories c1' + 
+                        ' where (select name from categories where c1.parent_id = categories.id) is null'
+                       , {
+                           type: QueryTypes.SELECT,
+                           nest: true,
+                         }).then(cats => {  
+                            console.log("consulta db")
+                             console.log(cats)
+                            categories = cats
+
+                            res.render('pages/products/productCreate', {
+                                title,
+                                product,
+                                categories:cats
+                            })
+
+
+                         }).catch(error => {  
+                             console.log(error.message);
+                             
+                           })
+
+
+        
+
+       
+
     },
 
     save: (req, res) => {
