@@ -43,6 +43,7 @@ CREATE TABLE `Products` (
 	PRIMARY KEY (`id`)
 );
 
+
 CREATE TABLE `ShoppingCart` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`user` INT NOT NULL,
@@ -56,6 +57,9 @@ CREATE TABLE `ShoppingCartProducts` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`product` INT NOT NULL,
 	`shoppingCart` INT NOT NULL,
+	`hasEdition` INT NOT NULL DEFAULT 0,
+	`edition` varchar(500),
+	`price` DECIMAL NOT NULL,
 	PRIMARY KEY (`id`)
 );
 

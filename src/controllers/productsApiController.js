@@ -62,7 +62,31 @@ let productsApiController = {
        }
     
    
-}
+    },
+
+    getProduct:(req,res) => {
+
+      let childCategory = req.params.childCategory;
+      let slugProduct = req.params.slugProduct;
+
+      Product.findOne({
+        include: [{
+            model:Category,
+            as : 'categories',
+            where:{
+                slug:childCategory
+            }
+        } ],
+        where: {
+            [db.Sequelize.Op.and]  : [{slug: slugProduct} ]
+        },
+    })
+        .then(product => {
+
+          res.json(product)
+        })
+
+    }
 }
 
 module.exports = productsApiController;

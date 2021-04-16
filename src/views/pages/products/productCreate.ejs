@@ -83,8 +83,8 @@
                         <label for="hasEdition">Tiene Edicion?</label>
     
                         <select name="hasEdition" id="hasEdition">
-                          <option value="true" <%= product?.hasEdition == 'true' ? "selected" : "" %> >Si</option>
-                          <option value="false" <%= product?.hasEdition == 'false' ? "selected" : "" %>>No</option>
+                          <option value=1 <%= product?.hasEdition == 1 ? "selected" : "" %> >Si</option>
+                          <option value=0 <%= product?.hasEdition == 0 ? "selected" : "" %>>No</option>
                         
                         </select>
     
@@ -93,7 +93,7 @@
     
                     <div class="input-wrapper">
                         <input class="input"  type="text" name="edition"  placeholder=" " id="edition" value="<%= product?.edition %>">
-                        <label for="edition" class="label">Edicion (Digite separado por comas)</label>
+                        <label for="edition" class="label">Edición (Digite separado por comas cada edición con formato nombre;precio) (Ej: Game of the year;350000, Standard;250000, Digital;170000)</label>
                     </div>
     
                     <div class="input-wrapper">
@@ -176,7 +176,7 @@
         <%- include('../../partials/footer.ejs') %>
 
 
-        <script src="/js/getCategories.js"></script>
+        <script src="/js/createProduct.js"></script>
     </footer>
 </body>
 

@@ -6,6 +6,10 @@ const nameInput = document.querySelector('#name');
 
 const slug = document.querySelector('#slug');
 
+const hasEdition = document.querySelector('#hasEdition');
+
+const edition = document.querySelector('#edition');
+
 function make_slug(str)
 {
     str = str.toLowerCase();
@@ -13,6 +17,17 @@ function make_slug(str)
     str = str.replace(/^-+|-+$/g, '');
     return str;
 }
+
+hasEdition.addEventListener("change", function(e){
+    let selected = e.target.value;
+    console.log(selected);
+    if(selected == 0){
+        edition.value = "";
+        edition.disabled = true;
+    }else{
+        edition.disabled = false;
+    }
+});
 
 
 fetch(location.origin+'/api/categorias/'+category.value)
@@ -54,8 +69,6 @@ category.addEventListener("change", function(e){
             subcategory.add(option, null)
         });
     });
-
-
 });
 
 nameInput.addEventListener("change", function(e){

@@ -219,7 +219,7 @@ VALUES
 'tlou2.png',
 18,
 1,
-'Standard, Coleccionista, Game of the year ',
+'Standard;205000, Coleccionista;350000, Game of the year;250000',
 10,
 1,
 null);
@@ -245,7 +245,7 @@ VALUES
 2199000,
 7,
 1,
-'Standard',
+'Standard;2199000',
 10,
 1,
 null);

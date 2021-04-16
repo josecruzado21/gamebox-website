@@ -80,20 +80,18 @@
                     <% if(product.hasEdition && product.edition != null && product.edition.length > 0  ) { %>
                     <div class="select-wrapper">
                         <select class="select" name="edition" id="edition">
-                            <% product.edition.forEach( edition => { %>
-                            <option value="<%= edition %>"><%= edition %></option>
-                           
-                            <!-- <option value="Standard">Standard</option>
-                            <option value="Collector">Coleccionista</option>
-                            <option value="Especial">Especial</option> -->
+                            <% product.editions.forEach( edition => { %>
+                            <option value="<%= edition.name %>"><%= edition.name %></option>
                             <% }); %>
                         </select>
                     </div>
                     <% } %>
-                    <div class="productPriceWrapper">
+                    <div class="productPriceWrapper" >
                         <p class="labelPrice">Precio</p>
-                        <h3 class="price"> $ <%= product.price %>  </h3>
+                        <h3 class="price" id="productPrice"> $ <%= product.price %>  </h3>
                     </div>
+
+                    <input type="hidden" id="productPriceHidden" name="productPriceHidden" value= <%= product.price %>>
 
                     <a href="" class="btn-CTA addToCart">Añadir al carrito</a>
                 </div>
@@ -136,6 +134,7 @@
     <footer>
         <%- include('../../partials/footer.ejs') %>
     </footer>
+    <script src="/js/productDetail.js"></script>
 </body>
 
 </html>
