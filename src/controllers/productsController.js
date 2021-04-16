@@ -32,7 +32,7 @@ let productsController = {
         let childCategory = req.params.childCategory;
         let slugProduct = req.params.slugProduct;
 
-        let productFound = {};
+       
 
         db.Product.findOne({
             //include:[{association:'categories'}],
@@ -57,7 +57,19 @@ let productsController = {
                 }
                 
                 if(product.edition){
-                    product.edition = product.edition.split(',');
+
+                    let  editionSplit = product.edition.split(',');
+                    console.log(editionSplit);
+                    let editions = [];
+                    editionSplit.forEach(ed => {
+                    let editionPriceSplit = ed.split(';')
+                  
+                    editions.push({
+                            name : editionPriceSplit[0],
+                            price: editionPriceSplit[1],
+                        })  
+                    });
+                    product.editions = editions;
                 }
 
                 console.log(product)
@@ -344,11 +356,6 @@ let productsController = {
                              
                            })
 
-
-        
-
-       
-
     },
 
     save: (req, res) => {
@@ -360,8 +367,7 @@ let productsController = {
        console.log(secondImage)
 
        let editionArr = req.body.edition.split(',')
-console.log(editionArr);
-console.log(editionArr.length);
+
        Product.create({
            
             name: req.body.name,
@@ -371,8 +377,8 @@ console.log(editionArr.length);
             image1: mainImage.originalname,
             image2: secondImage.originalname,
             category: req.body.subcategory,
-            hasEdition: req.body.hasEdition == 'true' ? 1 : 0,
-            edition: editionArr[0] != '' ? editionArr : null,
+            hasEdition: req.body.hasEdition,
+            edition: req.body.edition,
             stock: req.body.stock,
             isNew:req.body.type == 'nuevo' ? 1 : 0,
             rawApi:null
