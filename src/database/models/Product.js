@@ -74,6 +74,21 @@ module.exports = (sequelize, dataTypes) => {
         })
         
 
+        Product.belongsTo(models.RawInfo, {
+                as:'rawInfoObj',
+                foreignKey:'rawInfo'
+        })
+
+        Product.hasMany(models.ShoppingCartProduct, {
+            as:"products-shoppingCartProducts",
+            foreignKey:"product"
+        })
+
+        // Product.belongsToMany(models.ShoppingCart, {
+        //         through: models.ShoppingCartProduct,
+        //         as:"shoppingCart"
+        // })
+        
     }
 
     return Product;

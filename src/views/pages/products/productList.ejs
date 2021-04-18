@@ -22,7 +22,13 @@
                 <div class="precio_lista"><%=products[i].price%></div>
                 <div class="descripcion_lista"><%=products[i].description%></div>
             </div>
-            <button class="button-list">Agregar al carrito</button>
+            <button class="button-list"  
+            data-id = <%=products[i].id%>  
+            data-price = <%=products[i].price%> 
+            data-name= "<%=products[i].name%>"  
+            data-image= "<%=products[i].image2%>" 
+            data-hasedition= <%=products[i].hasEdition%> 
+            data-edition= "<%=products[i].edition%>">Agregar al carrito</button>
         </div>
         <% } %>
 
@@ -31,6 +37,7 @@
     <footer>
         <%- include('../../partials/footer.ejs') %>
     </footer>
+    <script src="/js/productList.js"></script>
 </body>
 
 </html>

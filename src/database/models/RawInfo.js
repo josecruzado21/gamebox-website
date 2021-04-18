@@ -59,7 +59,12 @@ module.exports = (sequelize, dataTypes) => {
 
     const RawInfo = sequelize.define(alias, cols, config);
 
-    
+    RawInfo.associate = function(models){
+        RawInfo.hasMany(models.Product, {
+            as:'rawInfo',
+            foreignKey:'rawInfo'
+        })
+    }
 
     return RawInfo;
 

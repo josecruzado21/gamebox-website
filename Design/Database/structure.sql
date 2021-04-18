@@ -44,14 +44,23 @@ CREATE TABLE `Products` (
 );
 
 
+CREATE TABLE `ShoppingCartStatus` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`status` varchar(50) NOT NULL,
+	PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `ShoppingCart` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`user` INT NOT NULL,
 	`itemsQuantity` INT NOT NULL DEFAULT 0,
 	`totalPrice` DECIMAL NOT NULL DEFAULT 0,
 	`date` DATETIME NOT NULL,
+	`shoppingCartStatus` INT NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`)
 );
+
+
 
 CREATE TABLE `ShoppingCartProducts` (
 	`id` INT NOT NULL AUTO_INCREMENT,
@@ -60,6 +69,8 @@ CREATE TABLE `ShoppingCartProducts` (
 	`hasEdition` INT NOT NULL DEFAULT 0,
 	`edition` varchar(500),
 	`price` DECIMAL NOT NULL,
+	`quantity` SMALLINT(6) NOT NULL,
+	`image` varchar(500) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -78,6 +89,9 @@ CREATE TABLE `RawInfo` (
 	PRIMARY KEY (`id`)
 );
 
+
+
+
 ALTER TABLE `Categories` ADD CONSTRAINT `Categories_fk0` FOREIGN KEY (`parent_id`) REFERENCES `Categories`(`id`);
 
 ALTER TABLE `Users` ADD CONSTRAINT `Users_fk0` FOREIGN KEY (`type`) REFERENCES `UserType`(`id`);
@@ -87,6 +101,9 @@ ALTER TABLE `Products` ADD CONSTRAINT `Products_fk0` FOREIGN KEY (`category`) RE
 ALTER TABLE `Products` ADD CONSTRAINT `Products_fk1` FOREIGN KEY (`rawInfo`) REFERENCES `RawInfo`(`id`);
 
 ALTER TABLE `ShoppingCart` ADD CONSTRAINT `ShoppingCart_fk0` FOREIGN KEY (`user`) REFERENCES `Users`(`id`);
+
+ALTER TABLE `ShoppingCart` ADD CONSTRAINT `ShoppingCart_fk1` FOREIGN KEY (`shoppingCartStatus`) REFERENCES `shoppingCartStatus`(`id`);
+
 
 ALTER TABLE `ShoppingCartProducts` ADD CONSTRAINT `ShoppingCartProducts_fk0` FOREIGN KEY (`product`) REFERENCES `Products`(`id`);
 

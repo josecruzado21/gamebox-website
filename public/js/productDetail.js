@@ -2,6 +2,9 @@
 const edition = document.querySelector('#edition');
 const productPrice = document.querySelector('#productPrice');
 const productPriceHidden = document.querySelector('#productPriceHidden');
+const addToCart = document.querySelector('#addToCartDetail');
+const cartCount = document.querySelector('#cartCount');
+
 let product = {};
 
 window.addEventListener("load", function(){
@@ -31,6 +34,16 @@ window.addEventListener("load", function(){
     });
 
 })
+
+addToCart.addEventListener("click", function(e){
+    e.stopPropagation();
+    console.log(e)
+    cartCount.dataset.count++; 
+
+
+})
+
+
 
 edition.addEventListener("change", function(e){
     let selected = e.target.value;

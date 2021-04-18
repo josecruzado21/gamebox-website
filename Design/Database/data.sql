@@ -300,3 +300,10 @@ null,
 2,
 1,
 null);
+
+INSERT INTO `gamebox`.`shoppingcartstatus`
+(
+`status`)
+VALUES
+("CREATED"), ("PENDING"), ("PAYED"), ("REJECTED");
+

@@ -18,7 +18,7 @@
             <div class="create-product-introWrapper">
                 <h1 class="small-title-createProduct">
                     <% if (product === null) { %>
-                    Crear producto
+                        Crear producto
                     <% } else { %>
                         Editar un producto
                     <% } %>
@@ -67,12 +67,6 @@
                         <label for="subcategory">Subcategoría</label>
     
                         <select name="subcategory" id="subcategory">
-                          <!-- <option value="ps4" <%= product?.subcategory == 'ps4' ? "selected" : "" %>>PS4</option>
-                          <option value="ps5" <%= product?.subcategory == 'ps5' ? "selected" : "" %>>PS5</option>
-                          <option value="xbox-one" <%= product?.subcategory == 'xbox-one' ? "selected" : "" %>>Xbox one</option>
-                          <option value="nintendo-switch" <%= product?.subcategory == 'nintendo-switch' ? "selected" : "" %>>Nintendo Switch</option>
-                          <option value="nintendo-3ds" <%= product?.subcategory == 'nintendo-3ds' ? "selected" : "" %>>Nintendo 3DS</option>
-                          <option value="ps3" <%= product?.subcategory == 'ps3' ? "selected" : "" %>>PS3</option> -->
                         </select>
     
                     </div>

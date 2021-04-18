@@ -22,8 +22,11 @@ module.exports = (sequelize, dataTypes) => {
         date: {
             type: dataTypes.DATE,
             allowNull: false
-        }
-
+        },
+        shoppingCartStatus: {
+            type: dataTypes.INTEGER,
+            allowNull: false
+        },
 
     };
 
@@ -34,11 +37,30 @@ module.exports = (sequelize, dataTypes) => {
 
     const ShoppingCart = sequelize.define(alias, cols, config);
 
-    // ShoppingCart.associate = function(models){
+    ShoppingCart.associate = function(models){
 
-    //     ShoppingCart.belongsToMany(models);
+        ShoppingCart.belongsTo(models.User, {
+            as:'userShoppingCart',
+            foreignKey:'user'
+        })
 
-    // }
+        ShoppingCart.belongsTo(models.ShoppingCartStatus, {
+            as:'statusShoppingCart',
+            foreignKey:'shoppingCartStatus'
+        })
+
+        ShoppingCart.hasMany(models.ShoppingCartProduct, {
+            as:"shoppingCartShoppingCartProducts",
+            foreignKey:"shoppingCart"
+        })
+
+
+        // ShoppingCart.belongsToMany(models.Product, {
+        //     through: models.ShoppingCartProduct,
+        //     as:"products"
+        // })
+
+     }
 
 
     return ShoppingCart;
