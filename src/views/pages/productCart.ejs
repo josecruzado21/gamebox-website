@@ -32,90 +32,41 @@
     
               </div>  
 
-              <% productList.forEach(product => { %>
-                <article class="product">
-                  <div class="product-1-title">
-                      <p>Producto</p>
-                      <span class="icon-erase">X</span>
-                  </div>
-                  <div class="product-1">
-                    <img
-                      src="/images/products/<%=product.image%>" 
-                      alt="the last of us 2"
-                    />
-                    <div class="product-texts">
-                      <p class="product-title"><%=product.name%></p>
-                      <p class="product-subtitle">Play Station 4</p>
+              <% if (productList.length > 0) { %>
+               
+                <% productList.forEach(product => { %>
+                  <article class="product">
+                    <div class="product-1-title">
+                        <p>Producto</p>
+                        <span class="icon-erase">X</span>
                     </div>
-                  </div>
-                  <div class="product-2-title">
-                      <p>Cantidad</p>
-                      <p>Precio</p>
-                  </div>
-                  <div class="product-2">
-                      <div class="product-quantity"><%=product.quantity%></div>
-                      <p class="product-price"><%=product.price%></p>
-                  </div>
-                  <!-- <img src="images/icon-close.svg" alt=""> -->
-                  <span class="icon-erase2">X</span>
-      
-                </article>
-              <% }) %>
+                    <div class="product-1">
+                      <img
+                        src="/images/products/<%=product.image%>" 
+                        alt="the last of us 2"
+                      />
+                      <div class="product-texts">
+                        <p class="product-title"><%=product.name%></p>
+                        <p class="product-subtitle">Play Station 4</p>
+                      </div>
+                    </div>
+                    <div class="product-2-title">
+                        <p>Cantidad</p>
+                        <p>Precio</p>
+                    </div>
+                    <div class="product-2">
+                        <div class="product-quantity"><%=product.quantity%></div>
+                        <p class="product-price"><%=product.price%></p>
+                    </div>
+                    <!-- <img src="images/icon-close.svg" alt=""> -->
+                    <span class="icon-erase2">X</span>
+        
+                  </article>
+                <% }) %>
 
 
+              <% } %>
 
-              <!-- <article class="product">
-                <div class="product-1-title">
-                    <p>Producto</p>
-                    <span class="icon-erase">X</span>
-                </div>
-                <div class="product-1">
-                  <img
-                    src="/images/products/last-of-us-cover.png"
-                    alt="the last of us 2"
-                  />
-                  <div class="product-texts">
-                    <p class="product-title">The last of us: Parte 2</p>
-                    <p class="product-subtitle">Play Station 4</p>
-                  </div>
-                </div>
-                <div class="product-2-title">
-                    <p>Cantidad</p>
-                    <p>Precio</p>
-                </div>
-                <div class="product-2">
-                    <div class="product-quantity">1</div>
-                    <p class="product-price">$ 170.000</p>
-                </div> -->
-                <!-- <img src="images/icon-close.svg" alt=""> -->
-                <!-- <span class="icon-erase2">X</span>
-    
-              </article> -->
-    
-              <!-- <article class="product">
-                <div class="product-1-title">
-                    <p>Producto</p>
-                    <span class="icon-erase">X</span>
-                </div>
-                <div class="product-1">
-                  <img src="/images/products/cyberpunk-cover.png" alt="ciberpunk" />
-                  <div class="product-texts">
-                    <p class="product-title">Cyberpunk 2077</p>
-                    <p class="product-subtitle">Play Station 4</p>
-                  </div>
-                </div>
-                <div class="product-2-title">
-                    <p>Cantidad</p>
-                    <p>Precio</p>
-                </div>
-                <div class="product-2">
-                    <div class="product-quantity">1</div>
-                    <p class="product-price">$ 170.000</p>
-                </div>
-    
-                <span class="icon-erase2">X</span>
-              </article>
-            </section> -->
             <section class="payment-methods">
               <h4 class="small-title-cart">Medios de pago</h4>
               <div class="payment-methods-types">
@@ -137,11 +88,11 @@
            
              <div class="summary">
                   <p>Productos</p>
-                  <p>$218.700</p>
+                  <p><%=totalBeforeTax%></p>
              </div>
              <div class="summary">
                   <p>Impuesto 19%</p>
-                  <p>$51.300</p>
+                  <p><%=tax%></p>
              </div>
               <div class="summary">
                   <p>Envio</p>
@@ -166,7 +117,7 @@
                 </div>
                 <div class="summary">
                   <p>Subtotal</p>
-                  <p>$270.000</p>
+                  <p><%=total%></p>
               </div>
   
   

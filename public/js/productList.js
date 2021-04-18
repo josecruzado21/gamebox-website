@@ -1,17 +1,27 @@
 const addToCartButtons = document.querySelectorAll('.button-list');
 const cartCount = document.querySelector('#cartCount');
 
-
-
 let cart = {}
 let cartFound = {}
 //let productList = []
 
 var cookieArr = document.cookie.split(";");
 
+console.log("cookies");
+console.log(cookieArr);
+
 addToCartButtons.forEach(function(currentBtn){
     currentBtn.addEventListener("click", function(e){
         e.stopPropagation();
+        
+        console.log("user");
+        console.log(currentBtn.dataset.userid);
+
+        if(currentBtn.dataset.userid == null ||  currentBtn.dataset.userid == undefined || currentBtn.dataset.userid == ''){
+            window.location.replace(location.origin+'/login');
+        }
+
+        let userId = currentBtn.dataset.userid
 
         cartCount.dataset.count++;
 
@@ -23,13 +33,14 @@ addToCartButtons.forEach(function(currentBtn){
         productToAdd.image = currentBtn.dataset.image;
         productToAdd.hasEdition = currentBtn.dataset.hasedition;
         productToAdd.edition = currentBtn.dataset.edition;
+        productToAdd.category = currentBtn.dataset.category;
 
         console.log("producto a añadir");
         console.log(productToAdd);
 
         console.log('Buscando carrito... ');
         //Buscar carrito creado, sino se encuentra se debe crear
-        fetch(location.origin+'/api/carrito-compras/' + '?'+ 'userId=' + 1)
+        fetch(location.origin+'/api/carrito-compras/' + '?'+ 'userId=' + userId + '&' + 'status=1')
         .then(response => response.json())
         .then(data => {
 
@@ -43,7 +54,7 @@ addToCartButtons.forEach(function(currentBtn){
             if(cartFound == null){
                     console.log("No Existe carrito")
                     //Crear carrito
-                    cart.userId = 1;
+                    cart.userId = userId;
                     cart.totalPrice = productToAdd.price;
                     cart.itemsQuantity = productToAdd.quantity;
                     cart.shoppingCartStatus = 1
@@ -244,16 +255,16 @@ addToCartButtons.forEach(function(currentBtn){
             //Si NO tiene productos
             }else{
                 console.log("No tiene productos ")
-                productList.forEach(pl => {
+             
 
                     let product = {};
-                    product.product = Number(pl.id) ;
+                    product.product = Number(productToAdd.id) ;
                     product.shoppingCart = Number(cartFound.id) ;
-                    product.hasEdition = Number(pl.hasEdition)  ;
-                    product.edition = pl.edition;
-                    product.image = pl.image;
-                    product.quantity = pl.quantity;
-                    product.price = pl.price;
+                    product.hasEdition = Number(productToAdd.hasEdition)  ;
+                    product.edition = productToAdd.edition;
+                    product.image = productToAdd.image;
+                    product.quantity = productToAdd.quantity;
+                    product.price = productToAdd.price;
 
 
                     //Guardar cada producto en shoppingCartProducts
@@ -276,7 +287,7 @@ addToCartButtons.forEach(function(currentBtn){
 
                     });
 
-                });
+             
 
             }
 

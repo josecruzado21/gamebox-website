@@ -43,6 +43,10 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.STRING(500),
             allowNull: true
         },
+        category: {
+            type: dataTypes.INTEGER,
+            allowNull: false
+        },
     };
 
     let config = {
@@ -60,6 +64,11 @@ module.exports = (sequelize, dataTypes) => {
         ShoppingCartProduct.belongsTo(models.Product, {
             as:'product-shoppingCartProducts',
             foreignKey:'product'
+        })
+    
+        ShoppingCartProduct.belongsTo(models.Category, {
+            as:'categories',
+            foreignKey:'category'
         })
     }
 

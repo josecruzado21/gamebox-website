@@ -34,10 +34,6 @@ const usersController = {
                 }
 
                 return res.redirect('/usuarios/perfil');
-                // return res.render('pages/users/profile', {
-                //     title: 'Perfil usuario',
-                //     user: user
-                // } );
             }else{
                 return res.render('pages/users/login', {
                     title: titleLogin,

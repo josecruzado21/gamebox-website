@@ -28,7 +28,10 @@
             data-name= "<%=products[i].name%>"  
             data-image= "<%=products[i].image2%>" 
             data-hasedition= <%=products[i].hasEdition%> 
-            data-edition= "<%=products[i].edition%>">Agregar al carrito</button>
+            data-edition= "<%=products[i].edition%>"
+            data-userid=<%=user?.id%>
+            data-category=<%=products[i].category%>
+            >Agregar al carrito</button>
         </div>
         <% } %>
 

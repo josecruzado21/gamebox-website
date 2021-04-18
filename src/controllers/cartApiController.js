@@ -12,10 +12,6 @@ const Product = db.Product;
 const User = db.User;
 
 let cartApiController = {
-  
-    updateCart:(req,res) => {
-
-    },
 
     createCart:(req,res) => {
         console.log("body crear carrito")
@@ -92,6 +88,7 @@ let cartApiController = {
     getCart:(req,res) => {
       
         let userId = req.query.userId;
+        let status = req.query.status;
         console.log(userId);
   
         ShoppingCart.findOne({
@@ -108,7 +105,7 @@ let cartApiController = {
                 as : 'shoppingCartShoppingCartProducts',
             } ],
           where: {
-              [db.Sequelize.Op.and]  : [{user: userId} ]
+              [db.Sequelize.Op.and]  : [{user: userId}, {shoppingCartStatus:status} ]
           },
         })
           .then(product => {

@@ -231,6 +231,8 @@ INSERT INTO `gamebox`.`products`
 `slug`,
 `description`,
 `price`,
+`image1`,
+`image2`,
 `category`,
 `hasEdition`,
 `edition`,
@@ -243,6 +245,8 @@ VALUES
 'consola-ps4-pro',
 'Ps4 Pro 1tb + Juego Fisico Spiderman. Nuevo y sellado. Garantia de 1 año. Control, Cable HDMI, 4K. Nueva y Sellada.',
 2199000,
+'ps4.jpg',
+'ps4.jpg',
 7,
 1,
 'Standard;2199000',
@@ -256,6 +260,8 @@ INSERT INTO `gamebox`.`products`
 `slug`,
 `description`,
 `price`,
+`image1`,
+`image2`,
 `category`,
 `hasEdition`,
 `edition`,
@@ -268,6 +274,8 @@ VALUES
 'xbox-series-x',
 'Xbox Series X (Project Scarlett hasta el anuncio oficial de su nombre) es la consola de novena generación de Microsoft, la cuarta de la familia de hardware de entretenimiento de la compañía de Redmond. La nueva Xbox es una máquina que es cuatro veces más potente que la propia Xbox One X y ha sido diseñada por el mismo equipo de ingenieros que gestaron a Xbox One X, y también que han marcado un antes y un después para el multijugador con Xbox Live.',
 3199000,
+'xbox-controller.png',
+'xbox-controller.png',
 11,
 0,
 null,
@@ -282,6 +290,8 @@ INSERT INTO `gamebox`.`products`
 `slug`,
 `description`,
 `price`,
+`image1`,
+`image2`,
 `category`,
 `hasEdition`,
 `edition`,
@@ -294,6 +304,8 @@ VALUES
 'alienware-m15',
 'Dell Alienware M15 I7 10ma 16b 512ssd Rtx2070 8gb',
 9599000,
+'alienware.jpg',
+'alienware.jpg',
 30,
 0,
 null,
@@ -306,4 +318,20 @@ INSERT INTO `gamebox`.`shoppingcartstatus`
 `status`)
 VALUES
 ("CREATED"), ("PENDING"), ("PAYED"), ("REJECTED");
+
+--
+-- Volcado de datos para la tabla `shoppingcart`
+--
+
+INSERT INTO `shoppingcart` ( `user`, `itemsQuantity`, `totalPrice`, `date`, `shoppingCartStatus`) VALUES
+( 1, 2, '2404000', '2021-04-18 20:06:07', 1);
+
+--
+-- Volcado de datos para la tabla `shoppingcartproducts`
+--
+
+INSERT INTO `shoppingcartproducts` ( `product`, `shoppingCart`, `hasEdition`, `edition`, `price`, `quantity`, `image`, `category`) VALUES
+( 1, 1, 1, 'Standard;205000, Coleccionista;350000, Game of the year;250000', '205000', 1, 'tlou2.png',18),
+( 2, 1, 1, 'Standard;2199000', '2199000', 1, 'ps4.jpg',7);
+
 

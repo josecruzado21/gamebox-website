@@ -142,6 +142,7 @@ let productsController = {
               res.render('pages/products/productList', {
                 title: title, 
                 products:prds,
+                user:req.session.userLogged
               
                 })
           }).catch(error => {  

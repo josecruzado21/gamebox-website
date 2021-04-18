@@ -71,6 +71,7 @@ CREATE TABLE `ShoppingCartProducts` (
 	`price` DECIMAL NOT NULL,
 	`quantity` SMALLINT(6) NOT NULL,
 	`image` varchar(500) NOT NULL,
+	`category` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -104,8 +105,8 @@ ALTER TABLE `ShoppingCart` ADD CONSTRAINT `ShoppingCart_fk0` FOREIGN KEY (`user`
 
 ALTER TABLE `ShoppingCart` ADD CONSTRAINT `ShoppingCart_fk1` FOREIGN KEY (`shoppingCartStatus`) REFERENCES `shoppingCartStatus`(`id`);
 
-
 ALTER TABLE `ShoppingCartProducts` ADD CONSTRAINT `ShoppingCartProducts_fk0` FOREIGN KEY (`product`) REFERENCES `Products`(`id`);
 
 ALTER TABLE `ShoppingCartProducts` ADD CONSTRAINT `ShoppingCartProducts_fk1` FOREIGN KEY (`shoppingCart`) REFERENCES `ShoppingCart`(`id`);
 
+ALTER TABLE `ShoppingCartProducts` ADD CONSTRAINT `ShoppingCartProducts_fk2` FOREIGN KEY (`category`) REFERENCES `Categories`(`id`);
