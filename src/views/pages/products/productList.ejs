@@ -19,7 +19,7 @@
             <img class='imagen_lista_productos' src="/images/products/<%= products[i].image2 %>">
             <div class="titulo_precio_descripcion">
                 <div class="nombre_lista"><a href="/productos/<%= products[i].categories.parent_slug %>/<%= products[i].categories.slug %>/<%= products[i].slug %>"><%=products[i].name%></a></div>
-                <div class="precio_lista"><%=products[i].price%></div>
+                <div class="precio_lista"> $ <%= new Intl.NumberFormat("es-CO").format(products[i].price)  %></div>
                 <div class="descripcion_lista"><%=products[i].description%></div>
             </div>
             <button class="button-list"  

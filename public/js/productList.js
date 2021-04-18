@@ -83,7 +83,7 @@ addToCartButtons.forEach(function(currentBtn){
                                 product.image = productToAdd.image;
                                 product.quantity = productToAdd.quantity;
                                 product.price = productToAdd.price;
-
+                                product.category = productToAdd.category;
                                 // //Crea productos en carrito
                                 console.log("Creando productos en carrito: ");
 

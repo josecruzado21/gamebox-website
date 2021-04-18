@@ -61,6 +61,7 @@ let cartApiController = {
             price : req.body.price,
             quantity:req.body.quantity,
             image:req.body.image,
+            category:req.body.category
      }).then((data)=> {
              console.log("createCartProduct creado por api")
              res.json(data)

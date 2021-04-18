@@ -7,6 +7,7 @@ const ShoppingCart = db.ShoppingCart;
 const ShoppingCartProduct = db.ShoppingCartProduct;
 const Product = db.Product;
 const User = db.User;
+const Category = db.Category;
 
 
 const cartController = {
@@ -19,16 +20,24 @@ const cartController = {
         ShoppingCart.findOne({
             include: [
                 {
-                model:User,
-                as : 'userShoppingCart',
-              //   where:{
-              //       slug:childCategory
-              //   }
-            },
-              {
+                    model:User,
+                    as : 'userShoppingCart',
+                },
+                {
                   model:ShoppingCartProduct,
                   as : 'shoppingCartShoppingCartProducts',
-              } ],
+                  include:[
+                      {
+                          model:Category,
+                          as:'categories'
+                      },
+                      {
+                            model:Product,
+                            as:'productShoppingCartProducts'
+                      }
+                  ]
+                }
+            ],
             where: {
                 [db.Sequelize.Op.and]  : [{user: user.id}, {shoppingCartStatus:1} ]
             },
@@ -40,7 +49,7 @@ const cartController = {
                 productList = productsFound
 
                 res.render('pages/productCart', {
-                    'title': title,
+                    title,
                     productList,
                     total:data?.totalPrice,
                     tax:data?.totalPrice*0.19,
