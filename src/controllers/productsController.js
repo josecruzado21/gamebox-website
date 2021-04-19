@@ -543,7 +543,7 @@ let productsController = {
 
     delete: (req, res) => {
         let id = parseInt(req.params.id);
-        db.Product.delete({
+        db.Product.destroy({
             where:{id:id}
         }).then(res.redirect("/productos"))
         
