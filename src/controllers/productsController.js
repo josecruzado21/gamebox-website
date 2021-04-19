@@ -543,23 +543,10 @@ let productsController = {
 
     delete: (req, res) => {
         let id = parseInt(req.params.id);
-        let products = fs.readFileSync(productsPath, 'utf-8');
-        products = JSON.parse(products);
-
-        //Obtengo el indice del producto en la lista
-        const i = products.map( p => p.id ).indexOf(id);
-
-        //Lo saco de la lista
-        if ( i > -1 ) {
-            products.splice(i, 1);
-        }
-
-        productsFinal = JSON.stringify(products);
-        fs.writeFileSync(productsPath, productsFinal);
+        db.Product.delete({
+            where:{id:id}
+        }).then(res.redirect("/productos"))
         
-  
-        res.redirect("/productos")
-
     },
 }
 
