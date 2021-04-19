@@ -5,6 +5,7 @@ const db = require('../database/models');
 
 const { QueryTypes } = require('sequelize');
 const { log } = require('console');
+const { title } = require('process');
 
 
 const productsPath = path.resolve(__dirname, '../data/products.json');
@@ -422,19 +423,12 @@ let productsController = {
      // res.redirect("/productos/"+product.category+"/"+product.id)
     },
 
-    edit: (req, res) => {
+    edit: async (req, res) => {
         let title = 'Gamebox | Editar Producto ';
         let product = null;
         let id = parseInt(req.params.id);
         
-        console.log("Param Id: " + req.params.id);
-
-        let products = fs.readFileSync(productsPath, 'utf-8');
-        products = JSON.parse(products);
-
-        let productFound = products.find( f => f.id == id);
-
-        console.log(productFound);
+        productFound=await db.Product.findByPk(id)
 
         if(productFound == null || productFound == undefined){
             res.render('pages/not-found', {
@@ -445,77 +439,104 @@ let productsController = {
         product = {
             "id": id,
             'name': productFound.name,
+            'slug': productFound.slug,
             'price': productFound.price,
             'category': productFound.category,
             'description': productFound.description,
             'subcategory': productFound.subcategory,
             'type': productFound.isNew == true ? 'nuevo' : 'usado',
             'hasEdition': productFound.hasEdition == true ? 'true' : 'false',
-            'edition': productFound.edition.join(','),
+            'edition': productFound.edition,
             'stock': productFound.stock,
             'mainImage': productFound.mainImage,
-            'secondImage': productFound.secondImage
+           'secondImage': productFound.secondImage
         }
 
+        var cats=await db.sequelize.query(
+            'select c1.id'+
+            ', c1.name'+
+            ', (select name from categories where c1.parent_id = categories.id) as ParentName'+
+            ' from categories c1' + 
+            ' where (select name from categories where c1.parent_id = categories.id) is null'
+           , {
+               type: QueryTypes.SELECT,
+               nest: true,
+             })
+
         res.render('pages/products/productCreate', {
-            'title': title,
-            'product': product
+            title,
+            product,
+            categories:cats,
         })
+
     },
 
 
-    update: (req, res) => {
-       let id = parseInt(req.params.id);
-      
+    update: async (req, res) => {
+        let id = parseInt(req.params.id);
+        productFound=await db.Product.findByPk(id)
+
         let files =  req.files;
-        console.log(files);
-        let mainImage = files.find(f=>f.fieldname == 'mainImage')
-        console.log(mainImage)
-        let secondImage = files.find(f=>f.fieldname == 'secondImage')
-        console.log(secondImage)
-       
-        let products = fs.readFileSync(productsPath, 'utf-8');
-        products = JSON.parse(products);
 
-        let product = null;
-
-        let editionArr = req.body.edition.split(',')
-      
-        product = {
-            'id':id,
-            'name': req.body.name,
-            'price': req.body.price,
-            'description':req.body.description,
-            'hasEdition': req.body.hasEdition == 'true' ? true : false,
-            'edition': editionArr,
-            'isNew': req.body.type == 'nuevo' ? true : false,
-            'category': req.body.category,
-            'subcategory': req.body.subcategory,
-            'stock': req.body.stock,
-             'mainImage': mainImage.originalname,
-             'secondImage': secondImage.originalname,
-            'rawApi':null
+        if (req.body.mainImage==undefined || req.body.secondImage==undefined){
+            mainImage = productFound.image1
+            secondImage = productFound.image2
+        } else{
+            console.log(files);
+            let mainImage = files.find(f=>f.fieldname == 'mainImage').originalname
+            console.log(mainImage)
+            let secondImage = files.find(f=>f.fieldname == 'secondImage').originalname
+            console.log(secondImage)
         }
-
-        console.log('To Update: ')
-        console.log(product)
-
-        //Obtengo el indice del producto en la lista
-        const i = products.map( p => p.id ).indexOf(id);
-
-        //Lo saco de la lista
-        if ( i > -1 ) {
-            products.splice(i, 1);
-        }
-
-        //Vuelve a entrar a la lista
-        products.push(product);
-        productsFinal = JSON.stringify(products);
-        fs.writeFileSync(productsPath, productsFinal);
         
-  
-      res.redirect("/productos/"+product.category+"/"+product.id)
+        //let products = fs.readFileSync(productsPath, 'utf-8');
+        //products = JSON.parse(products);
+        let editionArr = req.body.edition.split(',')
+        product={
+            'name': req.body.name,
+            'slug': req.body.slug,
+            'description':req.body.description,
+            'price':  Number(req.body.price),
+            'image1': mainImage,
+            'image2': secondImage,
+            'category': req.body.subcategory,
+            'hasEdition': req.body.hasEdition,
+            'edition': editionArr,
+            'stock': req.body.stock,
+            'isNew':req.body.type == 'nuevo' ? 1 : 0,
+            'rawApi':null            
+        }
 
+        if(product.edition){
+
+            let editions = [];
+            editionArr.forEach(ed => {
+            let editionPriceSplit = ed.split(';')
+          
+            editions.push({
+                    name : editionPriceSplit[0],
+                    price: editionPriceSplit[1],
+                })  
+            });
+            product.editions = editions;
+        }
+
+        db.Product.update({
+            name: req.body.name,
+            slug: req.body.slug,
+            description:req.body.description,
+            price:  Number(req.body.price),
+            image1: mainImage.originalname,
+            image2: secondImage.originalname,
+            category: req.body.subcategory,
+            hasEdition: req.body.hasEdition,
+            edition: req.body.edition,
+            stock: req.body.stock,
+            isNew:req.body.type == 'nuevo' ? 1 : 0,
+            rawApi:null
+        },{
+            where:{id:id}
+        }).then(res.render('pages/products/productDetail',{title:title,product:product}))
     },
 
     delete: (req, res) => {

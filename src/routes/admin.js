@@ -6,7 +6,7 @@ const productsController = require('../controllers/productsController');
 
 
 router.get('/productos/crear', productsController.create);
-router.get('/productos/:id', productsController.edit);
+router.get('/productos/editar/:id', productsController.edit);
 
 
 
