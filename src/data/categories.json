@@ -1,0 +1,90 @@
+[
+    {
+    "id":1,
+    "name":"consolas",
+    "subcategory":[
+        {
+            "id":1,
+            "name":"ps5"
+        },
+        {
+            "id":2,
+            "name":"ps4"
+        },
+        {
+            "id":3,
+            "name":"xbox"
+        },
+        {
+            "id":4,
+            "name":"nintendo-switch"
+        },
+        {
+            "id":5,
+            "name":"nintendo-3ds"
+        }
+    ]
+},
+{
+    "id":2,
+    "name":"juegos",
+    "subcategory":[
+        {
+            "id":6,
+            "name":"ps5"
+        },
+        {
+            "id":7,
+            "name":"ps4"
+        },
+        {
+            "id":8,
+            "name":"xbox"
+        },
+        {
+            "id":9,
+            "name":"nintendo-switch"
+        },
+        {
+            "id":10,
+            "name":"nintendo-3ds"
+        }
+    ]
+},
+{
+    "id":3,
+    "name":"accesorios",
+    "subcategory":[
+        {
+            "id":11,
+            "name":"audifonos"
+        },
+        {
+            "id":12,
+            "name":"teclados"
+        }
+      
+    ]
+},
+{
+    "id":4,
+    "name":"computadores",
+    "subcategory":[
+        {
+            "id":13,
+            "name":"alienware"
+        },
+        {
+            "id":14,
+            "name":"asus"
+        }
+      
+    ]
+},
+{
+    "id":5,
+    "name":"sillas-gamer",
+    "subcategory":null
+}
+
+]

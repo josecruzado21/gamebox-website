@@ -4,8 +4,16 @@
   "description": "GameBox es un e-commerce especializado en la venta de productos de *gaming*. La oferta de este comercio se centrará en productos electrónicos y no electrónicos que aquellos interesados en los videojuegos necesitan para practicar este pasatiempo.",
   "main": "app.js",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
     "ejs": "^3.1.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "method-override": "^3.0.0",
+    "multer": "^1.4.2",
+    "mysql2": "^2.2.5",
+    "node-localstorage": "^2.1.6",
+    "sequelize": "^6.6.2"
   },
   "devDependencies": {
     "browser-sync": "^2.26.14",
@@ -22,7 +30,7 @@
     "sass": "^1.32.5"
   },
   "scripts": {
-    "start": "nodemon app.js",
+    "start": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -43,10 +51,12 @@
     "ie_mob >= 10",
     "ff >= 45",
     "chrome >= 45",
-    "safari >= 7",
+    "safari >= 7", 
     "opera >= 23",
     "ios >= 7",
     "android >= 4",
     "bb >= 10"
   ]
+
+
 }

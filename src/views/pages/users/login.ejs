@@ -2,12 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/css/main.css">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <title>Home | Gamebox</title>
+    <%- include('../../partials/head.ejs') %>
+    <title><%= title %></title>
 </head>
 
 <body>
@@ -15,7 +11,7 @@
 
         <article class="login-1">
             <a href="/" target="_self" class="logoBrand">
-                <img src="static/images/logoColor.svg" alt="Ir a gamebox home">
+                <img src="images/logoColor.svg" alt="Ir a gamebox home">
             </a>
 
             <div class="formWrapper">
@@ -26,10 +22,15 @@
                     <p class="welcome-login">
                         ¡Bienvenido de nuevo! Ingresa con tu correo electrónico y contraseña
                     </p>
+                    <% if (locals.errors && errors.email) { %>
+                     <p>
+                         <%= errors.email.msg  %> 
+                     </p>
+                    <% } %>
                 </div>
 
                 <div class="form-login">
-                    <form action="" method="POST">
+                    <form action="/login" method="POST">
 
                         <div class="input-wrapper">
                             <input type="text" name="email" class="input" placeholder=" " id="email">
@@ -45,12 +46,12 @@
                         <a class="linkSmall" href="#">Recuperar contraseña</a>
 
                         <div class="checkboxWrapper">
-                            <input type="checkbox" name="sesion" id="checkboxSesion" class="checkbox">
+                            <input  type="checkbox" name="sesion" id="checkboxSesion" class="checkbox">
                             <label for="checkboxSesion" class="checkboxLabel">Mantener mi sesión
                                 iniciada</label>
                         </div>
 
-                        <button class="btn-get-in">Ingresa ahora</button>
+                        <button class="btn-get-in" type="submit">Ingresa ahora</button>
                     </form>
                 </div>
             </div>

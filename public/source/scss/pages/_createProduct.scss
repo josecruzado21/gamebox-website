@@ -1,0 +1,66 @@
+.createProduct{
+
+    padding: 32px;
+    width: 95%;
+    //color:$gggg;
+
+    @include respond-to('tablet') {
+       
+
+    }
+
+    @include respond-to('desktop') {
+
+
+
+    }
+}
+
+.form-create-product {
+    width: 95%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    margin: auto;
+    padding: 15px;
+    
+    form{
+        a.linkSmall {
+            margin-top: 12px;
+            text-align: right;
+        }
+
+        .checkboxWrapper {
+            margin: 32px 0 56px;
+        }
+    }
+
+    @include respond-to('desktop') {
+
+
+
+
+    }
+}
+ 
+
+.small-title-createProduct {
+    @extend .h4;
+}
+
+
+
+
+
+.btn-create-product{
+    @extend .btn-primary;
+    margin-bottom: 24px;
+
+    @include respond-to('desktop') {
+        margin-bottom: 0;
+    }
+    
+}
+
+
+

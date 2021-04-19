@@ -1,0 +1,103 @@
+<div class="header">
+    <div class="triggerMenu" id="showLeft">
+        <div class="burgerInner">
+            <span class="burgerInnerLine"></span>
+            <span class="burgerInnerLine"></span>
+            <span class="burgerInnerLine"></span>
+        </div>
+        <a href="#">Categorias</a>
+    </div>
+
+    <a href="/" class="logo-image" target="_self">
+        <img src="/images/logo.svg" alt="Gambox logo - Ir al inicio">
+    </a>
+
+    <div class="userActions">
+        <span class="fa-stack fa-2x has-badge" id="cartCount" data-count="0">
+            <i  class="fa fa-shopping-cart fa-stack-2x red-cart"></i>
+        </span>
+        <a href="/carrito-de-compras" class="userCart">
+            <img src="/images/iconCart.svg" alt="Ver productos en mi carrito">
+        </a>
+        <% if (locals.isLogged) { %>
+        <a href="/usuarios/perfil" class="userAccount">
+            <img src="/images/iconUser.svg" alt="Iniciar sesión">
+         
+            <div class="userAccountInfo">
+                <p>Mi cuenta</p>
+                <span>Ingresa o crea tu cuenta</span>
+            </div>
+        </a>
+        <% } else { %>
+            <a href="/login" class="userAccount">
+                <img src="/images/iconUser.svg" alt="Iniciar sesión">
+             
+                <div class="userAccountInfo">
+                    <p>Mi cuenta</p>
+                    <span>Ingresa o crea tu cuenta</span>
+                </div>
+            </a>
+            <% } %>
+        <% if (locals.isLogged) { %>
+        <a href="/logout" class="userLogout">
+            <!-- <img src="/images/iconSignOut.svg" alt="Cerrar sesión"> -->
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+        <% } %>
+    </div>
+
+    <form id="searchBar" action="/" method="GET" autocomplete="off">
+        <input type="text" id="searchBar" name="searchBar" placeholder="¿Qué estas buscando?">
+    </form>
+
+    <nav class="sideMenu" id="sideMenu">
+        <ul class="menu">
+            <li class="itemMenu">
+                <a href="#" target="_self">
+                    <span>Consolas</span>
+                    <img src="/images/iconChevronRight.svg" alt="Ir a la sección consolas">
+                </a>
+            </li>
+            <li class="itemMenu">
+                <a href="#" target="_self">
+                    <span>Videojuegos</span>
+                    <img src="/images/iconChevronRight.svg" alt="Ir a la sección videojuegos">
+                </a>
+            </li>
+            <li class="itemMenu">
+                <a href="#" target="_self">
+                    <span>Retrogaming</span>
+                    <img src="/images/iconChevronRight.svg" alt="Ir a la sección Retrogaming">
+                </a>
+            </li>
+            <li class="itemMenu">
+                <a href="#" target="_self">
+                    <span>Accesorios videojuegos</span>
+                    <img src="/images/iconChevronRight.svg" alt="Ir a la sección Accesorios videojuegos">
+                </a>
+            </li>
+            <li class="itemMenu">
+                <a href="#" target="_self">
+                    <span>PC Gaming</span>
+                    <img src="/images/iconChevronRight.svg" alt="Ir a la sección PC Gaming">
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <div class="mainCategories">
+        <ul>
+            <li class="mainCategoriesItem">
+                <a href="#">PlayStation</a>
+            </li>
+            <li class="mainCategoriesItem">
+                <a href="#">XBOX</a>
+            </li>
+            <li class="mainCategoriesItem">
+                <a href="#">Nintendo Switch</a>
+            </li>
+            <li class="mainCategoriesItem">
+                <a href="#">Computadores</a>
+            </li>
+        </ul>
+    </div>
+</div>

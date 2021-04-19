@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../../partials/head.ejs') %>
+    <title><%= title %></title>
+</head>
+
+<body>
+    <header>
+        <%- include('../../partials/header.ejs') %>
+    </header>
+    <section>
+        <p>
+            Hola! <%= user.name %> 
+        </p>
+        <img src="/images/avatars/<%= user.avatar %>" alt="">
+    </section>
+    <footer>
+        <%- include('../../partials/footer.ejs') %>
+    </footer>
+</body>
+
+</html>

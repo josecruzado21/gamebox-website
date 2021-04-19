@@ -2,22 +2,18 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/css/main.css">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
-        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <title>Home</title>
+    <%- include('../partials/head.ejs') %>
+    <title><%= title %></title>
 </head>
 
 <body>
     <header>
-        <%- include('../partials/header.ejs') %>
+         <%- include('../partials/header.ejs') %>
     </header>
    
     <div class="home">
         <div class="container-images-slider">
-            <img class="image-home" src="static/images/cyberpunk.png">
+            <img class="image-home" src="/images/cyberpunk.png">
             <div class="titulo-juego-home">
                 <p>Cyberpunk 2077</p>
                 <button class="boton-juego-home" type="button">Comprar</button>
@@ -45,7 +41,7 @@
         <div class="imagenes-consolas">
             <div class="consola-1">
                 <div class="imagen-consola-1">
-                    <img class="imagen-ps5" src="static/images/ps5-controller.png">
+                    <img class="imagen-ps5" src="/images/products/ps5-controller.png">
                 </div>
                 <div class="info-consola-1">
                     <p class="nombre-consola">Play Station 5</p>
@@ -55,7 +51,7 @@
 
             <div class="consola-2">
                 <div class="imagen-consola-2">
-                    <img class="imagen-xbox" src="static/images/xbox-controller.png">
+                    <img class="imagen-xbox" src="/images/products/xbox-controller.png">
                 </div>
                 <div class="info-consola-2">
                     <p class="nombre-consola">XBOX Series X</p>
@@ -65,7 +61,7 @@
 
             <div class="consola-3">
                 <div class="imagen-consola-3">
-                    <img class="imagen-switch" src="static/images/switch-controller.png">
+                    <img class="imagen-switch" src="/images/products/switch-controller.png">
                 </div>
                 <div class="info-consola-3">
                     <p class="nombre-consola">Nintendo Switch</p>
@@ -79,19 +75,19 @@
         <div class="secciones-pc-gaming">
             <div class="headphones-monitores">
                 <div class="headphones">
-                    <img class="imagen-headphones" src="static/images/headphones.png">
+                    <img class="imagen-headphones" src="/images/products/headphones.png">
                     <p>Accesorios</p>
                 </div>
 
                 <div class="monitores">
-                    <img class="imagen-monitor" src="static/images/curved-monitor.png">
+                    <img class="imagen-monitor" src="/images/products/curved-monitor.png">
                     <p>Monitores</p>
                 </div>
 
             </div>
 
             <div class="sillas-gamer">
-                <img class="imagen-silla" src="static/images/silla-gamer.png">
+                <img class="imagen-silla" src="/images/products/silla-gamer.png">
                 <p>Sillas Gamer</p>
             </div>
 

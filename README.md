@@ -45,8 +45,16 @@ de hacer las cosas. Apasionado por el fútbol, la familia y los videojuegos, me 
 Estamos utilizando CLubhouse como board para las historias y segumiento dle proyecto. Pueden acceder a la invitación en el siguiente enlace:
 https://app.clubhouse.io/invite-link/600f96ea-4f0c-4d5e-b54b-05fb907342c6
 
+## Product Backlog Public
+Creamos este tablero de trello público mientras mudamos los anteriores sprint desde Clubhouse
+
+https://trello.com/b/OlDI0UFB/gambox-sprint-4
+
+
 ## Retrospectiva
 - Sprint 2: https://jamboard.google.com/d/1saP2WgMT83ssmQHXt1NmiHbUAjRi7zB4i1NQCjiTn7U/edit?usp=sharing
+
+- Sprint 4: https://jamboard.google.com/d/1JYV_YP3vgd02aETJGwlahGrJRZZkHPsop95Tmb2Helc/viewer
 
 ## Diseño
 - Figma: https://www.figma.com/file/cxfNzhyACkm0akeE4y2ajh/gameBox?node-id=0%3A1
