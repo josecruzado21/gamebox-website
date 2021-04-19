@@ -76,7 +76,7 @@ let productsController = {
                 res.render('pages/products/productDetail', {
                     title: title, 
                     product:product,
-                  
+                    user:req.session.userLogged
                     })
             })
 
@@ -199,6 +199,7 @@ let productsController = {
                  res.render('pages/products/productList', {
                    title: title, 
                    products:prds,
+                   user:req.session.userLogged
                  
                    })
              }).catch(error => {  
@@ -255,7 +256,7 @@ let productsController = {
                  res.render('pages/products/productList', {
                    title: title, 
                    products:prds,
-                 
+                   user:req.session.userLogged
                    })
 
 
