@@ -18,10 +18,15 @@ module.exports = (sequelize, dataTypes) => {
         timestamps: false ,    tableName : 'usertype' 
     }
 
-    const User = sequelize.define(alias, cols, config);
+    const UserType = sequelize.define(alias, cols, config);
 
+    UserType.associate = function(models){
+        UserType.hasMany(models.User, {
+            as:'UserUserType',
+            foreignKey:'id'
+        })
+    }
 
-
-    return User;
+    return UserType;
 
 }

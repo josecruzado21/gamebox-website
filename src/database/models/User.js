@@ -26,8 +26,11 @@ module.exports = (sequelize, dataTypes) => {
         password: {
             type: dataTypes.STRING(500),
             allowNull: false
+        },
+        type: {
+            type: dataTypes.INTEGER,
+            allowNull: false
         }
-
 
     };
 
@@ -38,9 +41,16 @@ module.exports = (sequelize, dataTypes) => {
     const User = sequelize.define(alias, cols, config);
     
     User.associate = function(models){
-        User.hasMany(models.ShoppingCart, {
+        User.belongsTo(models.ShoppingCart, {
             as:'shoppingCarUser',
-            foreignKey:'user'
+            foreignKey:'id'
+        })
+    }
+
+    User.associate = function(models){
+        User.hasMany(models.UserType, {
+            as:'UserUserType',
+            foreignKey:'type'
         })
     }
 

@@ -1,9 +1,9 @@
   
 const path = require('path');
 const bcryptjs = require('bcryptjs');
-
+const db = require('../database/models');
 //Requiero el modelo
-const User = require('../models/User');
+const User = db.User;
 
 const titleLogin = 'Gamebox | Login '
 
@@ -77,29 +77,36 @@ const usersController = {
          })
     },
 
-    register_new_user: (req,res)=>{
+    register_new_user: async (req,res)=>{
         let title = 'Gamebox | Registro ';
-        let userindb=User.findByProperty('email',req.body.email)
-        if (userindb) {
-            return res.render('pages/users/register',{'title': title,
-                errors: {
-                    email: {
-                        msg: 'Ya existe una cuenta asociada a este correo'
-                    },
-                },
-                oldData:req.body
-            });
-        }
+        //let userindb=await db.User.findAll({
+        //    where:{email:req.body.email}})
+        //if (userindb!="") {
+        //    return res.render('pages/users/register',{'title': title,
+        //        errors: {
+        //            email: {
+        //                msg: 'Ya existe una cuenta asociada a este correo'
+        //            },
+        //        },
+        //        oldData:req.body
+        //    });
+        //}
         var usuario_nuevo=req.body
         if(req.file && req.file!== undefined){
-            usuario_nuevo.avatar=req.file.filename
+            req.body.avatar=req.file.filename
         } else{
-            usuario_nuevo.avatar='default-avatar.jpg'
+            req.body.avatar='default-avatar.jpg'
         }
-
-        usuario_nuevo.password=bcryptjs.hashSync(req.body.password,10)
-        User.create(usuario_nuevo)
-        res.redirect('/login')
+        req.body.password=bcryptjs.hashSync(req.body.password,10)
+        //res.send(req.body)
+        db.User.create({
+            firstName: req.body.name,
+            lastName: req.body.lastName,
+            email:req.body.email,
+            avatar:req.body.avatar,
+            password:req.body.password,
+            type:1,
+        }).then(()=>res.redirect('/login')).catch(error=>res.send(error))
 
     },
 
