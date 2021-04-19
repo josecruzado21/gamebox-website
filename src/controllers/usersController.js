@@ -17,17 +17,21 @@ const usersController = {
     },
 
 
-    loginProcess:(req, res) => {
+    loginProcess: async (req, res) => {
         //return res.send(req.body)
 
-        let user = User.findByProperty('email', req.body.email);
-     
-        if(user){
+        let user = await db.User.findAll({where:{
+            email: req.body.email}});
+        
+        //res.send(user[0].password)
+        //res.send(bcryptjs.compareSync(req.body.password, user[0].password))     
+        
+        if(user!=""){
 
-            let checkPass = bcryptjs.compareSync(req.body.password, user.password);
+            let checkPass = bcryptjs.compareSync(req.body.password, user[0].password);
             if(checkPass){
-                delete user.password;
-                req.session.userLogged = user;
+                delete user[0].password;
+                req.session.userLogged = user[0];
 
                 if(req.body.sesion){
                     res.cookie('userEmail', req.body.email, {maxAge: (1000*60) * 30})
@@ -56,6 +60,7 @@ const usersController = {
                 }
             }
         } );
+        
     },
 
 
