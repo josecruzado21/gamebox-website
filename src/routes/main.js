@@ -4,6 +4,7 @@ const mainController = require('../controllers/mainController');
 const usersController = require('../controllers/usersController');
 const User = require('../models/User');
 const guestMiddleware = require('../middlewares/guestMiddleware');
+const authMiddleware = require('../middlewares/authMiddleware');
 const path=require('path')
 const multer=require('multer')
 
@@ -26,7 +27,7 @@ const upload=multer({storage:storage,fileFilter:function(req,file,cb){
 }})
 
 router.get('/', mainController.home);
-router.get('/carrito-de-compras', cartController.cart);
+router.get('/carrito-de-compras', authMiddleware,cartController.cart);
 router.get('/login', guestMiddleware, usersController.login);
 router.get('/registro', guestMiddleware, usersController.register);
 router.post('/login',  usersController.loginProcess);

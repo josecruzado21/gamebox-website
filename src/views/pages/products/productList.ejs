@@ -19,10 +19,19 @@
             <img class='imagen_lista_productos' src="/images/products/<%= products[i].image2 %>">
             <div class="titulo_precio_descripcion">
                 <div class="nombre_lista"><a href="/productos/<%= products[i].categories.parent_slug %>/<%= products[i].categories.slug %>/<%= products[i].slug %>"><%=products[i].name%></a></div>
-                <div class="precio_lista"><%=products[i].price%></div>
+                <div class="precio_lista"> $ <%= new Intl.NumberFormat("es-CO").format(products[i].price)  %></div>
                 <div class="descripcion_lista"><%=products[i].description%></div>
             </div>
-            <button class="button-list">Agregar al carrito</button>
+            <button class="button-list"  
+            data-id = <%=products[i].id%>  
+            data-price = <%=products[i].price%> 
+            data-name= "<%=products[i].name%>"  
+            data-image= "<%=products[i].image2%>" 
+            data-hasedition= <%=products[i].hasEdition%> 
+            data-edition= "<%=products[i].edition%>"
+            data-userid=<%=user?.id%>
+            data-category=<%=products[i].category%>
+            >Agregar al carrito</button>
         </div>
         <% } %>
 
@@ -31,6 +40,8 @@
     <footer>
         <%- include('../../partials/footer.ejs') %>
     </footer>
+    <script type="module" src="/js/productList.js"></script>
+    <script type="module" src="/js/cartLogic.js"></script>
 </body>
 
 </html>
