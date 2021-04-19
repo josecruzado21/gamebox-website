@@ -71,6 +71,8 @@
             <article class="productColumnTwo">
                 <!-- Tarjeta con precio -->
                 <div class="productPrice">
+
+                <!-- <form action="/carrito-compras/crear" method="POST" enctype="multipart/form-data"> -->
                      <!-- Agregar funcionalidad -->
                     <div class="productCondition">
                         <a href="#">Nuevo</a>
@@ -88,13 +90,26 @@
                     <% } %>
                     <div class="productPriceWrapper" >
                         <p class="labelPrice">Precio</p>
-                        <h3 class="price" id="productPrice"> $ <%= product.price %>  </h3>
+                        <h3 class="price" id="productPrice"> $ <%= new Intl.NumberFormat("es-CO").format(product.price)  %>  </h3>
                     </div>
                     
 
                     <input type="hidden" id="productPriceHidden" name="productPriceHidden" value= <%= product.price %>>
 
-                    <a href="" class="btn-CTA addToCart">Añadir al carrito</a>
+                    <!-- <a href="" class="btn-CTA addToCart">Añadir al carrito</a> -->
+                    <button id="addToCartDetail" class="btn-CTA addToCart"  
+                    data-id = <%=product.id%>  
+                    data-price = <%=product.price%> 
+                    data-name= "<%=product.name%>"  
+                    data-image= "<%=product.image2%>" 
+                    data-hasedition= <%=product.hasEdition%> 
+                    data-edition= "<%=product.edition%>"
+                    data-userid=<%=user?.id%>
+                    data-category=<%=product.category%>
+                    >
+                    Añadir al carrito
+                    </button>
+                <!-- </form> -->
                 </div>
 
                 <% if(product.rawApi != null) { %>
@@ -135,7 +150,8 @@
     <footer>
         <%- include('../../partials/footer.ejs') %>
     </footer>
-    <script src="/js/productDetail.js"></script>
+    <script type="module" src="/js/productDetail.js"></script>
+    <script type="module" src="/js/cartLogic.js"></script>
 </body>
 
 </html>
