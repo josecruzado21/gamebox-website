@@ -369,7 +369,7 @@ let productsController = {
        let secondImage = files.find(f=>f.fieldname == 'secondImage')
        console.log(secondImage)
 
-       let editionArr = req.body.edition.split(',')
+       //let editionArr = req.body.edition.split(',')
 
        Product.create({
            
