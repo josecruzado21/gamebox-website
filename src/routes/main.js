@@ -19,12 +19,14 @@ const storage=multer.diskStorage({
         cb(null,file_name)
     }
 });
-
+/*
 const upload=multer({storage:storage,fileFilter:function(req,file,cb){
-    if (User.findByProperty('email',req.body.email)){
+    if (User.findAll({email:req.body.email})){
         cb(null,false)
     }
 }})
+*/
+let upload = multer({ storage });
 
 router.get('/', mainController.home);
 router.get('/carrito-de-compras', authMiddleware,cartController.cart);

@@ -84,9 +84,11 @@ const usersController = {
 
     register_new_user: async (req,res)=>{
         let title = 'Gamebox | Registro ';
+        /*
         let userindb=await db.User.findAll({
             where:{email:req.body.email}})
-        if (userindb!="") {
+
+        if (userindb!=undefined) {
             return res.render('pages/users/register',{'title': title,
                 errors: {
                     email: {
@@ -96,14 +98,16 @@ const usersController = {
                 oldData:req.body
             });
         }
-        var usuario_nuevo=req.body
+        */
+        console.log(req.file)
+        /*
         if(req.file && req.file!== undefined){
             req.body.avatar=req.file.filename
         } else{
             req.body.avatar='default-avatar.jpg'
         }
         req.body.password=bcryptjs.hashSync(req.body.password,10)
-        //res.send(req.body)
+        res.send(req.body.filename)
         db.User.create({
             firstName: req.body.name,
             lastName: req.body.lastName,
@@ -112,6 +116,8 @@ const usersController = {
             password:req.body.password,
             type:1,
         }).then(()=>res.redirect('/login')).catch(error=>res.send(error))
+        */
+        
 
     },
 
