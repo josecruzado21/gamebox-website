@@ -15,17 +15,17 @@ const storage=multer.diskStorage({
         cb(null,path.join(__dirname,'../../public/images/avatars'))
     },
     filename: (req,file,cb)=>{
-        const file_name=Date.now()+path.extname(file.originalname)
-        cb(null,file_name)
+        const newFilename = file.originalname;
+        cb(null, newFilename);
     }
 });
-/*
-const upload=multer({storage:storage,fileFilter:function(req,file,cb){
-    if (User.findAll({email:req.body.email})){
-        cb(null,false)
-    }
-}})
-*/
+
+// const upload=multer({storage:storage,fileFilter:function(req,file,cb){
+//     if (User.findByProperty('email',req.body.email)){
+//         cb(null,false)
+//     }
+// }})
+
 let upload = multer({ storage });
 
 router.get('/', mainController.home);
@@ -33,7 +33,7 @@ router.get('/carrito-de-compras', authMiddleware,cartController.cart);
 router.get('/login', guestMiddleware, usersController.login);
 router.get('/registro', guestMiddleware, usersController.register);
 router.post('/login',  usersController.loginProcess);
-router.post('/registro', upload.single('image'),usersController.register_new_user);
+router.post('/registro', upload.any(), usersController.register_new_user);
 router.get('/logout', usersController.logout);
 
 module.exports = router; 

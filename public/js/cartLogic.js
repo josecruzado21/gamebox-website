@@ -4,6 +4,8 @@ export function cart(productToAdd, userId) {
 
  //   console.log("Hola desde cartlogic")
 
+ let newCart = {}
+
     console.log("producto a añadir");
     console.log(productToAdd);
 
@@ -22,10 +24,10 @@ export function cart(productToAdd, userId) {
             if(cartFound == null){
                     console.log("No Existe carrito")
                     //Crear carrito
-                    cart.userId = userId;
-                    cart.totalPrice = productToAdd.price;
-                    cart.itemsQuantity = productToAdd.quantity;
-                    cart.shoppingCartStatus = 1
+                    newCart.userId = userId;
+                    newCart.totalPrice = productToAdd.price;
+                    newCart.itemsQuantity = productToAdd.quantity;
+                    newCart.shoppingCartStatus = 1
 
                     fetch(location.origin+'/api/carrito-compras/',
                     {
@@ -34,7 +36,7 @@ export function cart(productToAdd, userId) {
                             'Content-Type': 'application/json'
                             // 'Content-Type': 'application/x-www-form-urlencoded',
                         },
-                        body: JSON.stringify(cart)
+                        body: JSON.stringify(newCart)
                     }
 
                 )
