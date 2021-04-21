@@ -303,122 +303,140 @@ let productsController = {
     },
 
     save: async (req, res) => {
-       let files =  req.files;
+       let files = req.files;
        console.log(files);
-       let mainImage = files.find(f=>f.fieldname == 'mainImage')
-       console.log(mainImage)
-       let secondImage = files.find(f=>f.fieldname == 'secondImage')
-       console.log(secondImage)
+       let mainImage = files.find((f) => f.fieldname == "mainImage");
+       console.log(mainImage);
+       let secondImage = files.find((f) => f.fieldname == "secondImage");
+       console.log(secondImage);
 
        //let editionArr = req.body.edition.split(',')
 
-        let rawSearch = await fetch('https://api.rawg.io/api/games?key=44a0fa1def1e4f3a970bc5170c09bd74&search='+req.body.slug).then(res => res.json());  
-     //   console.log(rawSearch.results[0])
+       if (req.body.category == "Juegos" || req.body.category == "Juegos") {
+         let rawSearch = await fetch(
+           "https://api.rawg.io/api/games?key=44a0fa1def1e4f3a970bc5170c09bd74&search=" +
+             req.body.slug
+         ).then((res) => res.json());
+         //   console.log(rawSearch.results[0])
 
-        let gameId = rawSearch.results[0].id
+         let gameId = rawSearch.results[0].id;
 
-        let rawDetails= await fetch('https://api.rawg.io/api/games/'+ gameId +'?key=44a0fa1def1e4f3a970bc5170c09bd74').then(res => res.json());  
-    //    console.log(rawSearch.results[0])
+         let rawDetails = await fetch(
+           "https://api.rawg.io/api/games/" +
+             gameId +
+             "?key=44a0fa1def1e4f3a970bc5170c09bd74"
+         ).then((res) => res.json());
+         //    console.log(rawSearch.results[0])
 
-        let ratingMax = rawDetails.ratings.reduce((a,b) => a.count > b.count ? a:b);
-        let genres = rawDetails.genres.map((a) => `${a.name}` ).join(' ')
-        let tags = rawDetails.tags.map((a) => `${a.name}` ).join(' ')
-        let platforms = rawDetails.platforms.map((a) => `${a.platform.name}` ).join(' ')
+         let ratingMax = rawDetails.ratings.reduce((a, b) =>
+           a.count > b.count ? a : b
+         );
+         let genres = rawDetails.genres.map((a) => `${a.name}`).join(" ");
+         let tags = rawDetails.tags.map((a) => `${a.name}`).join(" ");
+         let platforms = rawDetails.platforms
+           .map((a) => `${a.platform.name}`)
+           .join(" ");
 
+         console.log(ratingMax);
+         console.log(genres);
+         console.log(tags);
+         console.log(platforms);
 
-        console.log(ratingMax)
-        console.log(genres)
-        console.log(tags)
-        console.log(platforms)
+         let esrb = 99;
 
-        let esrb = 99;
+         switch (rawDetails.esrb_rating.name) {
+           case "Mature":
+             esrb = 17;
+             break;
+           case "Mature":
+             esrb = 17;
+             break;
+           case "Mature":
+             esrb = 17;
+             break;
+           default:
+             break;
+         }
 
-        switch (rawDetails.esrb_rating.name) {
-            case "Mature":
-                esrb = 17
-                break;
-            case "Mature":
-                esrb = 17
-                break;
-            case "Mature":
-                esrb = 17
-                break;       
-            default:
-                break;
-        }
+         let newRawId = null;
 
-        let newRawId = null;
+         RawInfo.create({
+           synopsis: rawDetails.description,
+           launchDate: rawDetails.released,
+           metacritic: rawDetails.metacritic,
+           metacriticUrl: rawDetails.metacritic_platforms[0].url,
+           rating: ratingMax.title,
+           developer: rawDetails.developers[0].name,
+           genres: genres,
+           platforms: platforms,
+           tags: tags,
+           recommendedAge: esrb, //"17"
+         })
+           .then((data) => {
+             console.log("Raw Info guardada!");
+             console.log(data);
+             console.log(data.id);
+             newRawId = data.id;
 
-        RawInfo.create({
-            synopsis:rawDetails.description,
-            launchDate:rawDetails.released,
-            metacritic:rawDetails.metacritic,
-            metacriticUrl:rawDetails.metacritic_platforms[0].url,
-            rating:ratingMax.title,
-            developer:rawDetails.developers[0].name,
-            genres:genres,
-            platforms:platforms,
-            tags:tags,
-            recommendedAge:esrb //"17"
-        }).then((data)=> {
-            console.log("Raw Info guardada!");
-            console.log(data);
-            console.log(data.id);
-            newRawId = data.id
-
-            Product.create({
-           
-                name: req.body.name,
-                slug: req.body.slug,
-                description:req.body.description,
-                price:  Number(req.body.price),
-                image1: mainImage.originalname,
-                image2: secondImage.originalname,
-                category: req.body.subcategory,
-                hasEdition: req.body.hasEdition,
-                edition: req.body.edition,
-                stock: req.body.stock,
-                isNew:req.body.type == 'nuevo' ? 1 : 0,
-                rawInfo:newRawId
-    
-           }).then(()=> {
-                return res.redirect("/productos/")
-            })            
-            .catch(error => res.send(error))
-
-        }).catch(error =>        Product.create({
-           
-            name: req.body.name,
-            slug: req.body.slug,
-            description:req.body.description,
-            price:  Number(req.body.price),
-            image1: mainImage.originalname,
-            image2: secondImage.originalname,
-            category: req.body.subcategory,
-            hasEdition: req.body.hasEdition,
-            edition: req.body.edition,
-            stock: req.body.stock,
-            isNew:req.body.type == 'nuevo' ? 1 : 0,
-            rawInfo:null
-
-       }).then(()=> {
-            return res.redirect("/productos/")
-        })            
-        .catch(error => res.send(error)))
-
-        // {
-        // "synopsis":"El juego ",
-        // "launchDate":"Jun 19, 2020",
-        // "metacritic":93,
-        // "metacriticUrl":"https://www.metacritic.com/game/playstation-4/the-last-of-us-part-ii?ref=hp",
-        // "rating":"Excepcional",
-        // "developer":"Naughty Dog",
-        // "genres":"Acción Shooter Aventura",
-        // "platforms":"PlayStation4, PlayStation5",
-        // "tags":"Singleplayer, Atmospheric, Survival, Stealth, Violent, Action-Adventure, exclusive, 3rd-Person Perspective, Blood, America, LGBTQ+, Role Playing Game",
-        // "recommendedAge":"17"
-        //  }
-
+             Product.create({
+               name: req.body.name,
+               slug: req.body.slug,
+               description: req.body.description,
+               price: Number(req.body.price),
+               image1: mainImage.originalname,
+               image2: secondImage.originalname,
+               category: req.body.subcategory,
+               hasEdition: req.body.hasEdition,
+               edition: req.body.edition,
+               stock: req.body.stock,
+               isNew: req.body.type == "nuevo" ? 1 : 0,
+               rawInfo: newRawId,
+             })
+               .then(() => {
+                 return res.redirect("/productos/");
+               })
+               .catch((error) => res.send(error));
+           })
+           .catch((error) =>
+             Product.create({
+               name: req.body.name,
+               slug: req.body.slug,
+               description: req.body.description,
+               price: Number(req.body.price),
+               image1: mainImage.originalname,
+               image2: secondImage.originalname,
+               category: req.body.subcategory,
+               hasEdition: req.body.hasEdition,
+               edition: req.body.edition,
+               stock: req.body.stock,
+               isNew: req.body.type == "nuevo" ? 1 : 0,
+               rawInfo: null,
+             })
+               .then(() => {
+                 return res.redirect("/productos/");
+               })
+               .catch((error) => res.send(error))
+           );
+       } else {
+         Product.create({
+           name: req.body.name,
+           slug: req.body.slug,
+           description: req.body.description,
+           price: Number(req.body.price),
+           image1: mainImage.originalname,
+           image2: secondImage.originalname,
+           category: req.body.subcategory,
+           hasEdition: req.body.hasEdition,
+           edition: req.body.edition,
+           stock: req.body.stock,
+           isNew: req.body.type == "nuevo" ? 1 : 0,
+           rawInfo: null,
+         })
+           .then(() => {
+             return res.redirect("/productos/");
+           })
+           .catch((error) => res.send(error));
+       }
 
 
 
