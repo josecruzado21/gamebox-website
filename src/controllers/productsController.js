@@ -538,7 +538,7 @@ let productsController = {
             rawApi:null
         },{
             where:{id:id}
-        }).then(res.render('pages/products/productDetail',{title:title,product:product}))
+        }).then(res.render('pages/products/productDetail',{title:title,product:product,  user:req.session.userLogged}))
     },
 
     delete: (req, res) => {

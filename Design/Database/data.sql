@@ -152,6 +152,9 @@ VALUES
 3), (
 'Teclados',
 'teclados',
+3),, (
+'Monitores',
+'monitores',
 3);
 
 
