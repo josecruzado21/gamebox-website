@@ -84,19 +84,18 @@ const usersController = {
 
     register_new_user: async (req,res)=>{
         let title = 'Gamebox | Registro ';
-        //let userindb=await db.User.findAll({
-        //    where:{email:req.body.email}})
-        //if (userindb!="") {
-        //    return res.render('pages/users/register',{'title': title,
-        //        errors: {
-        //            email: {
-        //                msg: 'Ya existe una cuenta asociada a este correo'
-        //            },
-        //        },
-        //        oldData:req.body
-        //    });
-        //}
-        var usuario_nuevo=req.body
+        let userindb=await db.User.findAll({
+            where:{email:req.body.email}})
+        if (userindb!="") {
+            return res.render('pages/users/register',{'title': title,
+                errors: {
+                    email: {
+                        msg: 'Ya existe una cuenta asociada a este correo'
+                    },
+                },
+                oldData:req.body
+            });
+        }
         if(req.file && req.file!== undefined){
             req.body.avatar=req.file.filename
         } else{
