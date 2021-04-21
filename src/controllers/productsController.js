@@ -326,7 +326,7 @@ let productsController = {
              gameId +
              "?key=44a0fa1def1e4f3a970bc5170c09bd74"
          ).then((res) => res.json());
-         //    console.log(rawSearch.results[0])
+             console.log(rawSearch.results[0])
 
          let ratingMax = rawDetails.ratings.reduce((a, b) =>
            a.count > b.count ? a : b
@@ -364,7 +364,7 @@ let productsController = {
            synopsis: rawDetails.description,
            launchDate: rawDetails.released,
            metacritic: rawDetails.metacritic,
-           metacriticUrl: rawDetails.metacritic_platforms[0].url,
+           metacriticUrl: rawDetails.metacritic_platforms[0]?.url == null ? 'https://www.metacritic.com/game' : rawDetails.metacritic_platforms[0]?.url,
            rating: ratingMax.title,
            developer: rawDetails.developers[0].name,
            genres: genres,
