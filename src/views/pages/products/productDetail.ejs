@@ -23,15 +23,15 @@
                     <img class="game-image" src="/images/products/<%= product.image2 %>" alt="">
                     <div class="infoWrapper">
                         <h2 class="productName"><%= product.name %></h2>
-                        <% if(product.rawApi != null) { %>
-                        <p class="relaseDate">Fecha de lanzamiento <%= product.rawApi?.launchDate %></p>
+                        <% if(product.rawInfoObj != null) { %>
+                        <p class="relaseDate">Fecha de lanzamiento <%= product.rawInfoObj?.launchDate %></p>
                         <div class="metascore">
                             <p class="metascoreNumber">
-                                <%= product.rawApi?.metacritic %>  
+                                <%= product.rawInfoObj?.metacritic %>  
                             </p>
                             <div class="metascoreLabelLink">
-                                <p class="name"> <%= product.rawApi?.rating %>  </p>
-                                <a class="reviews" href=" <%= product.rawApi?.metacriticUrl %>  " target="_blank">Ver reviews</a>
+                                <p class="name"> <%= product.rawInfoObj?.rating %>  </p>
+                                <a class="reviews" href=" <%= product.rawInfoObj?.metacriticUrl %>  " target="_blank">Ver reviews</a>
                             </div>
                         </div>
                         <% } %>
@@ -49,11 +49,11 @@
                             <%= product.description %>  
                         </p>
 
-                        <% if(product.rawApi != null) { %>
+                        <% if(product.rawInfoObj != null) { %>
                         <p class="bodyTitle">Sinopsis</p>
 
                         <p class="bodyParagraph">
-                             <%= product.rawApi?.synopsis %>  
+                             <%= product.rawInfoObj?.synopsis %>  
                         </p>
                         <% } %>
                         <!-- <p class="bodyTitle">Gameplay</p>
@@ -92,6 +92,7 @@
                         <p class="labelPrice">Precio</p>
                         <h3 class="price" id="productPrice"> $ <%= new Intl.NumberFormat("es-CO").format(product.price)  %>  </h3>
                     </div>
+                    
 
                     <input type="hidden" id="productPriceHidden" name="productPriceHidden" value= <%= product.price %>>
 
@@ -103,42 +104,42 @@
                     data-image= "<%=product.image2%>" 
                     data-hasedition= <%=product.hasEdition%> 
                     data-edition= "<%=product.edition%>"
-                    data-userid=<%=user?.id%>
                     data-category=<%=product.category%>
+                    data-userid=<%=user?.id%>
                     >
                     Añadir al carrito
                     </button>
                 <!-- </form> -->
                 </div>
 
-                <% if(product.rawApi != null) { %>
+                <% if(product.rawInfoObj != null) { %>
                 <!-- Tarjeta con informacion adicional -->
                 <div class="productAditionalDetails">
                     <div class="tagRow">
                         <p class="tagName">Plataformas</p>
-                        <p class="tagValue"><%= product.rawApi?.platforms %> </p>
+                        <p class="tagValue"><%= product.rawInfoObj?.platforms %> </p>
                     </div>
 
                     <div class="tagRow">
                         <p class="tagName">Género</p>
-                        <p class="tagValue"><%= product.rawApi?.genres %>  </p>
+                        <p class="tagValue"><%= product.rawInfoObj?.genres %>  </p>
                     </div>
 
                     <div class="tagRow">
                         <p class="tagName">Desarrollador</p>
-                        <p class="tagValue"><%= product.rawApi?.developer %> </p>
+                        <p class="tagValue"><%= product.rawInfoObj?.developer %> </p>
                     </div>
 
                     <div class="tagRow">
                         <p class="tagName">Edad recomendada</p>
-                        <p class="tagValue"><%= product.rawApi?.recommendedAge %> +</p>
+                        <p class="tagValue"><%= product.rawInfoObj?.recommendedAge %> +</p>
                     </div>
 
                     <span class="divider"></span>
 
                     <div class="tagRow">
                         <p class="tagName completeField">Tags</p>
-                        <p class="tagValue completeField"><%= product.rawApi?.tags %></p>
+                        <p class="tagValue completeField"><%= product.rawInfoObj?.tags %></p>
                     </div>
                 </div>
                 <% } %>

@@ -5,12 +5,13 @@ const db = require('../database/models');
 
 const { QueryTypes } = require('sequelize');
 const { log } = require('console');
-
+const { title } = require('process');
+const fetch = require('node-fetch');
 
 const productsPath = path.resolve(__dirname, '../data/products.json');
 const Category = db.Category;
 const Product = db.Product;
-
+const RawInfo = db.RawInfo;
 
 function make_slug(str)
 {
@@ -24,7 +25,7 @@ let productsController = {
   
     
     
-    product: (req, res) => {
+    product: async (req, res) => {
         let title = 'Gamebox | ';
         let id = parseInt(req.params.id);
 
@@ -32,17 +33,26 @@ let productsController = {
         let childCategory = req.params.childCategory;
         let slugProduct = req.params.slugProduct;
 
-       
+        //let raw = await fetch('https://restcountries.eu/rest/v2/all').then(res => res.json());  
 
         db.Product.findOne({
             //include:[{association:'categories'}],
-            include: [{
+            include: [
+                {
                 model:Category,
                 as : 'categories',
                 where:{
                     slug:childCategory
                 }
-            } ],
+            },
+            {
+                model:RawInfo,
+                as:'rawInfoObj'
+
+            }
+        ],
+
+
             where: {
                 [db.Sequelize.Op.and]  : [{slug: slugProduct} ]
             },
@@ -80,24 +90,6 @@ let productsController = {
                     })
             })
 
-
-        // let products = fs.readFileSync(productsPath, 'utf-8');
-        // products = JSON.parse(products);
-
-        // let productFound = products.find( product => product.id === id);
-
-
-        // if(productFound == null || productFound == undefined ){
-        //     res.render('pages/products/productNotFound', {
-        //         'title': 'Sin resultados',
-        //         'description':'Producto no encontrado'
-        //     })
-        // }
-
-        // res.render('pages/products/productDetail', {
-        //     title: title + productFound.name,
-        //     product : productFound
-        // })
     },
 
     list: (req, res) => {
@@ -270,56 +262,6 @@ let productsController = {
               });
         }
 
-        // ----------------------------------------------
-
-     
-
-        // let products = fs.readFileSync(productsPath, 'utf-8');
-        // products = JSON.parse(products);
-       
-        // if(products == null || products == undefined || products.length < 1){
-        //     res.render('pages/products/productNotFound', {
-        //         'title': 'Sin resultados',
-        //         'description':'Lo sentimos no encontramos productos'
-        //     })
-        // }
-
-
-        // console.log("Params: ")
-        // console.log(req.params);
-
-        // let category = req.params.category;
-
-        //     if(category !== null && category !== undefined ){
-
-
-        //     let productsFound =  products.filter(f => f.category == category);
-            
-        //     if(productsFound == null || productsFound == undefined || productsFound.length < 1){
-        //         res.render('pages/products/productNotFound', {
-        //             'title': 'Sin resultados',
-        //             'description':'Lo sentimos no encontramos productos para la categoria: ' + category
-        //         })
-        //         }
-
-                
-        //     console.log("Productos encontrados :" );
-        //     console.log(productsFound.length);
-
-        //     products = productsFound;
-        //     }
-
-
-
-        //    products.sort(function(a, b){return b.id - a.id});
-
-        //    res.render('pages/products/productList', {
-        //     title: title, 
-        //     products:products,
-        //     prdTest:prdTest
-        //     })
-       
-
 
     },
 
@@ -360,18 +302,230 @@ let productsController = {
 
     },
 
-    save: (req, res) => {
-       let files =  req.files;
+    save: async (req, res) => {
+       let files = req.files;
        console.log(files);
-       let mainImage = files.find(f=>f.fieldname == 'mainImage')
-       console.log(mainImage)
-       let secondImage = files.find(f=>f.fieldname == 'secondImage')
-       console.log(secondImage)
+       let mainImage = files.find((f) => f.fieldname == "mainImage");
+       console.log(mainImage);
+       let secondImage = files.find((f) => f.fieldname == "secondImage");
+       console.log(secondImage);
 
-       let editionArr = req.body.edition.split(',')
+       //let editionArr = req.body.edition.split(',')
 
-       Product.create({
-           
+       if (req.body.category == "Juegos" || req.body.category == "Juegos") {
+         let rawSearch = await fetch(
+           "https://api.rawg.io/api/games?key=44a0fa1def1e4f3a970bc5170c09bd74&search=" +
+             req.body.slug
+         ).then((res) => res.json());
+         //   console.log(rawSearch.results[0])
+
+         let gameId = rawSearch.results[0].id;
+
+         let rawDetails = await fetch(
+           "https://api.rawg.io/api/games/" +
+             gameId +
+             "?key=44a0fa1def1e4f3a970bc5170c09bd74"
+         ).then((res) => res.json());
+             console.log(rawSearch.results[0])
+
+         let ratingMax = rawDetails.ratings.reduce((a, b) =>
+           a.count > b.count ? a : b
+         );
+         let genres = rawDetails.genres.map((a) => `${a.name}`).join(" ");
+         let tags = rawDetails.tags.map((a) => `${a.name}`).join(" ");
+         let platforms = rawDetails.platforms
+           .map((a) => `${a.platform.name}`)
+           .join(" ");
+
+         console.log(ratingMax);
+         console.log(genres);
+         console.log(tags);
+         console.log(platforms);
+
+         let esrb = 99;
+
+         switch (rawDetails.esrb_rating.name) {
+           case "Mature":
+             esrb = 17;
+             break;
+           case "Mature":
+             esrb = 17;
+             break;
+           case "Mature":
+             esrb = 17;
+             break;
+           default:
+             break;
+         }
+
+         let newRawId = null;
+
+         RawInfo.create({
+           synopsis: rawDetails.description,
+           launchDate: rawDetails.released,
+           metacritic: rawDetails.metacritic,
+           metacriticUrl: rawDetails.metacritic_platforms[0]?.url == null ? 'https://www.metacritic.com/game' : rawDetails.metacritic_platforms[0]?.url,
+           rating: ratingMax.title,
+           developer: rawDetails.developers[0].name,
+           genres: genres,
+           platforms: platforms,
+           tags: tags,
+           recommendedAge: esrb, //"17"
+         })
+           .then((data) => {
+             console.log("Raw Info guardada!");
+             console.log(data);
+             console.log(data.id);
+             newRawId = data.id;
+
+             Product.create({
+               name: req.body.name,
+               slug: req.body.slug,
+               description: req.body.description,
+               price: Number(req.body.price),
+               image1: mainImage.originalname,
+               image2: secondImage.originalname,
+               category: req.body.subcategory,
+               hasEdition: req.body.hasEdition,
+               edition: req.body.edition,
+               stock: req.body.stock,
+               isNew: req.body.type == "nuevo" ? 1 : 0,
+               rawInfo: newRawId,
+             })
+               .then(() => {
+                 return res.redirect("/productos/");
+               })
+               .catch((error) => res.send(error));
+           })
+           .catch((error) =>
+             Product.create({
+               name: req.body.name,
+               slug: req.body.slug,
+               description: req.body.description,
+               price: Number(req.body.price),
+               image1: mainImage.originalname,
+               image2: secondImage.originalname,
+               category: req.body.subcategory,
+               hasEdition: req.body.hasEdition,
+               edition: req.body.edition,
+               stock: req.body.stock,
+               isNew: req.body.type == "nuevo" ? 1 : 0,
+               rawInfo: null,
+             })
+               .then(() => {
+                 return res.redirect("/productos/");
+               })
+               .catch((error) => res.send(error))
+           );
+       } else {
+         Product.create({
+           name: req.body.name,
+           slug: req.body.slug,
+           description: req.body.description,
+           price: Number(req.body.price),
+           image1: mainImage.originalname,
+           image2: secondImage.originalname,
+           category: req.body.subcategory,
+           hasEdition: req.body.hasEdition,
+           edition: req.body.edition,
+           stock: req.body.stock,
+           isNew: req.body.type == "nuevo" ? 1 : 0,
+           rawInfo: null,
+         })
+           .then(() => {
+             return res.redirect("/productos/");
+           })
+           .catch((error) => res.send(error));
+       }
+
+
+
+    },
+
+    edit: async (req, res) => {
+        let title = 'Gamebox | Editar Producto ';
+        let id = parseInt(req.params.id);
+        
+        productFound=await db.Product.findByPk(id)
+
+        if(productFound == null || productFound == undefined){
+            res.render('pages/not-found', {
+                'title': 'Pagina no encontrada',
+            })
+        }
+
+        console.log(productFound);
+
+        var cats=await db.sequelize.query(
+            'select c1.id'+
+            ', c1.name'+
+            ', (select name from categories where c1.parent_id = categories.id) as ParentName'+
+            ' from categories c1' + 
+            ' where (select name from categories where c1.parent_id = categories.id) is null'
+           , {
+               type: QueryTypes.SELECT,
+               nest: true,
+             })
+
+        res.render('pages/products/productCreate', {
+            title,
+            product:productFound,
+            categories:cats,
+        })
+
+    },
+
+
+    update: async (req, res) => {
+        let id = parseInt(req.params.id);
+        productFound=await db.Product.findByPk(id)
+
+        let files =  req.files;
+
+        if (req.body.mainImage==undefined || req.body.secondImage==undefined){
+            mainImage = productFound.image1
+            secondImage = productFound.image2
+        } else{
+            console.log(files);
+            let mainImage = files.find(f=>f.fieldname == 'mainImage').originalname
+            console.log(mainImage)
+            let secondImage = files.find(f=>f.fieldname == 'secondImage').originalname
+            console.log(secondImage)
+        }
+        
+        //let products = fs.readFileSync(productsPath, 'utf-8');
+        //products = JSON.parse(products);
+        let editionArr = req.body.edition.split(',')
+        product={
+            'name': req.body.name,
+            'slug': req.body.slug,
+            'description':req.body.description,
+            'price':  Number(req.body.price),
+            'image1': mainImage,
+            'image2': secondImage,
+            'category': req.body.subcategory,
+            'hasEdition': req.body.hasEdition,
+            'edition': editionArr,
+            'stock': req.body.stock,
+            'isNew':req.body.type == 'nuevo' ? 1 : 0,
+            'rawApi':null            
+        }
+
+        if(product.edition){
+
+            let editions = [];
+            editionArr.forEach(ed => {
+            let editionPriceSplit = ed.split(';')
+          
+            editions.push({
+                    name : editionPriceSplit[0],
+                    price: editionPriceSplit[1],
+                })  
+            });
+            product.editions = editions;
+        }
+
+        db.Product.update({
             name: req.body.name,
             slug: req.body.slug,
             description:req.body.description,
@@ -384,161 +538,17 @@ let productsController = {
             stock: req.body.stock,
             isNew:req.body.type == 'nuevo' ? 1 : 0,
             rawApi:null
-
-       }).then(()=> {
-            return res.redirect("/productos/")
-        })            
-        .catch(error => res.send(error))
-
-        // let products = fs.readFileSync(productsPath, 'utf-8');
-        // products = JSON.parse(products);
-
-        // let product = null;
-
-        // let editionArr = req.body.edition.split(',')
-      
-        // product = {
-        //     'id':products.length +1,
-        //     'name': req.body.name,
-        //     'price': req.body.price,
-        //     'description':req.body.description,
-        //     'hasEdition': req.body.hasEdition == 'true' ? true : false,
-        //     'edition': editionArr,
-        //     'isNew':req.body.type == 'nuevo' ? true : false,
-        //     'category': req.body.category,
-        //     'subcategory': req.body.subcategory,
-        //     'stock': req.body.stock,
-        //     'mainImage': mainImage.originalname,
-        //     'secondImage': secondImage.originalname,
-        //     'rawApi':null
-        // }
-
-        // console.log("Producto a crear: ");
-        // console.log(product)
-
-        // products.push(product);
-        // productsFinal = JSON.stringify(products);
-        // fs.writeFileSync(productsPath, productsFinal);
-        
-  
-     // res.redirect("/productos/"+product.category+"/"+product.id)
-    },
-
-    edit: (req, res) => {
-        let title = 'Gamebox | Editar Producto ';
-        let product = null;
-        let id = parseInt(req.params.id);
-        
-        console.log("Param Id: " + req.params.id);
-
-        let products = fs.readFileSync(productsPath, 'utf-8');
-        products = JSON.parse(products);
-
-        let productFound = products.find( f => f.id == id);
-
-        console.log(productFound);
-
-        if(productFound == null || productFound == undefined){
-            res.render('pages/not-found', {
-                'title': 'Pagina no encontrada',
-            })
-        }
-
-        product = {
-            "id": id,
-            'name': productFound.name,
-            'price': productFound.price,
-            'category': productFound.category,
-            'description': productFound.description,
-            'subcategory': productFound.subcategory,
-            'type': productFound.isNew == true ? 'nuevo' : 'usado',
-            'hasEdition': productFound.hasEdition == true ? 'true' : 'false',
-            'edition': productFound.edition.join(','),
-            'stock': productFound.stock,
-            'mainImage': productFound.mainImage,
-            'secondImage': productFound.secondImage
-        }
-
-        res.render('pages/products/productCreate', {
-            'title': title,
-            'product': product
-        })
-    },
-
-
-    update: (req, res) => {
-       let id = parseInt(req.params.id);
-      
-        let files =  req.files;
-        console.log(files);
-        let mainImage = files.find(f=>f.fieldname == 'mainImage')
-        console.log(mainImage)
-        let secondImage = files.find(f=>f.fieldname == 'secondImage')
-        console.log(secondImage)
-       
-        let products = fs.readFileSync(productsPath, 'utf-8');
-        products = JSON.parse(products);
-
-        let product = null;
-
-        let editionArr = req.body.edition.split(',')
-      
-        product = {
-            'id':id,
-            'name': req.body.name,
-            'price': req.body.price,
-            'description':req.body.description,
-            'hasEdition': req.body.hasEdition == 'true' ? true : false,
-            'edition': editionArr,
-            'isNew': req.body.type == 'nuevo' ? true : false,
-            'category': req.body.category,
-            'subcategory': req.body.subcategory,
-            'stock': req.body.stock,
-             'mainImage': mainImage.originalname,
-             'secondImage': secondImage.originalname,
-            'rawApi':null
-        }
-
-        console.log('To Update: ')
-        console.log(product)
-
-        //Obtengo el indice del producto en la lista
-        const i = products.map( p => p.id ).indexOf(id);
-
-        //Lo saco de la lista
-        if ( i > -1 ) {
-            products.splice(i, 1);
-        }
-
-        //Vuelve a entrar a la lista
-        products.push(product);
-        productsFinal = JSON.stringify(products);
-        fs.writeFileSync(productsPath, productsFinal);
-        
-  
-      res.redirect("/productos/"+product.category+"/"+product.id)
-
+        },{
+            where:{id:id}
+        }).then(res.render('pages/products/productDetail',{title:title,product:product,  user:req.session.userLogged}))
     },
 
     delete: (req, res) => {
         let id = parseInt(req.params.id);
-        let products = fs.readFileSync(productsPath, 'utf-8');
-        products = JSON.parse(products);
-
-        //Obtengo el indice del producto en la lista
-        const i = products.map( p => p.id ).indexOf(id);
-
-        //Lo saco de la lista
-        if ( i > -1 ) {
-            products.splice(i, 1);
-        }
-
-        productsFinal = JSON.stringify(products);
-        fs.writeFileSync(productsPath, productsFinal);
+        db.Product.destroy({
+            where:{id:id}
+        }).then(res.redirect("/productos"))
         
-  
-        res.redirect("/productos")
-
     },
 }
 

@@ -91,14 +91,12 @@
                     </div>
     
                     <div class="input-wrapper">
-                        <input class="input" type="number" name="stock" value="<%= product?.stock %>"  placeholder=" " id="stock">
+                        <input class="input" type="number" name="stock"  placeholder=" " id="stock" value="<%= product?.stock %>">
                         <label for="stock" class="label">Stock</label>
                     </div>
 
                     <div class="input-wrapper">
-                        <textarea class="input"  name="description"  placeholder=" " id="description">
-                            <%= product?.description %>
-                        </textarea>
+                        <textarea class="input"  name="description"  placeholder="" id="description"><%= product?.description %></textarea>
                         <label for="description" class="label">Descripcion del producto</label>
                     </div>
 
@@ -118,7 +116,7 @@
                         <label for="mainImage">Imagen principal</label>
 
                         <input type="file"
-                            id="mainImage" name="mainImage"
+                            id="mainImage" name="mainImage" value="<%= product?.mainImage %>"
                             accept="image/png, image/jpeg">
     
                     </div>

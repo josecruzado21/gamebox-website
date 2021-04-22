@@ -22,7 +22,6 @@ router.get('/:parentCategory', productsController.list)
 router.get('/:parentCategory/:childCategory', productsController.list)
 router.get('/:parentCategory/:childCategory/:slugProduct', productsController.product);
 
-
 router.post('/crear' ,upload.any(),productsController.save);
 router.put('/editar/:id',  upload.any(),productsController.update);
 router.delete('/eliminar/:id',productsController.delete);

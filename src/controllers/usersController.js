@@ -1,9 +1,9 @@
 
 const path = require('path');
 const bcryptjs = require('bcryptjs');
-
+const db = require('../database/models');
 //Requiero el modelo
-const User = require('../models/User');
+const User = db.User;
 
 const titleLogin = 'Gamebox | Login '
 
@@ -15,13 +15,24 @@ const usersController = {
     },
 
 
-    loginProcess: (req, res) => {
-        let user = User.findByProperty('email', req.body.email);
-        if (user) {
-            let checkPass = bcryptjs.compareSync(req.body.password, user.password);
+    loginProcess: async (req, res) => {
+        //return res.send(req.body)
+
+        let user = await db.User.findAll({
+            where: {
+                email: req.body.email
+            }
+        });
+
+        //res.send(user[0].password)
+        //res.send(bcryptjs.compareSync(req.body.password, user[0].password))
+
+        if (user != "") {
+
+            let checkPass = bcryptjs.compareSync(req.body.password, user[0].password);
             if (checkPass) {
-                delete user.password;
-                req.session.userLogged = user;
+                delete user[0].password;
+                req.session.userLogged = user[0];
 
                 if (req.body.sesion) {
                     res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 30 })
@@ -50,6 +61,7 @@ const usersController = {
                 }
             }
         });
+
     },
 
 
@@ -71,10 +83,12 @@ const usersController = {
         })
     },
 
-    register_new_user: (req, res) => {
+    register_new_user: async (req, res) => {
         let title = 'Gamebox | Registro ';
-        let userindb = User.findByProperty('email', req.body.email)
-        if (userindb) {
+        let userindb = await db.User.findAll({
+            where: { email: req.body.email }
+        })
+        if (userindb != "") {
             return res.render('pages/users/register', {
                 'title': title,
                 errors: {
@@ -85,16 +99,21 @@ const usersController = {
                 oldData: req.body
             });
         }
-        var usuario_nuevo = req.body
         if (req.file && req.file !== undefined) {
-            usuario_nuevo.avatar = req.file.filename
+            req.body.avatar = req.file.filename
         } else {
-            usuario_nuevo.avatar = 'default-avatar.jpg'
+            req.body.avatar = 'default-avatar.jpg'
         }
-
-        usuario_nuevo.password = bcryptjs.hashSync(req.body.password, 10)
-        User.create(usuario_nuevo)
-        res.redirect('/login')
+        req.body.password = bcryptjs.hashSync(req.body.password, 10)
+        //res.send(req.body)
+        db.User.create({
+            firstName: req.body.name,
+            lastName: req.body.lastName,
+            email: req.body.email,
+            avatar: req.body.avatar,
+            password: req.body.password,
+            type: 1,
+        }).then(() => res.redirect('/login')).catch(error => res.send(error))
 
     },
 
