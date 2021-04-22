@@ -13,14 +13,14 @@
 
     <main>
         <section class="hero-banner">
-            <img src="/images/products/<%= product.mainImage %>" width="100%" alt="Cover relacionado con el juego">
+            <img src="/images/products/<%= product.image1 %>" width="100%" alt="Cover relacionado con el juego">
         </section>
 
         <section class="productGroup">
             <article class="productColumnOne">
                 <!-- Header details -->
                 <div class="productDetails-head">
-                    <img class="game-image" src="/images/products/<%= product.secondImage %>" alt="">
+                    <img class="game-image" src="/images/products/<%= product.image2 %>" alt="">
                     <div class="infoWrapper">
                         <h2 class="productName"><%= product.name %></h2>
                         <% if(product.rawApi != null) { %>
@@ -71,31 +71,44 @@
             <article class="productColumnTwo">
                 <!-- Tarjeta con precio -->
                 <div class="productPrice">
+
+                <!-- <form action="/carrito-compras/crear" method="POST" enctype="multipart/form-data"> -->
                      <!-- Agregar funcionalidad -->
                     <div class="productCondition">
                         <a href="#">Nuevo</a>
                         <a href="#">Usado</a>
                     </div>
                     
-                    <% if(product.hasEdition) { %>
+                    <% if(product.hasEdition && product.edition != null && product.edition.length > 0  ) { %>
                     <div class="select-wrapper">
                         <select class="select" name="edition" id="edition">
-                            <% product.edition.forEach( edition => { %>
-                            <option value="<%= edition %>"><%= edition %></option>
-                           
-                            <!-- <option value="Standard">Standard</option>
-                            <option value="Collector">Coleccionista</option>
-                            <option value="Especial">Especial</option> -->
+                            <% product.editions.forEach( edition => { %>
+                            <option value="<%= edition.name %>"><%= edition.name %></option>
                             <% }); %>
                         </select>
                     </div>
                     <% } %>
-                    <div class="productPriceWrapper">
+                    <div class="productPriceWrapper" >
                         <p class="labelPrice">Precio</p>
-                        <h3 class="price"> $ <%= product.price %>  </h3>
+                        <h3 class="price" id="productPrice"> $ <%= new Intl.NumberFormat("es-CO").format(product.price)  %>  </h3>
                     </div>
 
-                    <a href="" class="btn-CTA addToCart">Añadir al carrito</a>
+                    <input type="hidden" id="productPriceHidden" name="productPriceHidden" value= <%= product.price %>>
+
+                    <!-- <a href="" class="btn-CTA addToCart">Añadir al carrito</a> -->
+                    <button id="addToCartDetail" class="btn-CTA addToCart"  
+                    data-id = <%=product.id%>  
+                    data-price = <%=product.price%> 
+                    data-name= "<%=product.name%>"  
+                    data-image= "<%=product.image2%>" 
+                    data-hasedition= <%=product.hasEdition%> 
+                    data-edition= "<%=product.edition%>"
+                    data-userid=<%=user?.id%>
+                    data-category=<%=product.category%>
+                    >
+                    Añadir al carrito
+                    </button>
+                <!-- </form> -->
                 </div>
 
                 <% if(product.rawApi != null) { %>
@@ -136,6 +149,8 @@
     <footer>
         <%- include('../../partials/footer.ejs') %>
     </footer>
+    <script type="module" src="/js/productDetail.js"></script>
+    <script type="module" src="/js/cartLogic.js"></script>
 </body>
 
 </html>

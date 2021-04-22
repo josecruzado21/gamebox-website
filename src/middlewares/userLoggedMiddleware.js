@@ -4,17 +4,15 @@ function userLoggedMiddleware(req, res, next){
 
     res.locals.isLogged = false;
 
-    console.log(req.cookies);
     if(req.cookies){
 
-    let emailInCookie = req.cookies.userEmail;
-    let userFromCookie = User.findByProperty('email', emailInCookie);
-    if(userFromCookie){
-        req.session.userLogged = userFromCookie;
-    }
+        let emailInCookie = req.cookies.userEmail;
+        let userFromCookie = User.findByProperty('email', emailInCookie);
+        if(userFromCookie){
+            req.session.userLogged = userFromCookie;
+        }
 
     }
-
 
 
     if(req.session &&  req.session.userLogged){

@@ -26,7 +26,7 @@
                 </div>
 
             <div class="form-register">
-                <form action="" method="POST">
+                <form action="/registro" method="POST" enctype='multipart/form-data'>
              
                     <div class="input-wrapper">
                         <input class="input"  type="text" name="name"  placeholder=" " id="name">
@@ -42,6 +42,11 @@
                         <input class="input" type="text" name="email"  placeholder=" " id="email">
                         <label for="email" class="label">Correo electrónico</label>
                     </div>
+                    <% if(locals.errors && errors.email){ %>
+                        <p style="color:red;">
+                            <%= errors.email.msg  %>
+                        </p>
+                    <% } %>
 
                     <div class="input-wrapper">
                         <input class="input" type="password" name="password" placeholder=" " id="password">
@@ -49,6 +54,10 @@
                         <span class="icon"></span>
                     </div>
 
+                    <div class="input-wrapper">
+                        <input class="input" type="file" name="image" accept="image/*" id="image">
+                        <label for="image" class="label" id="label">Imagen de perfil</label>
+                    </div>
 
                     <div class="checkboxWrapper">
                         <input type="checkbox" name="terms" id="checkboxTerms" class="checkbox">
@@ -56,7 +65,7 @@
                         </label>
                     </div>
 
-                    <button class="btn-get-in">Crear cuenta</button>
+                    <button class="btn-get-in" type='submit'>Crear cuenta</button>
 
                 </form> 
             </div>

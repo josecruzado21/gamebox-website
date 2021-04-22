@@ -28,7 +28,6 @@ const usersController = {
                 }
 
                 return res.redirect('/usuarios/perfil');
-                
             } else {
                 return res.render('pages/users/login', {
                     title: titleLogin,
@@ -71,6 +70,34 @@ const usersController = {
             'title': title
         })
     },
+
+    register_new_user: (req, res) => {
+        let title = 'Gamebox | Registro ';
+        let userindb = User.findByProperty('email', req.body.email)
+        if (userindb) {
+            return res.render('pages/users/register', {
+                'title': title,
+                errors: {
+                    email: {
+                        msg: 'Ya existe una cuenta asociada a este correo'
+                    },
+                },
+                oldData: req.body
+            });
+        }
+        var usuario_nuevo = req.body
+        if (req.file && req.file !== undefined) {
+            usuario_nuevo.avatar = req.file.filename
+        } else {
+            usuario_nuevo.avatar = 'default-avatar.jpg'
+        }
+
+        usuario_nuevo.password = bcryptjs.hashSync(req.body.password, 10)
+        User.create(usuario_nuevo)
+        res.redirect('/login')
+
+    },
+
     profile: (req, res) => {
 
         let title = 'Gamebox | Perfil ';

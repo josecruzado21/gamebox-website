@@ -1,4 +1,3 @@
-
 const fs = require('fs');
 const path = require('path');
 const dataPath = path.resolve(__dirname, '../data/');
@@ -80,8 +79,6 @@ const User = {
 
 
 }
-
-
 module.exports = User;
 
 //console.log(User.findByProperty('email','ldavydychevf@walmart.com'))

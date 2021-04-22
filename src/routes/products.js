@@ -18,8 +18,9 @@ let upload = multer({ storage });
 
 
 router.get('/', productsController.list)
-router.get('/:category', productsController.list)
-router.get('/:category/:id', productsController.product);
+router.get('/:parentCategory', productsController.list)
+router.get('/:parentCategory/:childCategory', productsController.list)
+router.get('/:parentCategory/:childCategory/:slugProduct', productsController.product);
 
 
 router.post('/crear' ,upload.any(),productsController.save);
