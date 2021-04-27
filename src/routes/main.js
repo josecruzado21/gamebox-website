@@ -15,7 +15,7 @@ const storage=multer.diskStorage({
         cb(null,path.join(__dirname,'../../public/images/avatars'))
     },
     filename: (req,file,cb)=>{
-        const newFilename = file.originalname;
+        const newFilename = Date.now()+path.extname(file.originalname);
         cb(null, newFilename);
     }
 });
@@ -33,7 +33,7 @@ router.get('/carrito-de-compras', authMiddleware,cartController.cart);
 router.get('/login', guestMiddleware, usersController.login);
 router.get('/registro', guestMiddleware, usersController.register);
 router.post('/login',  usersController.loginProcess);
-router.post('/registro', upload.any(), usersController.register_new_user);
+router.post('/registro', upload.single('image'), usersController.register_new_user);
 router.get('/logout', usersController.logout);
 
 module.exports = router; 
