@@ -99,12 +99,14 @@ const usersController = {
                 oldData: req.body
             });
         }
-        if (req.file && req.file !== undefined) {
-            req.body.avatar = req.file.filename
-        } else {
-            req.body.avatar = 'default-avatar.jpg'
+
+        if(req.file && req.file!== undefined){
+            req.body.avatar=req.file.filename
+        } else{
+            req.body.avatar='default-avatar.jpg'
         }
-        req.body.password = bcryptjs.hashSync(req.body.password, 10)
+
+        req.body.password=bcryptjs.hashSync(req.body.password,10)
         //res.send(req.body)
         db.User.create({
             firstName: req.body.name,
