@@ -79,14 +79,14 @@ CREATE TABLE `RawInfo` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`synopsis` TEXT NOT NULL,
 	`launchDate` DATETIME NOT NULL,
-	`metacritic` INT NOT NULL,
-	`metacriticUrl` varchar(500) NOT NULL,
+	`metacritic` INT,
+	`metacriticUrl` varchar(500),
 	`rating` varchar(500) NOT NULL,
 	`developer` varchar(500) NOT NULL,
 	`genres` TEXT NOT NULL,
 	`platforms` TEXT NOT NULL,
 	`tags` TEXT NOT NULL,
-	`recommendedAge` INT NOT NULL,
+	`recommendedAge` varchar(500) NOT NULL,
 	PRIMARY KEY (`id`)
 );
 

@@ -17,11 +17,11 @@ module.exports = (sequelize, dataTypes) => {
         },
         metacritic: {
             type: dataTypes.INTEGER,
-            allowNull: false
+            allowNull: true
         },
         metacriticUrl: {
             type: dataTypes.STRING(500),
-            allowNull: false
+            allowNull: true
         },
         rating: {
             type: dataTypes.STRING(500),
@@ -44,7 +44,7 @@ module.exports = (sequelize, dataTypes) => {
             allowNull: false
         },
         recommendedAge: {
-            type: dataTypes.INTEGER,
+            type: dataTypes.STRING(500),
             allowNull: false
         }
 
