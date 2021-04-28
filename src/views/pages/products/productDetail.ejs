@@ -24,7 +24,7 @@
                     <div class="infoWrapper">
                         <h2 class="productName"><%= product.name %></h2>
                         <% if(product.rawInfoObj != null) { %>
-                        <p class="relaseDate">Fecha de lanzamiento <%= product.rawInfoObj?.launchDate %></p>
+                        <p class="relaseDate">Fecha de lanzamiento <%=  new Date(product.rawInfoObj?.launchDate).toLocaleDateString()  %></p>
                         <div class="metascore">
                             <p class="metascoreNumber">
                                 <%= product.rawInfoObj?.metacritic %>  
