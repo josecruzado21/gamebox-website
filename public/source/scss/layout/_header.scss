@@ -1,16 +1,47 @@
 .header {
     background-color: $blue;
     border-bottom: 4px solid $red;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px;
     width: 100%;
 
+    .headerWrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 24px;
+        z-index: 1;
+    }
+
     @include respond-to('tablet') {
-        height: 20vh;
+        position: relative;
+
+        &::after {
+            bottom: 0;
+            content: '';
+            background-color: $darkBlue;
+            height: 42px;
+            left: 0;
+            position: absolute;
+            width: 100%;
+            z-index: 0;
+        }
+
+        .headerWrapper {
+            height: auto;
+            flex-wrap: wrap;
+            padding-bottom: 0;
+        }
+    }
+
+    @include respond-to('desktop') {
+        display: flex;
+        justify-content: center;
+
+        .headerWrapper {
+            max-width: 1136px;
+            width: 100%;
+        }
     }
 }
 
@@ -59,6 +90,10 @@
     a {
         display: none;
     }
+
+    @include respond-to('tablet') {
+        display: none;
+    }
 }
 
 .toggled .burgerInnerLine {
@@ -70,25 +105,31 @@
         bottom: 0px;
         transform: rotate(-45deg);
         transition: bottom 250ms cubic-bezier(0.23, 1, 0.32, 1),
-        transform 250ms 250ms cubic-bezier(0.23, 1, 0.32, 1);
+            transform 250ms 250ms cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     &:last-child {
         top: 0px;
         transform: rotate(45deg);
         transition: top 250ms cubic-bezier(0.23, 1, 0.32, 1),
-        transform 250ms 250ms cubic-bezier(0.23, 1, 0.32, 1);
+            transform 250ms 250ms cubic-bezier(0.23, 1, 0.32, 1);
     }
 }
 
 .logo-image {
     display: inline-block;
     margin-bottom: 16px;
+
+    @include respond-to('tablet') {
+        margin-bottom: 0;
+        margin-right: 24px;
+    }
 }
 
 .userActions {
     display: inline-flex;
     margin-bottom: 16px;
+
 
     .userAccount {
         margin-left: 24px;
@@ -98,10 +139,38 @@
         }
     }
 
-    .userLogout{
+    .userLogout {
         margin-left: 18px;
         font-size: 24px;
         color: white;
+    }
+
+    @include respond-to('tablet') {
+        align-items: center;
+        margin-left: 24px;
+        margin-bottom: 0;
+        order: 3;
+
+        .userAccount {
+            display: flex;
+            margin-left: 24px;
+            text-decoration: none;
+
+            img {
+                margin-right: 12px;
+            }
+
+            .userAccountInfo {
+                color: $white;
+                display: block;
+
+                p {
+                    font-weight: 700;
+                    margin: 0;
+                    padding: 0;
+                }
+            }
+        }
 
     }
 }
@@ -139,6 +208,54 @@
             font-size: 1rem;
         }
     }
+
+    @include respond-to('tablet') {
+        flex-grow: 1;
+        order: 2;
+        width: initial;
+        max-width: 464px;
+    }
+}
+
+.productsMenu {
+    @include respond-to('tablet') {
+        display: flex;
+        margin-top: 24px;
+        order: 4;
+        position: relative;
+        width: 100%;
+    }
+}
+
+.categoriesLink {
+    display: none;
+
+    @include respond-to('tablet') {
+        background-color: $red;
+        color: white;
+        display: flex;
+        align-items: center;
+        padding: 12px 32px;
+        position: relative;
+        text-decoration: none;
+        z-index: 1;
+
+        span {
+            font-weight: 500;
+            padding-left: 12px;
+        }
+
+        &::after {
+            bottom: 0;
+            content: '';
+            background-color: $red;
+            height: 42px;
+            right: 0;
+            position: absolute;
+            width: calc(100vw - 70%);
+            z-index: -1;
+        }
+    }
 }
 
 .sideMenu {
@@ -174,6 +291,65 @@
             text-decoration: none;
         }
     }
+
+    @include respond-to('tablet') {
+        background-color: $white;
+        border-radius: 8px;
+        box-shadow: 0px 0px 22px rgba($darkGrey, 0.2);
+        height: inherit;
+        left: 12px;
+        margin-top: 46px;
+        padding: 0;
+        position: absolute;
+        transform: translateX(0);
+        top: 0px;
+        width: 270px;
+
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(8px);
+        transition: all .4s ease;
+
+        &::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 12px 12px 12px;
+            border-color: transparent transparent #ffffff transparent;
+            border-radius: 8px;
+            position: absolute;
+            top: -8px;
+            left: 16px;
+        }
+
+        .menu {
+
+            .itemMenu a {
+                border-bottom: 1px solid rgba($darkGrey, 0.1);
+                color: $darkBlue;
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 12px 16px 12px 24px;
+                text-decoration: none;
+                transition: .2s;
+
+                &:hover {
+                    background-color: rgba($darkGrey, 0.1);
+                    overflow: hidden;
+                }
+            }
+        }
+
+    }
+}
+
+.menuActive {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
 }
 
 .sideMenu.open {
@@ -183,34 +359,64 @@
 
 .mainCategories {
     display: none;
+
+    @include respond-to('tablet') {
+        background-color: $darkBlue;
+        display: block;
+        padding: 12px 0;
+
+        ul {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: relative;
+            z-index: 1;
+
+            .mainCategoriesItem {
+                padding-left: 32px;
+
+                &:last-child {
+                    padding-right: 32px;
+                }
+
+                a {
+                    color: $white;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
 }
 
 .fixed {
     position: fixed;
 }
 
+/* Preguntar a Jaime */
 
-
-.fa-stack[data-count]:after{
-    position:absolute;
-    right:0%;
-    top:0%;
+.fa-stack[data-count]:after {
+    position: absolute;
+    right: 0%;
+    top: 0%;
     content: attr(data-count);
-    font-size:40%;
-    padding:.6em;
-    border-radius:999px;
-    line-height:.75em;
-    color:red;
-    text-align:center;
-    min-width:2em;
-    font-weight:bold;
+    font-size: 40%;
+    padding: .6em;
+    border-radius: 999px;
+    line-height: .75em;
+    color: red;
+    text-align: center;
+    min-width: 2em;
+    font-weight: bold;
     background: white;
-    border-style:solid;
-  }
-  .fa-circle {
-    color:#DF0000;
-  }
-  
-  .red-cart {
-      color: #DF0000; background:white;
-  }
+    border-style: solid;
+}
+
+.fa-circle {
+    color: #DF0000;
+}
+
+.red-cart {
+    color: #DF0000;
+    background: white;
+}

@@ -15,3 +15,6 @@ __Juan__ :
 __Jaime__ : Definir los campos necesarios para los productos y generar archivo JSON y CRUD de productos
 __Jose__ : Definir los campos necesarios para los usuarios y generar archivo JSON
 __Juan__ : Ajustes de estilos gráficos en el menú y en el footer
+
+#### Sprint 5
+

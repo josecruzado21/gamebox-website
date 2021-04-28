@@ -1,7 +1,7 @@
 //Breakpoints
 $breakpoints: ('phone': (min-width: 480),
   'tablet': (min-width: 768px),
-  'desktop': (min-width: 1024px),
+  'desktop': (min-width: 992px),
   'large-screen': (min-width: 1200px),
 );
 
@@ -43,10 +43,8 @@ $white:#FFFFFF;
 $yellow:#F1A72A;
 
 // Variables para texto, para verificar el peso del font-weight revisar el archivo _typography.css
-$primary-font: 'Catamaran',
-sans-serif;
-$secondary-font: 'Mulish',
-sans-serif;
+$primary-font: 'Catamaran', sans-serif;
+$secondary-font: 'Mulish',  sans-serif;
 
 * {
   box-sizing: border-box;

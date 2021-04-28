@@ -9,7 +9,9 @@ menuToggle.addEventListener('click', () => {
     bodySelector.classList.toggle('fixed');
 });
 
+// Agrega la clase .menuActive en Tablet y Desktop
 
-
-
-
+function menuActive() {
+    const toggleMenu = document.querySelector('.sideMenu');
+    toggleMenu.classList.toggle('menuActive');
+}
