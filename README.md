@@ -56,7 +56,7 @@ https://trello.com/b/OlDI0UFB/gambox-sprint-4
 
 - Sprint 4: https://jamboard.google.com/d/1JYV_YP3vgd02aETJGwlahGrJRZZkHPsop95Tmb2Helc/viewer
 
-- Sprint 5: 
+- Sprint 5: https://jamboard.google.com/d/1GZci6opPdLs50E1FV2wJuqtRLLY8uvD5wPBcmXBIHGA/edit?usp=sharing
 
 ## Diseño
 - Figma: https://www.figma.com/file/cxfNzhyACkm0akeE4y2ajh/gameBox?node-id=0%3A1
@@ -65,3 +65,4 @@ https://trello.com/b/OlDI0UFB/gambox-sprint-4
 
 - Jaime Rivera: https://github.com/tatos85/mliebre
 - Juan Castañeda: https://mercadoliebrejc.herokuapp.com/
+- Jose Cruzado: https://mercado-liebre-jc.herokuapp.com/

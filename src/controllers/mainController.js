@@ -4,7 +4,8 @@ const mainController = {
         let title = 'Gamebox | Videojuegos y mas';
         res.render('pages/index', 
         {
-            'title': title
+            'title': title,
+            'user' : req.session.userLogged
         });
     },
 };

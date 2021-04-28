@@ -38,7 +38,14 @@ const usersController = {
                     res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 30 })
                 }
 
-                return res.redirect('/usuarios/perfil');
+                // return res.send(req.session.userLogged)
+
+                // res.render('pages/index', {
+                //     title: title,
+                //     user : req.session.userLogged
+                // })
+
+                return res.redirect('/');
             } else {
                 return res.render('pages/users/login', {
                     title: titleLogin,

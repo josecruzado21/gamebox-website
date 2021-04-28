@@ -134,7 +134,6 @@ let productsController = {
           title: title,
           products: prds,
           user: req.session.userLogged
-
         })
       }).catch(error => {
         console.log(error.message);

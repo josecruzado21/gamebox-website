@@ -7,11 +7,11 @@
                 <span class="burgerInnerLine"></span>
             </div>
         </div>
-    
+
         <a href="/" class="logo-image" target="_self">
             <img src="/images/logo.svg" alt="Gambox logo - Ir al inicio">
         </a>
-    
+
         <div class="userActions">
             <!-- <span class="fa-stack fa-2x has-badge" id="cartCount" data-count="0">
                 <i class="fa fa-shopping-cart fa-stack-2x red-cart"></i>
@@ -22,40 +22,40 @@
             <% if (locals.isLogged) { %>
                 <a href="/usuarios/perfil" class="userAccount">
                     <img src="/images/iconUser.svg" alt="Iniciar sesión">
-    
+
                     <div class="userAccountInfo">
-                        <p>Mi cuenta</p>
-                        <span>Ingresa o crea tu cuenta</span>
+                        <p>¡Hola, <%= user.firstName %>! <img src="/images/iconChevronDownWhite.svg" alt=""></p>
+                        <span>Nos alegramos de verte</span>
                     </div>
                 </a>
                 <% } else { %>
                     <a href="/login" class="userAccount">
                         <img src="/images/iconUser.svg" alt="Iniciar sesión">
-    
+
                         <div class="userAccountInfo">
                             <p>Mi cuenta</p>
                             <span>Ingresa o crea tu cuenta</span>
                         </div>
                     </a>
                     <% } %>
-                        <% if (locals.isLogged) { %>
-                            <a href="/logout" class="userLogout">
-                                <!-- <img src="/images/iconSignOut.svg" alt="Cerrar sesión"> -->
-                                <i class="fas fa-sign-out-alt"></i>
-                            </a>
-                            <% } %>
+                    <% if (locals.isLogged) { %>
+                        <a href="/logout" class="userLogout">
+                            <!-- <img src="/images/iconSignOut.svg" alt="Cerrar sesión"> -->
+                            <i class="fas fa-sign-out-alt"></i>
+                        </a>
+                    <% } %>
         </div>
-    
+
         <form id="searchBar" action="/" method="GET" autocomplete="off">
             <input type="text" id="searchBar" name="searchBar" placeholder="¿Qué estas buscando?">
         </form>
-    
+
         <div class="productsMenu">
             <a href="#" class="categoriesLink" onclick="menuActive();">
                 <img src="/images/iconMenu.svg" alt="icono menu" width="16">
                 <span>Categorias</span>
             </a>
-    
+
             <nav class="sideMenu" id="sideMenu">
                 <ul class="menu">
                     <li class="itemMenu">
@@ -90,7 +90,7 @@
                     </li>
                 </ul>
             </nav>
-    
+
             <div class="mainCategories">
                 <ul>
                     <li class="mainCategoriesItem">
