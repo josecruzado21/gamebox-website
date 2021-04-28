@@ -3,6 +3,24 @@ const path = require('path');
 const fs = require('fs');
 const db = require('../database/models');
 
+const LanguageTranslatorV3 = require('ibm-watson/language-translator/v3');
+const { IamAuthenticator } = require('ibm-watson/auth');
+
+const languageTranslator = new LanguageTranslatorV3({
+    version: '2018-05-01',
+    authenticator: new IamAuthenticator({
+      apikey: 'Ccdodn5cOgaE-BEEJV3b1pF2f3OB23BeHZIp6M1BwiNh',
+    }),
+    serviceUrl: 'https://api.us-south.language-translator.watson.cloud.ibm.com/instances/29b27ae0-b540-41f2-9ac5-20995f046fa3',
+    disableSslVerification: true,
+  });
+  
+  const translateParams = {
+    text: 'Hello, how are you today?',
+    modelId: 'en-es',
+  };
+  
+
 const { QueryTypes } = require('sequelize');
 const { log } = require('console');
 const { title } = require('process');
@@ -23,8 +41,6 @@ function make_slug(str)
 
 let productsController = {
   
-    
-    
     product: async (req, res) => {
         let title = 'Gamebox | ';
         let id = parseInt(req.params.id);
@@ -32,8 +48,6 @@ let productsController = {
         let parentCategory = req.params.parentCategory;
         let childCategory = req.params.childCategory;
         let slugProduct = req.params.slugProduct;
-
-        //let raw = await fetch('https://restcountries.eu/rest/v2/all').then(res => res.json());  
 
         db.Product.findOne({
             //include:[{association:'categories'}],
@@ -314,7 +328,7 @@ let productsController = {
 
        if (req.body.category == "Juegos" || req.body.category == "Juegos") {
          let rawSearch = await fetch(
-           "https://api.rawg.io/api/games?key=44a0fa1def1e4f3a970bc5170c09bd74&search=" +
+           "https://api.rawg.io/api/games?key=1f24a4342da044cd871a3dee991ff147&search=" +
              req.body.slug
          ).then((res) => res.json());
          //   console.log(rawSearch.results[0])
@@ -324,7 +338,7 @@ let productsController = {
          let rawDetails = await fetch(
            "https://api.rawg.io/api/games/" +
              gameId +
-             "?key=44a0fa1def1e4f3a970bc5170c09bd74"
+             "?key=1f24a4342da044cd871a3dee991ff147"
          ).then((res) => res.json());
              console.log(rawSearch.results[0])
 
@@ -345,14 +359,23 @@ let productsController = {
          let esrb = 99;
 
          switch (rawDetails.esrb_rating.name) {
-           case "Mature":
-             esrb = 17;
+           case "Everyone":
+             esrb = "Todos";
              break;
-           case "Mature":
-             esrb = 17;
+           case "Everyone 10+":
+             esrb = "Todos 10+";
              break;
+           case "Teen":
+                esrb = "Adolescentes";
+                break;             
            case "Mature":
-             esrb = 17;
+                esrb = "Maduro +17";
+                break;  
+           case "Adults Only":
+                esrb = "Adultos unicamente +18";
+                break;  
+           case "Rating Pending":
+             esrb = "Sin clasificación";
              break;
            default:
              break;
@@ -360,63 +383,84 @@ let productsController = {
 
          let newRawId = null;
 
-         RawInfo.create({
-           synopsis: rawDetails.description,
-           launchDate: rawDetails.released,
-           metacritic: rawDetails.metacritic,
-           metacriticUrl: rawDetails.metacritic_platforms[0]?.url == null ? 'https://www.metacritic.com/game' : rawDetails.metacritic_platforms[0]?.url,
-           rating: ratingMax.title,
-           developer: rawDetails.developers[0].name,
-           genres: genres,
-           platforms: platforms,
-           tags: tags,
-           recommendedAge: esrb, //"17"
-         })
-           .then((data) => {
-             console.log("Raw Info guardada!");
-             console.log(data);
-             console.log(data.id);
-             newRawId = data.id;
+         let translation = null;
+         translateParams.text = rawDetails.description;
+   
+         await languageTranslator.translate(translateParams)
+         .then(translationResult => {
+           console.log("-----TRADUCIENDO------");
+           console.log(JSON.stringify(translationResult, null, 2));
+           translation = translationResult.result.translations[0].translation;
 
-             Product.create({
-               name: req.body.name,
-               slug: req.body.slug,
-               description: req.body.description,
-               price: Number(req.body.price),
-               image1: mainImage.originalname,
-               image2: secondImage.originalname,
-               category: req.body.subcategory,
-               hasEdition: req.body.hasEdition,
-               edition: req.body.edition,
-               stock: req.body.stock,
-               isNew: req.body.type == "nuevo" ? 1 : 0,
-               rawInfo: newRawId,
-             })
-               .then(() => {
-                 return res.redirect("/productos/");
-               })
-               .catch((error) => res.send(error));
-           })
-           .catch((error) =>
-             Product.create({
-               name: req.body.name,
-               slug: req.body.slug,
-               description: req.body.description,
-               price: Number(req.body.price),
-               image1: mainImage.originalname,
-               image2: secondImage.originalname,
-               category: req.body.subcategory,
-               hasEdition: req.body.hasEdition,
-               edition: req.body.edition,
-               stock: req.body.stock,
-               isNew: req.body.type == "nuevo" ? 1 : 0,
-               rawInfo: null,
-             })
-               .then(() => {
-                 return res.redirect("/productos/");
-               })
-               .catch((error) => res.send(error))
-           );
+
+           RawInfo.create({
+            synopsis: translation,
+            launchDate: rawDetails.released,
+            metacritic: rawDetails.metacritic == null ? 0 :rawDetails.metacritic ,
+            metacriticUrl: rawDetails.metacritic_platforms[0]?.url == null ? 'https://www.metacritic.com/game' : rawDetails.metacritic_platforms[0]?.url,
+            rating: ratingMax.title,
+            developer: rawDetails.developers[0].name,
+            genres: genres,
+            platforms: platforms,
+            tags: tags,
+            recommendedAge: esrb, //"17"
+          })
+            .then((data) => {
+              console.log("Raw Info guardada!");
+              console.log(data);
+              console.log(data.id);
+              newRawId = data.id;
+ 
+              Product.create({
+                name: req.body.name,
+                slug: req.body.slug,
+                description: req.body.description,
+                price: Number(req.body.price),
+                image1: mainImage.originalname,
+                image2: secondImage.originalname,
+                category: req.body.subcategory,
+                hasEdition: req.body.hasEdition,
+                edition: req.body.edition,
+                stock: req.body.stock,
+                isNew: req.body.type == "nuevo" ? 1 : 0,
+                rawInfo: newRawId,
+              })
+                .then(() => {
+                  return res.redirect("/productos/");
+                })
+                .catch((error) => res.send(error));
+            })
+            .catch((error) => {
+               console.error(error);
+              Product.create({
+                name: req.body.name,
+                slug: req.body.slug,
+                description: req.body.description,
+                price: Number(req.body.price),
+                image1: mainImage.originalname,
+                image2: secondImage.originalname,
+                category: req.body.subcategory,
+                hasEdition: req.body.hasEdition,
+                edition: req.body.edition,
+                stock: req.body.stock,
+                isNew: req.body.type == "nuevo" ? 1 : 0,
+                rawInfo: null,
+              })
+            
+                .then(() => {
+                  return res.redirect("/productos/");
+                })
+                .catch((error) => res.send(error))
+            }
+            );
+
+         })
+         .catch(err => {
+           console.log('error:', err);
+         });
+
+
+
        } else {
          Product.create({
            name: req.body.name,
@@ -474,7 +518,6 @@ let productsController = {
         })
 
     },
-
 
     update: async (req, res) => {
         let id = parseInt(req.params.id);
