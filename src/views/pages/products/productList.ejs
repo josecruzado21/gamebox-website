@@ -21,6 +21,14 @@
                 <div class="nombre_lista"><a href="/productos/<%= products[i].categories.parent_slug %>/<%= products[i].categories.slug %>/<%= products[i].slug %>"><%=products[i].name%></a></div>
                 <div class="precio_lista"> $ <%= new Intl.NumberFormat("es-CO").format(products[i].price)  %></div>
                 <div class="descripcion_lista"><%=products[i].description%></div>
+                <% if (user?.type==1) { %>
+                    <div class="botones_admin">
+                        <a href="/admin/productos/editar/<%=products[i].id%>"><button class="button-edit">Editar</button></a>
+                        <% if (products[i].rawInfo != null) { %>
+                            <a href="/admin/productos/editar-info/<%=products[i].rawInfo%>"><button class="button-edit">Editar mas info</button></a>
+                        <% } %>
+                      </div>
+                <% } %>
             </div>
             <button class="button-list"  
             data-id = <%=products[i].id%>  
@@ -32,6 +40,8 @@
             data-category=<%=products[i].category%>
             data-userid=<%=user?.id%>
             >Agregar al carrito</button>
+
+
         </div>
         <% } %>
 

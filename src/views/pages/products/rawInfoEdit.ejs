@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('../../partials/head.ejs') %>
+    <title><%= title %></title>
+</head>
+
+<body>
+    <header>
+        <%- include('../../partials/header.ejs') %>
+    </header>
+
+    <section class= "createProduct">
+       
+        <div class="formWrapper">
+
+            <div class="create-product-introWrapper">
+                <h1 class="small-title-createProduct">
+                        Editar más info de juego 
+                </h1>
+            </div>
+    
+                <form action="/productos/editar-info/<%= info?.id %>?_method=PUT" method="POST">
+     
+                <div class="form-create-product">
+               
+                    <div class="input-wrapper">
+                        <textarea class="input"  name="synopsis"  placeholder="" id="synopsis"><%= info?.synopsis %></textarea>
+                        <label for="synopsis" class="label">Sinopsis</label>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input class="input"  type="date" name="launchDate"  placeholder=" " id="launchDate" value="<%= new Date(info?.date)  %>">
+                        <label for="launchDate" class="label">Fecha de lanzamiento</label>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input class="input"  type="number" name="metacritic"  placeholder=" " id="metacritic" value="<%= info?.metacritic %>">
+                        <label for="metacritic" class="label">Metacritic</label>
+                    </div>
+
+                    
+                    <div class="input-wrapper">
+                        <input class="input"  type="text" name="metacriticUrl"  placeholder=" " id="metacriticUrl" value="<%= info?.metacriticUrl %>">
+                        <label for="metacriticUrl" class="label">Metacritic Url</label>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input class="input"  type="text" name="rating"  placeholder=" " id="rating" value="<%= info?.rating %>">
+                        <label for="rating" class="label">Rating</label>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <input class="input"  type="text" name="developer"  placeholder=" " id="developer" value="<%= info?.developer %>">
+                        <label for="developer" class="label">Desarrollador</label>
+                    </div>
+    
+                    <div class="input-wrapper">
+                        <textarea class="input"  name="genres"  placeholder="" id="genres"><%= info?.genres %></textarea>
+                        <label for="genres" class="label">Generos</label>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <textarea class="input"  name="platforms"  placeholder="" id="platforms"><%= info?.platforms %></textarea>
+                        <label for="platforms" class="label">Plataformas</label>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <textarea class="input"  name="tags"  placeholder="" id="tags"><%= info?.tags %></textarea>
+                        <label for="tags" class="label">Tags</label>
+                    </div>
+    
+
+                    <div class="input-wrapper">
+
+                        <label for="recommendedAge">Edad recomendada</label>
+    
+                        <select name="recommendedAge" id="type">
+                          <option <%= info?.recommendedAge == 'Todos' ? "selected" : "" %> value="Todos">Todos</option>
+                          <option <%= info?.recommendedAge == 'Todos 10+' ? "selected" : "" %> value="Todos 10+"  >Todos 10+</option>
+                          <option <%= info?.recommendedAge == 'Adolescentes' ? "selected" : "" %> value="Adolescentes">Adolescentes</option>
+                          <option <%= info?.recommendedAge == 'Maduro +17' ? "selected" : "" %> value="Maduro +17"  >Maduro +17</option>
+                          <option <%= info?.recommendedAge == 'Adultos unicamente +18' ? "selected" : "" %> value="Adultos unicamente +18">Adultos unicamente +18</option>
+                          <option <%= info?.recommendedAge == 'Sin clasificación' ? "selected" : "" %> value="Sin clasificación"  >Sin clasificación</option>
+                        </select>
+                    </div>
+
+                    <div class="input-wrapper">
+                        
+                        <button type="submit" class="btn-create-product">Actualizar</button>
+       
+                    </div>
+                    <div class="input-wrapper">
+
+                        <button type="reset" class="btn-create-product">Resetear formulario</button>
+    
+                    </div>
+            </div>
+
+            </form> 
+    </section>
+
+    <footer>
+        <%- include('../../partials/footer.ejs') %>
+    </footer>
+</body>
+
+</html>

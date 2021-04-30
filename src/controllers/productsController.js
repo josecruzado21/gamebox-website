@@ -30,13 +30,6 @@ const Category = db.Category;
 const Product = db.Product;
 const RawInfo = db.RawInfo;
 
-function make_slug(str)
-{
-    str = str.toLowerCase();
-    str = str.replace(/[^a-z0-9]+/g, '-');
-    str = str.replace(/^-+|-+$/g, '');
-    return str;
-}
 
 let productsController = {
   
@@ -75,7 +68,8 @@ let productsController = {
                 if(product == null || product == undefined ){
                     res.render('pages/products/productNotFound', {
                         'title': 'Sin resultados',
-                        'description':'Producto no encontrado'
+                        'description':'Producto no encontrado',
+                        user:req.session.userLogged
                     })
                 }
                 
@@ -132,7 +126,8 @@ let productsController = {
          '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
          'FROM `products` AS `Product` ' +
          'LEFT OUTER JOIN `categories` AS `categories` ' +
-         'ON `Product`.`category` = `categories`.`id`', {
+         'ON `Product`.`category` = `categories`.`id`'  
+         , {
             type: QueryTypes.SELECT,
             nest: true,
           }).then(prds => {  
@@ -140,21 +135,24 @@ let productsController = {
               if(prds == null || prds == undefined || prds.length < 1){
                 res.render('pages/products/productNotFound', {
                     'title': 'Sin resultados',
-                    'description':'Lo sentimos no encontramos productos'
+                    'description':'Lo sentimos no encontramos productos',
+                    user:req.session.userLogged
                 })
+            }else{
+                res.render('pages/products/productList', {
+                    title: title, 
+                    products:prds,
+                    user:req.session.userLogged
+                  
+                    })
             }
 
-              res.render('pages/products/productList', {
-                title: title, 
-                products:prds,
-                user:req.session.userLogged
-              
-                })
+
           }).catch(error => {  
               console.log(error.message);
               res.render('pages/error', {
-                title: title
-            
+                title: title,
+                user:req.session.userLogged
               
                 })
             })
@@ -198,20 +196,23 @@ let productsController = {
                  if(prds == null || prds == undefined || prds.length < 1){
                     res.render('pages/products/productNotFound', {
                         'title': 'Sin resultados',
-                        'description':'Lo sentimos no encontramos productos'
+                        'description':'Lo sentimos no encontramos productos',
+                        user:req.session.userLogged
                     })
+                }else{
+                    res.render('pages/products/productList', {
+                        title: title, 
+                        products:prds,
+                        user:req.session.userLogged
+                      
+                        })
                 }
-                 res.render('pages/products/productList', {
-                   title: title, 
-                   products:prds,
-                   user:req.session.userLogged
-                 
-                   })
+
              }).catch(error => {  
                 console.log(error.message);
                 res.render('pages/error', {
-                  title: title
-              
+                  title: title ,
+                  user:req.session.userLogged
                 
                   })
               });
@@ -254,22 +255,25 @@ let productsController = {
                          if(prds == null || prds == undefined || prds.length < 1){
                             res.render('pages/products/productNotFound', {
                                 'title': 'Sin resultados',
-                                'description':'Lo sentimos no encontramos productos'
+                                'description':'Lo sentimos no encontramos productos',
+                                user:req.session.userLogged
                             })
+                        }else{
+                            res.render('pages/products/productList', {
+                                title: title, 
+                                products:prds,
+                                user:req.session.userLogged
+                                })
                         }
 
-                 res.render('pages/products/productList', {
-                   title: title, 
-                   products:prds,
-                   user:req.session.userLogged
-                   })
+
 
 
              }).catch(error => {  
                 console.log(error.message);
                 res.render('pages/error', {
-                  title: title
-              
+                  title: title,
+                  user:req.session.userLogged
                 
                   })
               });
@@ -304,7 +308,8 @@ let productsController = {
                             res.render('pages/products/productCreate', {
                                 title,
                                 product,
-                                categories:cats
+                                categories:cats,
+                                user:req.session.userLogged
                             })
 
 
@@ -494,6 +499,7 @@ let productsController = {
         if(productFound == null || productFound == undefined){
             res.render('pages/not-found', {
                 'title': 'Pagina no encontrada',
+                user:req.session.userLogged
             })
         }
 
@@ -514,6 +520,32 @@ let productsController = {
             title,
             product:productFound,
             categories:cats,
+            user:req.session.userLogged
+        })
+
+    },
+
+    editInfo: async (req, res) => {
+        let title = 'Gamebox | Editar mas info producto ';
+        let id = parseInt(req.params.id);
+        
+        console.log("buscando raw info");
+
+        infoFound=await RawInfo.findByPk(id)
+
+        if(infoFound == null || infoFound == undefined){
+            res.render('pages/not-found', {
+                'title': 'Pagina no encontrada',
+            })
+        }
+
+        console.log(infoFound);
+
+        res.render('pages/products/rawInfoEdit', {
+            title,
+            info:infoFound,
+            user:req.session.userLogged
+         
         })
 
     },
@@ -578,11 +610,41 @@ let productsController = {
             hasEdition: req.body.hasEdition,
             edition: req.body.edition,
             stock: req.body.stock,
-            isNew:req.body.type == 'nuevo' ? 1 : 0,
-            rawApi:null
+            isNew:req.body.type == 'nuevo' ? 1 : 0
+         
         },{
             where:{id:id}
-        }).then(res.render('pages/products/productDetail',{title:title,product:product,  user:req.session.userLogged}))
+        }).then(
+            res.redirect("/productos/")
+        )
+    },
+
+
+    updateInfoRaw: async (req, res) => {
+        let id = parseInt(req.params.id);
+       // infoFound=await RawInfo.findByPk(id)
+        console.log("actualizando rawinfo")
+        console.log(JSON.stringify(req.body))
+     await RawInfo.update({
+            synopsis:req.body.synopsis,
+            launchDate:  req.body.launchDate,
+            metacritic: req.body.metacritic,
+            metacriticUrl: req.body.metacriticUrl,
+            rating: req.body.rating,
+            developer: req.body.developer,
+            genres: req.body.genres,
+            platforms: req.body.platforms,
+            tags:req.body.tags,
+            recommendedAge:req.body.recommendedAge
+        },{
+            where:{id:id}
+        }).then(a=>
+            {
+              console.log("Raw Actualizado!")
+              res.redirect("/productos/")
+            }
+    
+            )
     },
 
     delete: (req, res) => {
