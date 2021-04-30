@@ -5,6 +5,8 @@ const db = require('../database/models');
 const LanguageTranslatorV3 = require('ibm-watson/language-translator/v3');
 const { IamAuthenticator } = require('ibm-watson/auth');
 
+var moment = require('moment'); // require
+
 const languageTranslator = new LanguageTranslatorV3({
     version: '2018-05-01',
     authenticator: new IamAuthenticator({
@@ -540,11 +542,15 @@ let productsController = {
         }
 
         console.log(infoFound);
+        var newDate = moment(infoFound.launchDate).utc().format("YYYY-MM-DD")
+        console.log(newDate);
+       
 
         res.render('pages/products/rawInfoEdit', {
             title,
             info:infoFound,
-            user:req.session.userLogged
+            user:req.session.userLogged,
+            newDate
          
         })
 
