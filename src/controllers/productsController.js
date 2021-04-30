@@ -105,8 +105,74 @@ let productsController = {
        
         let title = 'Gamebox | Lista de Productos ';
        
+        let queryString = req.query.search; 
+
+        console.log(queryString);
+
+        queryString = queryString.toLowerCase() ;
+
+        console.log(queryString);
+
         let parentCategory = req.params.parentCategory;
         let childCategory = req.params.childCategory;
+
+        if(queryString != null && queryString != undefined){
+
+            db.sequelize.query('SELECT `Product`.`id`,' + 
+            '`Product`.`name`,' +  
+            '`Product`.`description`,' +  
+            '`Product`.`price`, ' +
+            '`Product`.`image1`, ' +
+            '`Product`.`image2`, ' +
+            '`Product`.`category`, ' +
+            '`Product`.`hasEdition`, ' +
+            '`Product`.`edition`, `Product`.`stock`, `Product`.`isNew`, ' +
+            '`Product`.`rawInfo`, ' +
+            '`Product`.`slug`, ' +
+            '`categories`.`id` AS `categories.id`, ' +
+            '`categories`.`name` AS `categories.name`, ' +
+            '`categories`.`slug` AS `categories.slug`, ' +
+            '(select name from categories as c2 where categories.parent_id = c2.id) as `categories.parent_name`,' +
+            '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
+            'where LOWER( `categories`.`slug` )  = LOWER(:queryString1 ) or LOWER( `Product`.`name` ) like :queryString2', 
+             {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { queryString1: queryString, queryString2: '%'+queryString+'%' },
+             }).then(prds => {  
+   
+                 if(prds == null || prds == undefined || prds.length < 1){
+                   res.render('pages/products/productNotFound', {
+                       'title': 'Sin resultados',
+                       'description':'Lo sentimos no encontramos productos',
+                       user:req.session.userLogged
+                   })
+               }else{
+                   res.render('pages/products/productList', {
+                       title: title, 
+                       products:prds,
+                       user:req.session.userLogged
+                     
+                       })
+               }
+   
+   
+             }).catch(error => {  
+                 console.log(error.message);
+                 res.render('pages/error', {
+                   title: title,
+                   user:req.session.userLogged
+                 
+                   })
+               })
+
+
+        }else{
+
+        
 
         if(parentCategory == null || parentCategory == undefined ){
 
@@ -280,6 +346,7 @@ let productsController = {
                   })
               });
         }
+    }
 
 
     },
