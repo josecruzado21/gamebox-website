@@ -45,6 +45,53 @@
         </div>
         <% } %>
 
+        <div>
+            <ul class="pagination">
+                <li><a href="#">«</a></li>
+            <% for( let index = 0; index < pagesNumber; index++ ) { %>
+                
+                  <% if (queryString != null && queryString != undefined) { %>
+                    <li><a class="<% if (index+1 == page) { %>
+                        active
+                        <% } %>" 
+    
+                    href="/productos?page=<%= index+1 %>"><%=index+1%> </a></li>
+                  <% } %>
+                  
+
+                  <% if (parentCategory == null || parentCategory == undefined) { %>
+                    <li><a class="<% if (index+1 == page) { %>
+                        active
+                  <% } %>" 
+    
+                  href="/productos?page=<%= index+1 %>"><%=index+1%> </a></li>
+                  <% } %>
+                  
+                 
+                  <% if (parentCategory != null && parentCategory != undefined && (childCategory == null || childCategory == undefined)) { %>
+                    <li><a class="<% if (index+1 == page) { %>
+                        active
+                  <% } %>" 
+    
+                     href="/productos/<%=parentCategory%>?page=<%= index+1 %>"><%=index+1%> </a></li>
+                  <% } %>
+
+                  <% if (childCategory != null && childCategory != undefined) { %>
+                    <li><a class="<% if (index+1 == page) { %>
+                        active
+                  <% } %>" 
+    
+                     href="/productos/<%=parentCategory%>/<%=childCategory%>?page=<%= index+1 %>"><%=index+1%> </a></li>
+                  <% } %>
+
+            <% } %>
+                <li><a href="#">»</a></li>
+            </ul>
+
+        </div>
+
+
+
     </main>
 
     <footer>

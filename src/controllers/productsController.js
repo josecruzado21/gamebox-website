@@ -101,22 +101,57 @@ let productsController = {
 
     },
 
-    list: (req, res) => {
+    list: async (req, res) => {
        
         let title = 'Gamebox | Lista de Productos ';
        
         let queryString = req.query.search; 
 
-        console.log(queryString);
+        let page = req.query.page;
 
-        queryString = queryString.toLowerCase() ;
+        let offset = 0;
 
-        console.log(queryString);
+        let count = 0;
+
+        let pagesNumber = 0;
+
+        if(page > 1){
+            offset = (page - 1 )*10;
+        }
+
+        if(page == null || page ==undefined){
+            page =1
+        }
 
         let parentCategory = req.params.parentCategory;
         let childCategory = req.params.childCategory;
 
+        //Busqueda
         if(queryString != null && queryString != undefined){
+            queryString = queryString.toLowerCase() ;
+            
+            //Obtiene conteo para paginador
+            db.sequelize.query('SELECT count(*) AS count ' + 
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
+            'where LOWER( `categories`.`slug` )  = LOWER(:queryString1 ) or LOWER( `Product`.`name` ) like :queryString2', 
+             {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { queryString1: queryString, queryString2: '%'+queryString+'%' },
+             }).then(c => { 
+                    count = c[0].count;
+             }).catch(error => {  
+                 console.log(error.message);
+                 res.render('pages/error', {
+                   title: title,
+                   user:req.session.userLogged
+                 
+                   })
+               })
+
+               pagesNumber = Math.ceil(count/10);
 
             db.sequelize.query('SELECT `Product`.`id`,' + 
             '`Product`.`name`,' +  
@@ -137,11 +172,12 @@ let productsController = {
             'FROM `products` AS `Product` ' +
             'LEFT OUTER JOIN `categories` AS `categories` ' +
             'ON `Product`.`category` = `categories`.`id`' + 
-            'where LOWER( `categories`.`slug` )  = LOWER(:queryString1 ) or LOWER( `Product`.`name` ) like :queryString2', 
+            'where LOWER( `categories`.`slug` )  = LOWER(:queryString1 ) or LOWER( `Product`.`name` ) like :queryString2 '+
+            'limit 10 offset :offset', 
              {
                type: QueryTypes.SELECT,
                nest: true,
-               replacements: { queryString1: queryString, queryString2: '%'+queryString+'%' },
+               replacements: { queryString1: queryString, queryString2: '%'+queryString+'%', offset: offset },
              }).then(prds => {  
    
                  if(prds == null || prds == undefined || prds.length < 1){
@@ -154,8 +190,13 @@ let productsController = {
                    res.render('pages/products/productList', {
                        title: title, 
                        products:prds,
-                       user:req.session.userLogged
-                     
+                       user:req.session.userLogged,
+                       count:count,
+                       pagesNumber:pagesNumber,
+                       page:page,
+                       parentCategory:parentCategory,
+                       childCategory:childCategory,
+                       queryString:queryString
                        })
                }
    
@@ -173,10 +214,32 @@ let productsController = {
         }else{
 
         
-
+        //Busca productos sin categoria
         if(parentCategory == null || parentCategory == undefined ){
+        //Obtiene conteo para paginador
+        await  db.sequelize.query('SELECT count(*) AS count ' +    
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`'  
+            , {
+               type: QueryTypes.SELECT,
+               nest: true
+             }).then(c => {  
+                console.log("termina consulta conteo");
+                console.log(c);
+                count = c[0].count
+             }).catch(error => {  
+                 console.log(error.message);
+                 res.render('pages/error', {
+                   title: title,
+                   user:req.session.userLogged
+                 
+                   })
+               })
 
-         db.sequelize.query('SELECT `Product`.`id`,' + 
+               pagesNumber = Math.ceil(count/10);
+
+        await db.sequelize.query('SELECT `Product`.`id`,' + 
          '`Product`.`name`,' +  
          '`Product`.`description`,' +  
          '`Product`.`price`, ' +
@@ -194,10 +257,12 @@ let productsController = {
          '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
          'FROM `products` AS `Product` ' +
          'LEFT OUTER JOIN `categories` AS `categories` ' +
-         'ON `Product`.`category` = `categories`.`id`'  
+         'ON `Product`.`category` = `categories`.`id` '  +
+         'limit 10 offset :offset'
          , {
             type: QueryTypes.SELECT,
             nest: true,
+            replacements: { offset: offset },
           }).then(prds => {  
 
               if(prds == null || prds == undefined || prds.length < 1){
@@ -207,11 +272,18 @@ let productsController = {
                     user:req.session.userLogged
                 })
             }else{
+                console.log(count);
                 res.render('pages/products/productList', {
                     title: title, 
                     products:prds,
-                    user:req.session.userLogged
-                  
+                    user:req.session.userLogged,
+                    count,
+                    pagesNumber:pagesNumber,
+                    page:page,
+                    parentCategory:parentCategory,
+                    childCategory:childCategory,
+                    queryString:queryString
+                    
                     })
             }
 
@@ -231,6 +303,33 @@ let productsController = {
         //Busca por categorias principales
         if(parentCategory != null && parentCategory != undefined && (childCategory == null || childCategory == undefined)){
 
+
+            //Obtiene conteo para paginador
+            db.sequelize.query('SELECT count(*) AS count ' + 
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
+            'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory', 
+            
+            {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { parentCategory: parentCategory },
+             
+             }).then(c => {  
+                count = c[0].count
+
+             }).catch(error => {  
+                console.log(error.message);
+                res.render('pages/error', {
+                  title: title ,
+                  user:req.session.userLogged
+                
+                  })
+              });
+
+              
+
             db.sequelize.query('SELECT `Product`.`id`,' + 
             '`Product`.`name`,' +  
             '`Product`.`description`,' +  
@@ -250,17 +349,17 @@ let productsController = {
             'FROM `products` AS `Product` ' +
             'LEFT OUTER JOIN `categories` AS `categories` ' +
             'ON `Product`.`category` = `categories`.`id`' + 
-            'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory', 
+            'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory ' +
+            'limit 10 offset :offset'
+            , 
             
             {
                type: QueryTypes.SELECT,
                nest: true,
-               replacements: { parentCategory: parentCategory },
+               replacements: { parentCategory: parentCategory, offset: offset },
              
              }).then(prds => {  
-               
-                 //console.log(JSON.stringify(prds[0], null, 2));
-
+                pagesNumber = Math.ceil(count/10);
                  if(prds == null || prds == undefined || prds.length < 1){
                     res.render('pages/products/productNotFound', {
                         'title': 'Sin resultados',
@@ -268,11 +367,18 @@ let productsController = {
                         user:req.session.userLogged
                     })
                 }else{
+                    console.log(count)
+                    console.log(pagesNumber)
                     res.render('pages/products/productList', {
                         title: title, 
                         products:prds,
-                        user:req.session.userLogged
-                      
+                        user:req.session.userLogged,
+                        count,
+                        pagesNumber:pagesNumber,
+                        page:page,
+                        parentCategory:parentCategory,
+                        childCategory:childCategory,
+                        queryString:queryString
                         })
                 }
 
@@ -290,6 +396,36 @@ let productsController = {
 
         //Busca por categorias secundarias
         if(childCategory != null && childCategory != undefined ){
+        
+            //Obtiene conteo para paginador
+            db.sequelize.query('SELECT count(*) AS count ' + 
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
+            'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory' +
+            ' and `categories`.`slug` = :childCategory', 
+            
+            {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { parentCategory: parentCategory, childCategory: childCategory },
+             
+             }).then(c => {  
+                count = c[0].count
+   
+             }).catch(error => {  
+                console.log(error.message);
+                res.render('pages/error', {
+                  title: title,
+                  user:req.session.userLogged
+                
+                  })
+              });
+         
+            
+              
+            
+         
             db.sequelize.query('SELECT `Product`.`id`,' + 
             '`Product`.`name`,' +  
             '`Product`.`description`,' +  
@@ -310,16 +446,17 @@ let productsController = {
             'LEFT OUTER JOIN `categories` AS `categories` ' +
             'ON `Product`.`category` = `categories`.`id`' + 
             'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory' +
-            ' and `categories`.`slug` = :childCategory', 
+            ' and `categories`.`slug` = :childCategory '+
+            'limit 10 offset :offset' , 
             
             {
                type: QueryTypes.SELECT,
                nest: true,
-               replacements: { parentCategory: parentCategory, childCategory: childCategory },
+               replacements: { parentCategory: parentCategory, childCategory: childCategory, offset: offset },
              
              }).then(prds => {  
 
-   
+                pagesNumber = Math.ceil(count/10);
                          if(prds == null || prds == undefined || prds.length < 1){
                             res.render('pages/products/productNotFound', {
                                 'title': 'Sin resultados',
@@ -330,7 +467,13 @@ let productsController = {
                             res.render('pages/products/productList', {
                                 title: title, 
                                 products:prds,
-                                user:req.session.userLogged
+                                user:req.session.userLogged,
+                                count,
+                                pagesNumber:pagesNumber,
+                                page:page,
+                                parentCategory:parentCategory,
+                                childCategory:childCategory,
+                                queryString:queryString
                                 })
                         }
 
