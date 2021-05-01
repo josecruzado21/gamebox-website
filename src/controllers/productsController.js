@@ -5,6 +5,8 @@ const db = require('../database/models');
 const LanguageTranslatorV3 = require('ibm-watson/language-translator/v3');
 const { IamAuthenticator } = require('ibm-watson/auth');
 
+var moment = require('moment'); // require
+
 const languageTranslator = new LanguageTranslatorV3({
     version: '2018-05-01',
     authenticator: new IamAuthenticator({
@@ -30,13 +32,6 @@ const Category = db.Category;
 const Product = db.Product;
 const RawInfo = db.RawInfo;
 
-function make_slug(str)
-{
-    str = str.toLowerCase();
-    str = str.replace(/[^a-z0-9]+/g, '-');
-    str = str.replace(/^-+|-+$/g, '');
-    return str;
-}
 
 let productsController = {
   
@@ -75,7 +70,8 @@ let productsController = {
                 if(product == null || product == undefined ){
                     res.render('pages/products/productNotFound', {
                         'title': 'Sin resultados',
-                        'description':'Producto no encontrado'
+                        'description':'Producto no encontrado',
+                        user:req.session.userLogged
                     })
                 }
                 
@@ -105,65 +101,57 @@ let productsController = {
 
     },
 
-    list: (req, res) => {
+    list: async (req, res) => {
        
         let title = 'Gamebox | Lista de Productos ';
        
+        let queryString = req.query.search; 
+
+        let page = req.query.page;
+
+        let offset = 0;
+
+        let count = 0;
+
+        let pagesNumber = 0;
+
+        if(page > 1){
+            offset = (page - 1 )*10;
+        }
+
+        if(page == null || page ==undefined){
+            page =1
+        }
+
         let parentCategory = req.params.parentCategory;
         let childCategory = req.params.childCategory;
 
-        if(parentCategory == null || parentCategory == undefined ){
-
-         db.sequelize.query('SELECT `Product`.`id`,' + 
-         '`Product`.`name`,' +  
-         '`Product`.`description`,' +  
-         '`Product`.`price`, ' +
-         '`Product`.`image1`, ' +
-         '`Product`.`image2`, ' +
-         '`Product`.`category`, ' +
-         '`Product`.`hasEdition`, ' +
-         '`Product`.`edition`, `Product`.`stock`, `Product`.`isNew`, ' +
-         '`Product`.`rawInfo`, ' +
-         '`Product`.`slug`, ' +
-         '`categories`.`id` AS `categories.id`, ' +
-         '`categories`.`name` AS `categories.name`, ' +
-         '`categories`.`slug` AS `categories.slug`, ' +
-         '(select name from categories as c2 where categories.parent_id = c2.id) as `categories.parent_name`,' +
-         '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
-         'FROM `products` AS `Product` ' +
-         'LEFT OUTER JOIN `categories` AS `categories` ' +
-         'ON `Product`.`category` = `categories`.`id`', {
-            type: QueryTypes.SELECT,
-            nest: true,
-          }).then(prds => {  
-
-              if(prds == null || prds == undefined || prds.length < 1){
-                res.render('pages/products/productNotFound', {
-                    'title': 'Sin resultados',
-                    'description':'Lo sentimos no encontramos productos'
-                })
-            }
-
-              res.render('pages/products/productList', {
-                title: title, 
-                products:prds,
-                user:req.session.userLogged
-              
-                })
-          }).catch(error => {  
-              console.log(error.message);
-              res.render('pages/error', {
-                title: title
+        //Busqueda
+        if(queryString != null && queryString != undefined){
+            queryString = queryString.toLowerCase() ;
             
-              
-                })
-            })
-         
-      
-        }
+            //Obtiene conteo para paginador
+            db.sequelize.query('SELECT count(*) AS count ' + 
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
+            'where LOWER( `categories`.`slug` )  = LOWER(:queryString1 ) or LOWER( `Product`.`name` ) like :queryString2', 
+             {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { queryString1: queryString, queryString2: '%'+queryString+'%' },
+             }).then(c => { 
+                    count = c[0].count;
+             }).catch(error => {  
+                 console.log(error.message);
+                 res.render('pages/error', {
+                   title: title,
+                   user:req.session.userLogged
+                 
+                   })
+               })
 
-        //Busca por categorias principales
-        if(parentCategory != null && parentCategory != undefined && (childCategory == null || childCategory == undefined)){
+               
 
             db.sequelize.query('SELECT `Product`.`id`,' + 
             '`Product`.`name`,' +  
@@ -184,6 +172,143 @@ let productsController = {
             'FROM `products` AS `Product` ' +
             'LEFT OUTER JOIN `categories` AS `categories` ' +
             'ON `Product`.`category` = `categories`.`id`' + 
+            'where LOWER( `categories`.`slug` )  = LOWER(:queryString1 ) or LOWER( `Product`.`name` ) like :queryString2 '+
+            'limit 10 offset :offset', 
+             {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { queryString1: queryString, queryString2: '%'+queryString+'%', offset: offset },
+             }).then(prds => {  
+                pagesNumber = Math.ceil(count/10);
+                 if(prds == null || prds == undefined || prds.length < 1){
+                   res.render('pages/products/productNotFound', {
+                       'title': 'Sin resultados',
+                       'description':'Lo sentimos no encontramos productos',
+                       user:req.session.userLogged
+                   })
+               }else{
+                   res.render('pages/products/productList', {
+                       title: title, 
+                       products:prds,
+                       user:req.session.userLogged,
+                       count:count,
+                       pagesNumber:pagesNumber,
+                       page:page,
+                       parentCategory:parentCategory,
+                       childCategory:childCategory,
+                       queryString:queryString
+                       })
+               }
+   
+   
+             }).catch(error => {  
+                 console.log(error.message);
+                 res.render('pages/error', {
+                   title: title,
+                   user:req.session.userLogged
+                 
+                   })
+               })
+
+
+        }else{
+
+        
+        //Busca productos sin categoria
+        if(parentCategory == null || parentCategory == undefined ){
+        //Obtiene conteo para paginador
+        await  db.sequelize.query('SELECT count(*) AS count ' +    
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`'  
+            , {
+               type: QueryTypes.SELECT,
+               nest: true
+             }).then(c => {  
+                console.log("termina consulta conteo");
+                console.log(c);
+                count = c[0].count
+             }).catch(error => {  
+                 console.log(error.message);
+                 res.render('pages/error', {
+                   title: title,
+                   user:req.session.userLogged
+                 
+                   })
+               })
+
+           
+
+        await db.sequelize.query('SELECT `Product`.`id`,' + 
+         '`Product`.`name`,' +  
+         '`Product`.`description`,' +  
+         '`Product`.`price`, ' +
+         '`Product`.`image1`, ' +
+         '`Product`.`image2`, ' +
+         '`Product`.`category`, ' +
+         '`Product`.`hasEdition`, ' +
+         '`Product`.`edition`, `Product`.`stock`, `Product`.`isNew`, ' +
+         '`Product`.`rawInfo`, ' +
+         '`Product`.`slug`, ' +
+         '`categories`.`id` AS `categories.id`, ' +
+         '`categories`.`name` AS `categories.name`, ' +
+         '`categories`.`slug` AS `categories.slug`, ' +
+         '(select name from categories as c2 where categories.parent_id = c2.id) as `categories.parent_name`,' +
+         '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
+         'FROM `products` AS `Product` ' +
+         'LEFT OUTER JOIN `categories` AS `categories` ' +
+         'ON `Product`.`category` = `categories`.`id` '  +
+         'limit 10 offset :offset'
+         , {
+            type: QueryTypes.SELECT,
+            nest: true,
+            replacements: { offset: offset },
+          }).then(prds => {  
+            pagesNumber = Math.ceil(count/10);
+              if(prds == null || prds == undefined || prds.length < 1){
+                res.render('pages/products/productNotFound', {
+                    'title': 'Sin resultados',
+                    'description':'Lo sentimos no encontramos productos',
+                    user:req.session.userLogged
+                })
+            }else{
+                console.log(count);
+                res.render('pages/products/productList', {
+                    title: title, 
+                    products:prds,
+                    user:req.session.userLogged,
+                    count,
+                    pagesNumber:pagesNumber,
+                    page:page,
+                    parentCategory:parentCategory,
+                    childCategory:childCategory,
+                    queryString:queryString
+                    
+                    })
+            }
+
+
+          }).catch(error => {  
+              console.log(error.message);
+              res.render('pages/error', {
+                title: title,
+                user:req.session.userLogged
+              
+                })
+            })
+         
+      
+        }
+
+        //Busca por categorias principales
+        if(parentCategory != null && parentCategory != undefined && (childCategory == null || childCategory == undefined)){
+
+
+            //Obtiene conteo para paginador
+            db.sequelize.query('SELECT count(*) AS count ' + 
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
             'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory', 
             
             {
@@ -191,27 +316,77 @@ let productsController = {
                nest: true,
                replacements: { parentCategory: parentCategory },
              
-             }).then(prds => {  
-               
-                 //console.log(JSON.stringify(prds[0], null, 2));
+             }).then(c => {  
+                count = c[0].count
 
-                 if(prds == null || prds == undefined || prds.length < 1){
-                    res.render('pages/products/productNotFound', {
-                        'title': 'Sin resultados',
-                        'description':'Lo sentimos no encontramos productos'
-                    })
-                }
-                 res.render('pages/products/productList', {
-                   title: title, 
-                   products:prds,
-                   user:req.session.userLogged
-                 
-                   })
              }).catch(error => {  
                 console.log(error.message);
                 res.render('pages/error', {
-                  title: title
+                  title: title ,
+                  user:req.session.userLogged
+                
+                  })
+              });
+
               
+
+            db.sequelize.query('SELECT `Product`.`id`,' + 
+            '`Product`.`name`,' +  
+            '`Product`.`description`,' +  
+            '`Product`.`price`, ' +
+            '`Product`.`image1`, ' +
+            '`Product`.`image2`, ' +
+            '`Product`.`category`, ' +
+            '`Product`.`hasEdition`, ' +
+            '`Product`.`edition`, `Product`.`stock`, `Product`.`isNew`, ' +
+            '`Product`.`rawInfo`, ' +
+            '`Product`.`slug`, ' +
+            '`categories`.`id` AS `categories.id`, ' +
+            '`categories`.`name` AS `categories.name`, ' +
+            '`categories`.`slug` AS `categories.slug`, ' +
+            '(select name from categories as c2 where categories.parent_id = c2.id) as `categories.parent_name`,' +
+            '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
+            'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory ' +
+            'limit 10 offset :offset'
+            , 
+            
+            {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { parentCategory: parentCategory, offset: offset },
+             
+             }).then(prds => {  
+                pagesNumber = Math.ceil(count/10);
+                 if(prds == null || prds == undefined || prds.length < 1){
+                    res.render('pages/products/productNotFound', {
+                        'title': 'Sin resultados',
+                        'description':'Lo sentimos no encontramos productos',
+                        user:req.session.userLogged
+                    })
+                }else{
+                    console.log(count)
+                    console.log(pagesNumber)
+                    res.render('pages/products/productList', {
+                        title: title, 
+                        products:prds,
+                        user:req.session.userLogged,
+                        count,
+                        pagesNumber:pagesNumber,
+                        page:page,
+                        parentCategory:parentCategory,
+                        childCategory:childCategory,
+                        queryString:queryString
+                        })
+                }
+
+             }).catch(error => {  
+                console.log(error.message);
+                res.render('pages/error', {
+                  title: title ,
+                  user:req.session.userLogged
                 
                   })
               });
@@ -221,6 +396,36 @@ let productsController = {
 
         //Busca por categorias secundarias
         if(childCategory != null && childCategory != undefined ){
+        
+            //Obtiene conteo para paginador
+            db.sequelize.query('SELECT count(*) AS count ' + 
+            'FROM `products` AS `Product` ' +
+            'LEFT OUTER JOIN `categories` AS `categories` ' +
+            'ON `Product`.`category` = `categories`.`id`' + 
+            'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory' +
+            ' and `categories`.`slug` = :childCategory', 
+            
+            {
+               type: QueryTypes.SELECT,
+               nest: true,
+               replacements: { parentCategory: parentCategory, childCategory: childCategory },
+             
+             }).then(c => {  
+                count = c[0].count
+   
+             }).catch(error => {  
+                console.log(error.message);
+                res.render('pages/error', {
+                  title: title,
+                  user:req.session.userLogged
+                
+                  })
+              });
+         
+            
+              
+            
+         
             db.sequelize.query('SELECT `Product`.`id`,' + 
             '`Product`.`name`,' +  
             '`Product`.`description`,' +  
@@ -241,39 +446,50 @@ let productsController = {
             'LEFT OUTER JOIN `categories` AS `categories` ' +
             'ON `Product`.`category` = `categories`.`id`' + 
             'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory' +
-            ' and `categories`.`slug` = :childCategory', 
+            ' and `categories`.`slug` = :childCategory '+
+            'limit 10 offset :offset' , 
             
             {
                type: QueryTypes.SELECT,
                nest: true,
-               replacements: { parentCategory: parentCategory, childCategory: childCategory },
+               replacements: { parentCategory: parentCategory, childCategory: childCategory, offset: offset },
              
              }).then(prds => {  
 
-   
+                pagesNumber = Math.ceil(count/10);
                          if(prds == null || prds == undefined || prds.length < 1){
                             res.render('pages/products/productNotFound', {
                                 'title': 'Sin resultados',
-                                'description':'Lo sentimos no encontramos productos'
+                                'description':'Lo sentimos no encontramos productos',
+                                user:req.session.userLogged
                             })
+                        }else{
+                            res.render('pages/products/productList', {
+                                title: title, 
+                                products:prds,
+                                user:req.session.userLogged,
+                                count,
+                                pagesNumber:pagesNumber,
+                                page:page,
+                                parentCategory:parentCategory,
+                                childCategory:childCategory,
+                                queryString:queryString
+                                })
                         }
 
-                 res.render('pages/products/productList', {
-                   title: title, 
-                   products:prds,
-                   user:req.session.userLogged
-                   })
+
 
 
              }).catch(error => {  
                 console.log(error.message);
                 res.render('pages/error', {
-                  title: title
-              
+                  title: title,
+                  user:req.session.userLogged
                 
                   })
               });
         }
+    }
 
 
     },
@@ -304,7 +520,8 @@ let productsController = {
                             res.render('pages/products/productCreate', {
                                 title,
                                 product,
-                                categories:cats
+                                categories:cats,
+                                user:req.session.userLogged
                             })
 
 
@@ -494,6 +711,7 @@ let productsController = {
         if(productFound == null || productFound == undefined){
             res.render('pages/not-found', {
                 'title': 'Pagina no encontrada',
+                user:req.session.userLogged
             })
         }
 
@@ -514,6 +732,36 @@ let productsController = {
             title,
             product:productFound,
             categories:cats,
+            user:req.session.userLogged
+        })
+
+    },
+
+    editInfo: async (req, res) => {
+        let title = 'Gamebox | Editar mas info producto ';
+        let id = parseInt(req.params.id);
+        
+        console.log("buscando raw info");
+
+        infoFound=await RawInfo.findByPk(id)
+
+        if(infoFound == null || infoFound == undefined){
+            res.render('pages/not-found', {
+                'title': 'Pagina no encontrada',
+            })
+        }
+
+        console.log(infoFound);
+        var newDate = moment(infoFound.launchDate).utc().format("YYYY-MM-DD")
+        console.log(newDate);
+       
+
+        res.render('pages/products/rawInfoEdit', {
+            title,
+            info:infoFound,
+            user:req.session.userLogged,
+            newDate
+         
         })
 
     },
@@ -578,11 +826,41 @@ let productsController = {
             hasEdition: req.body.hasEdition,
             edition: req.body.edition,
             stock: req.body.stock,
-            isNew:req.body.type == 'nuevo' ? 1 : 0,
-            rawApi:null
+            isNew:req.body.type == 'nuevo' ? 1 : 0
+         
         },{
             where:{id:id}
-        }).then(res.render('pages/products/productDetail',{title:title,product:product,  user:req.session.userLogged}))
+        }).then(
+            res.redirect("/productos/")
+        )
+    },
+
+
+    updateInfoRaw: async (req, res) => {
+        let id = parseInt(req.params.id);
+       // infoFound=await RawInfo.findByPk(id)
+        console.log("actualizando rawinfo")
+        console.log(JSON.stringify(req.body))
+     await RawInfo.update({
+            synopsis:req.body.synopsis,
+            launchDate:  req.body.launchDate,
+            metacritic: req.body.metacritic,
+            metacriticUrl: req.body.metacriticUrl,
+            rating: req.body.rating,
+            developer: req.body.developer,
+            genres: req.body.genres,
+            platforms: req.body.platforms,
+            tags:req.body.tags,
+            recommendedAge:req.body.recommendedAge
+        },{
+            where:{id:id}
+        }).then(a=>
+            {
+              console.log("Raw Actualizado!")
+              res.redirect("/productos/")
+            }
+    
+            )
     },
 
     delete: (req, res) => {

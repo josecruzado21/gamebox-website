@@ -26,4 +26,6 @@ router.post('/crear' ,upload.any(),productsController.save);
 router.put('/editar/:id',  upload.any(),productsController.update);
 router.delete('/eliminar/:id',productsController.delete);
 
+router.put('/editar-info/:id', productsController.updateInfoRaw);
+
 module.exports = router;
