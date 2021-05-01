@@ -151,7 +151,7 @@ let productsController = {
                    })
                })
 
-               pagesNumber = Math.ceil(count/10);
+               
 
             db.sequelize.query('SELECT `Product`.`id`,' + 
             '`Product`.`name`,' +  
@@ -179,7 +179,7 @@ let productsController = {
                nest: true,
                replacements: { queryString1: queryString, queryString2: '%'+queryString+'%', offset: offset },
              }).then(prds => {  
-   
+                pagesNumber = Math.ceil(count/10);
                  if(prds == null || prds == undefined || prds.length < 1){
                    res.render('pages/products/productNotFound', {
                        'title': 'Sin resultados',
@@ -237,7 +237,7 @@ let productsController = {
                    })
                })
 
-               pagesNumber = Math.ceil(count/10);
+           
 
         await db.sequelize.query('SELECT `Product`.`id`,' + 
          '`Product`.`name`,' +  
@@ -264,7 +264,7 @@ let productsController = {
             nest: true,
             replacements: { offset: offset },
           }).then(prds => {  
-
+            pagesNumber = Math.ceil(count/10);
               if(prds == null || prds == undefined || prds.length < 1){
                 res.render('pages/products/productNotFound', {
                     'title': 'Sin resultados',
