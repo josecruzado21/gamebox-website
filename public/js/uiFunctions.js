@@ -11,7 +11,14 @@ menuToggle.addEventListener('click', () => {
 
 // Agrega la clase .menuActive en Tablet y Desktop
 
-function menuActive() {
+document.addEventListener('click', function (event) {
+    const categoriesAnchor = document.querySelector('.categoriesLink');
     const toggleMenu = document.querySelector('.sideMenu');
-    toggleMenu.classList.toggle('menuActive');
-}
+    let isClickeableInside = categoriesAnchor.contains(event.target);
+
+    if(isClickeableInside) {
+        toggleMenu.classList.toggle('menuActive');
+    } else {
+        toggleMenu.classList.remove('menuActive');
+    }
+})
