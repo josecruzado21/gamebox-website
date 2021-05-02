@@ -3,7 +3,9 @@
 
 <head>
     <%- include('../../partials/head.ejs') %>
-    <title><%= title %></title>
+        <title>
+            <%= title %>
+        </title>
 </head>
 
 <body>
@@ -23,30 +25,30 @@
                         ¡Bienvenido de nuevo! Ingresa con tu correo electrónico y contraseña
                     </p>
                     <% if (locals.errors && errors.email) { %>
-                     <p>
-                         <%= errors.email.msg  %> 
-                     </p>
-                    <% } %>
+                        <p>
+                            <%= errors.email.msg %>
+                        </p>
+                        <% } %>
                 </div>
 
                 <div class="form-login">
                     <form action="/login" method="POST">
 
                         <div class="input-wrapper">
-                            <input type="text" name="email" class="input" placeholder=" " id="email">
+                            <input type="text" name="email" class="input" placeholder=" " id="email" autocomplete="username">
                             <label for="email" class="label">Correo electrónico</label>
                         </div>
 
                         <div class="input-wrapper">
-                            <input class="input" type="password" name="password" placeholder=" ">
+                            <input class="input" type="password" name="password" placeholder=" " id="password" autocomplete="current-password">
                             <label for="password" class="label" id="label">Password</label>
-                            <span class="icon"></span>
+                            <span class="icon togglePassword"></span>
                         </div>
 
                         <a class="linkSmall" href="#">Recuperar contraseña</a>
 
                         <div class="checkboxWrapper">
-                            <input  type="checkbox" name="sesion" id="checkboxSesion" class="checkbox">
+                            <input type="checkbox" name="sesion" id="checkboxSesion" class="checkbox">
                             <label for="checkboxSesion" class="checkboxLabel">Mantener mi sesión
                                 iniciada</label>
                         </div>
@@ -66,6 +68,8 @@
         </article>
 
     </section>
+
+    <script src="/js/uiFunctions.js"></script>
 </body>
 
 </html>

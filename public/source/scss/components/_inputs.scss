@@ -56,7 +56,7 @@
     z-index: 1;
 }
 
-.input:focus {
+.input:focus, .input:active {
     border: 2px solid $lightBlue;
 }
 
@@ -73,6 +73,11 @@
     width: 24px;
 
     
+}
+
+.icon-eyeClose {
+    @extend .icon;
+    background: url('../images/iconEyeClose.svg') 0 0 no-repeat;
 }
 
 .icon-close {

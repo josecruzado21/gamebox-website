@@ -20,7 +20,7 @@
                 <img src="/images/iconCart.svg" alt="Ver productos en mi carrito">
             </a>
             <% if (locals.isLogged) { %>
-                <a href="/usuarios/perfil" class="userAccount">
+                <a href="#" class="userAccount">
                     <img src="/images/iconUser.svg" alt="Iniciar sesión">
 
                     <div class="userAccountInfo">
@@ -28,6 +28,42 @@
                         <span>Nos alegramos de verte</span>
                     </div>
                 </a>
+
+                <div id="userMenu" class="userMenuParent">
+                    <ul class="userMenu">
+                        <li class="itemMenu">
+                            <a href="/usuarios/perfil">
+                                <span>Mi cuenta</span>
+                                <img src="/images/iconUserOrange.svg" alt="">
+                            </a>
+                        </li>
+                        <li class="itemMenu">
+                            <a href="/admin/productos/crear">
+                                <span>Crear productos</span>
+                                <img src="/images/iconProductsOrange.svg" alt="">
+                            </a>
+                        </li>
+                        <!-- <li class="itemMenu">
+                            <a href="">
+                                <span>Manejo de usuarios</span>
+                                <img src="/images/iconUsersOrange.svg" alt="">
+                            </a>
+                        </li> -->
+                        <!-- <li class="itemMenu">
+                            <a href="">
+                                <span>Pedidos</span>
+                                <img src="/images/iconOrdersOrange.svg" alt="">
+                            </a>
+                        </li> -->
+                        <li class="itemMenu">
+                            <a href="/logout">
+                                <span>Cerrar sesión</span>
+                                <img src="/images/iconLogoutOrange.svg" alt="">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
                 <% } else { %>
                     <a href="/login" class="userAccount">
                         <img src="/images/iconUser.svg" alt="Iniciar sesión">
@@ -37,13 +73,14 @@
                             <span>Ingresa o crea tu cuenta</span>
                         </div>
                     </a>
+
                     <% } %>
-                    <% if (locals.isLogged) { %>
-                        <a href="/logout" class="userLogout">
-                            <!-- <img src="/images/iconSignOut.svg" alt="Cerrar sesión"> -->
-                            <i class="fas fa-sign-out-alt"></i>
-                        </a>
-                    <% } %>
+                        <% if (locals.isLogged) { %>
+                            <!-- <a href="/logout" class="userLogout">
+                                <img src="/images/iconSignOut.svg" alt="Cerrar sesión">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a> -->
+                            <% } %>
         </div>
 
         <form id="searchBar" action="/productos" method="GET" autocomplete="off">
