@@ -7,7 +7,7 @@ module.exports = (sequelize, dataTypes) => {
             allowNull: false,
             autoIncrement: true
         },
-        name: {
+        type: {
             type: dataTypes.STRING(500),
             allowNull: false
         }
@@ -23,10 +23,11 @@ module.exports = (sequelize, dataTypes) => {
     UserType.associate = function(models){
         UserType.hasMany(models.User, {
             as:'UserUserType',
-            foreignKey:'id'
+            foreignKey:'type'
         })
     }
 
     return UserType;
+
 
 }

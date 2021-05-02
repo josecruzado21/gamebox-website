@@ -835,7 +835,6 @@ let productsController = {
         )
     },
 
-
     updateInfoRaw: async (req, res) => {
         let id = parseInt(req.params.id);
        // infoFound=await RawInfo.findByPk(id)
