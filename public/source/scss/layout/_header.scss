@@ -388,7 +388,7 @@
 }
 
 .fixed {
-    position: fixed;
+    overflow-y: hidden;
 }
 
 .userMenuParent {
@@ -439,8 +439,14 @@
         padding: 0;
 
         .itemMenu {
-            padding: 16px 24px;
+            padding: 12px 24px;
             border-bottom: 1px solid rgba($darkGrey, 0.1);
+            transition: .2s;
+            
+            &:hover {
+                background-color: rgba($darkGrey, 0.1);
+                overflow: hidden;
+            }
 
             &:last-child {
                 padding-bottom: 16px;
@@ -452,8 +458,10 @@
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
+                align-items: center;
                 justify-content: space-between;
                 text-decoration: none;
+                transition: .2s;
 
                 img {
                     width: 24px;
