@@ -751,70 +751,6 @@ let productsController = {
       })
     }
 
-    console.log(infoFound);
-    var newDate = moment(infoFound.launchDate).utc().format("YYYY-MM-DD")
-    console.log(newDate);
-
-
-    res.render('pages/products/rawInfoEdit', {
-      title,
-      info: infoFound,
-      user: req.session.userLogged,
-      newDate
-
-    })
-
-  },
-
-  update: async (req, res) => {
-    let id = parseInt(req.params.id);
-    productFound = await db.Product.findByPk(id)
-
-    let files = req.files;
-
-    if (req.body.mainImage == undefined || req.body.secondImage == undefined) {
-      mainImage = productFound.image1
-      secondImage = productFound.image2
-    } else {
-      console.log(files);
-      let mainImage = files.find(f => f.fieldname == 'mainImage').originalname
-      console.log(mainImage)
-      let secondImage = files.find(f => f.fieldname == 'secondImage').originalname
-      console.log(secondImage)
-    }
-
-    //let products = fs.readFileSync(productsPath, 'utf-8');
-    //products = JSON.parse(products);
-    let editionArr = req.body.edition.split(',')
-    product = {
-      'name': req.body.name,
-      'slug': req.body.slug,
-      'description': req.body.description,
-      'price': Number(req.body.price),
-      'image1': mainImage,
-      'image2': secondImage,
-      'category': req.body.subcategory,
-      'hasEdition': req.body.hasEdition,
-      'edition': editionArr,
-      'stock': req.body.stock,
-      'isNew': req.body.type == 'nuevo' ? 1 : 0,
-      'rawApi': null
-    }
-
-    if (product.edition) {
-
-      let editions = [];
-      editionArr.forEach(ed => {
-        let editionPriceSplit = ed.split(';')
-
-        editions.push({
-          name: editionPriceSplit[0],
-          price: editionPriceSplit[1],
-        })
-      });
-      product.editions = editions;
-    }
-
     db.Product.update({
       name: req.body.name,
       slug: req.body.slug,
@@ -834,7 +770,6 @@ let productsController = {
       res.redirect("/productos/")
     )
   },
-
 
   updateInfoRaw: async (req, res) => {
     let id = parseInt(req.params.id);
