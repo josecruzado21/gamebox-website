@@ -4,7 +4,7 @@ const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
 //Requiero el modelo
 const User = db.User;
-
+const UserType = db.UserType;
 const titleLogin = 'Gamebox | Login '
 
 const usersController = {
@@ -138,7 +138,46 @@ const usersController = {
         } else {
             res.redirect('/')
         }
+    },
+
+    list:(req,res) => {
+        let title = 'Gamebox | Lista de usuarios';
+
+        User.findAll({
+            //include:[{association:'UserUserType'}],
+            include:[{
+                model:UserType,
+                as:'UserTypeObj'
+
+            }]
+        })
+            .then(users => {
+
+                console.log(JSON.stringify(users))
+                if(users == null || users == undefined ){
+                    res.render('pages/products/productNotFound', {
+                        'title': 'Sin resultados',
+                        'description':'Usuarios no encontrados',
+                        user:req.session.userLogged
+                    })
+                }
+                
+                //console.log(product)
+                res.render('pages/users/userList', {
+                    title: title, 
+                    users:users,
+                    user:req.session.userLogged
+                    })
+            })
+
+    },
+    edit:(req,res) => {
+        let title = 'Gamebox | Editar usuarios';
+
+       
+
     }
+
 };
 
 module.exports = usersController;

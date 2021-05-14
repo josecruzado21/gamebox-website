@@ -60,6 +60,7 @@ let productsController = {
         }
       ],
 
+      // let pagesNumber = 0;
 
       where: {
         [db.Sequelize.Op.and]: [{ slug: slugProduct }]
@@ -478,6 +479,8 @@ let productsController = {
             }
 
 
+          }).then(c => {
+            count = c[0].count
 
 
           }).catch(error => {
@@ -698,44 +701,72 @@ let productsController = {
         .catch((error) => res.send(error));
     }
 
+  })
+        .catch(err => { console.log('error:', err) ;
+  });
 
 
-  },
 
-  edit: async (req, res) => {
-    let title = 'Gamebox | Editar Producto ';
-    let id = parseInt(req.params.id);
-
-    productFound = await db.Product.findByPk(id)
-
-    if (productFound == null || productFound == undefined) {
-      res.render('pages/not-found', {
-        'title': 'Pagina no encontrada',
-        user: req.session.userLogged
-      })
+} else {
+  Product.create({
+    name: req.body.name,
+    slug: req.body.slug,
+    description: req.body.description,
+    price: Number(req.body.price),
+    image1: mainImage.originalname,
+    image2: secondImage.originalname,
+    category: req.body.subcategory,
+    hasEdition: req.body.hasEdition,
+    edition: req.body.edition,
+    stock: req.body.stock,
+    isNew: req.body.type == "nuevo" ? 1 : 0,
+    rawInfo: null,
+  })
+    .then(() => {
+      return res.redirect("/productos/");
+    })
+    .catch((error) => res.send(error));
     }
 
-    console.log(productFound);
 
-    var cats = await db.sequelize.query(
-      'select c1.id' +
-      ', c1.name' +
-      ', (select name from categories where c1.parent_id = categories.id) as ParentName' +
-      ' from categories c1' +
-      ' where (select name from categories where c1.parent_id = categories.id) is null'
-      , {
-        type: QueryTypes.SELECT,
-        nest: true,
-      })
-
-    res.render('pages/products/productCreate', {
-      title,
-      product: productFound,
-      categories: cats,
-      user: req.session.userLogged
-    })
+<<<<<<< HEAD
 
   },
+
+edit: async (req, res) => {
+  let title = 'Gamebox | Editar Producto ';
+  let id = parseInt(req.params.id);
+
+  productFound = await db.Product.findByPk(id)
+
+  if (productFound == null || productFound == undefined) {
+    res.render('pages/not-found', {
+      'title': 'Pagina no encontrada',
+      user: req.session.userLogged
+    })
+  }
+
+  console.log(productFound);
+
+  var cats = await db.sequelize.query(
+    'select c1.id' +
+    ', c1.name' +
+    ', (select name from categories where c1.parent_id = categories.id) as ParentName' +
+    ' from categories c1' +
+    ' where (select name from categories where c1.parent_id = categories.id) is null'
+    , {
+      type: QueryTypes.SELECT,
+      nest: true,
+    })
+
+  res.render('pages/products/productCreate', {
+    title,
+    product: productFound,
+    categories: cats,
+    user: req.session.userLogged
+  })
+
+},
 
   editInfo: async (req, res) => {
     let title = 'Gamebox | Editar mas info producto ';
@@ -767,101 +798,272 @@ let productsController = {
 
   },
 
-  update: async (req, res) => {
-    let id = parseInt(req.params.id);
-    productFound = await db.Product.findByPk(id)
+    update: async (req, res) => {
+      let id = parseInt(req.params.id);
+      productFound = await db.Product.findByPk(id)
 
-    let files = req.files;
+      let files = req.files;
 
-    if (req.body.mainImage == undefined || req.body.secondImage == undefined) {
-      mainImage = productFound.image1
-      secondImage = productFound.image2
-    } else {
-      console.log(files);
-      let mainImage = files.find(f => f.fieldname == 'mainImage').originalname
-      console.log(mainImage)
-      let secondImage = files.find(f => f.fieldname == 'secondImage').originalname
-      console.log(secondImage)
-    }
+      if (req.body.mainImage == undefined || req.body.secondImage == undefined) {
+        mainImage = productFound.image1
+        secondImage = productFound.image2
+      } else {
+        console.log(files);
+        let mainImage = files.find(f => f.fieldname == 'mainImage').originalname
+        console.log(mainImage)
+        let secondImage = files.find(f => f.fieldname == 'secondImage').originalname
+        console.log(secondImage)
+      }
 
-    //let products = fs.readFileSync(productsPath, 'utf-8');
-    //products = JSON.parse(products);
-    let editionArr = req.body.edition.split(',')
-    product = {
-      'name': req.body.name,
-      'slug': req.body.slug,
-      'description': req.body.description,
-      'price': Number(req.body.price),
-      'image1': mainImage,
-      'image2': secondImage,
-      'category': req.body.subcategory,
-      'hasEdition': req.body.hasEdition,
-      'edition': editionArr,
-      'stock': req.body.stock,
-      'isNew': req.body.type == 'nuevo' ? 1 : 0,
-      'rawApi': null
-    }
+      //let products = fs.readFileSync(productsPath, 'utf-8');
+      //products = JSON.parse(products);
+      let editionArr = req.body.edition.split(',')
+      product = {
+        'name': req.body.name,
+        'slug': req.body.slug,
+        'description': req.body.description,
+        'price': Number(req.body.price),
+        'image1': mainImage,
+        'image2': secondImage,
+        'category': req.body.subcategory,
+        'hasEdition': req.body.hasEdition,
+        'edition': editionArr,
+        'stock': req.body.stock,
+        'isNew': req.body.type == 'nuevo' ? 1 : 0,
+        'rawApi': null
+      }
 
-    if (product.edition) {
+      if (product.edition) {
 
-      let editions = [];
-      editionArr.forEach(ed => {
-        let editionPriceSplit = ed.split(';')
+        let editions = [];
+        editionArr.forEach(ed => {
+          let editionPriceSplit = ed.split(';')
 
-        editions.push({
-          name: editionPriceSplit[0],
-          price: editionPriceSplit[1],
+          editions.push({
+            name: editionPriceSplit[0],
+            price: editionPriceSplit[1],
+          })
+        });
+        product.editions = editions;
+      }
+
+      db.Product.update({
+        name: req.body.name,
+        slug: req.body.slug,
+        description: req.body.description,
+        price: Number(req.body.price),
+        image1: mainImage.originalname,
+        image2: secondImage.originalname,
+        category: req.body.subcategory,
+        hasEdition: req.body.hasEdition,
+        edition: req.body.edition,
+        stock: req.body.stock,
+        isNew: req.body.type == 'nuevo' ? 1 : 0
+
+      }, {
+        where: { id: id }
+      }).then(
+        res.redirect("/productos/")
+      )
+    },
+
+
+      updateInfoRaw: async (req, res) => {
+        let id = parseInt(req.params.id);
+        // infoFound=await RawInfo.findByPk(id)
+        console.log("actualizando rawinfo")
+        console.log(JSON.stringify(req.body))
+        await RawInfo.update({
+          synopsis: req.body.synopsis,
+          launchDate: req.body.launchDate,
+          metacritic: req.body.metacritic,
+          metacriticUrl: req.body.metacriticUrl,
+          rating: req.body.rating,
+          developer: req.body.developer,
+          genres: req.body.genres,
+          platforms: req.body.platforms,
+          tags: req.body.tags,
+          recommendedAge: req.body.recommendedAge
+        }, {
+          where: { id: id }
+        }).then(a => {
+          console.log("Raw Actualizado!")
+          res.redirect("/productos/")
+        }
+
+        )
+      },
+
+        delete: (req, res) => {
+          let id = parseInt(req.params.id);
+          db.Product.destroy({
+            where: { id: id }
+          }).then(res.redirect("/productos"))
+
+        },
+=======
+=======
+    },
+
+    edit: async (req, res) => {
+        let title = 'Gamebox | Editar Producto ';
+        let id = parseInt(req.params.id);
+
+        productFound=await db.Product.findByPk(id)
+
+        if(productFound == null || productFound == undefined){
+            res.render('pages/not-found', {
+                'title': 'Pagina no encontrada',
+                user:req.session.userLogged
+            })
+        }
+
+        console.log(productFound);
+
+        var cats=await db.sequelize.query(
+            'select c1.id'+
+            ', c1.name'+
+            ', (select name from categories where c1.parent_id = categories.id) as ParentName'+
+            ' from categories c1' +
+            ' where (select name from categories where c1.parent_id = categories.id) is null'
+           , {
+               type: QueryTypes.SELECT,
+               nest: true,
+             })
+
+        res.render('pages/products/productCreate', {
+            title,
+            product:productFound,
+            categories:cats,
+            user:req.session.userLogged
         })
-      });
-      product.editions = editions;
-    }
 
-    db.Product.update({
-      name: req.body.name,
-      slug: req.body.slug,
-      description: req.body.description,
-      price: Number(req.body.price),
-      image1: mainImage.originalname,
-      image2: secondImage.originalname,
-      category: req.body.subcategory,
-      hasEdition: req.body.hasEdition,
-      edition: req.body.edition,
-      stock: req.body.stock,
-      isNew: req.body.type == 'nuevo' ? 1 : 0
+    },
 
-    }, {
-      where: { id: id }
-    }).then(
-      res.redirect("/productos/")
-    )
-  },
+    editInfo: async (req, res) => {
+        let title = 'Gamebox | Editar mas info producto ';
+        let id = parseInt(req.params.id);
+
+        console.log("buscando raw info");
+
+        infoFound=await RawInfo.findByPk(id)
+
+        if(infoFound == null || infoFound == undefined){
+            res.render('pages/not-found', {
+                'title': 'Pagina no encontrada',
+            })
+        }
+
+        console.log(infoFound);
+        var newDate = moment(infoFound.launchDate).utc().format("YYYY-MM-DD")
+        console.log(newDate);
 
 
-  updateInfoRaw: async (req, res) => {
-    let id = parseInt(req.params.id);
-    // infoFound=await RawInfo.findByPk(id)
-    console.log("actualizando rawinfo")
-    console.log(JSON.stringify(req.body))
-    await RawInfo.update({
-      synopsis: req.body.synopsis,
-      launchDate: req.body.launchDate,
-      metacritic: req.body.metacritic,
-      metacriticUrl: req.body.metacriticUrl,
-      rating: req.body.rating,
-      developer: req.body.developer,
-      genres: req.body.genres,
-      platforms: req.body.platforms,
-      tags: req.body.tags,
-      recommendedAge: req.body.recommendedAge
-    }, {
-      where: { id: id }
-    }).then(a => {
-      console.log("Raw Actualizado!")
-      res.redirect("/productos/")
-    }
+        res.render('pages/products/rawInfoEdit', {
+            title,
+            info:infoFound,
+            user:req.session.userLogged,
+            newDate
 
-    )
-  },
+        })
+
+    },
+
+    update: async (req, res) => {
+        let id = parseInt(req.params.id);
+        productFound=await db.Product.findByPk(id)
+
+        let files =  req.files;
+
+        if (req.body.mainImage==undefined || req.body.secondImage==undefined){
+            mainImage = productFound.image1
+            secondImage = productFound.image2
+        } else{
+            console.log(files);
+            let mainImage = files.find(f=>f.fieldname == 'mainImage').originalname
+            console.log(mainImage)
+            let secondImage = files.find(f=>f.fieldname == 'secondImage').originalname
+            console.log(secondImage)
+        }
+
+        //let products = fs.readFileSync(productsPath, 'utf-8');
+        //products = JSON.parse(products);
+        let editionArr = req.body.edition.split(',')
+        product={
+            'name': req.body.name,
+            'slug': req.body.slug,
+            'description':req.body.description,
+            'price':  Number(req.body.price),
+            'image1': mainImage,
+            'image2': secondImage,
+            'category': req.body.subcategory,
+            'hasEdition': req.body.hasEdition,
+            'edition': editionArr,
+            'stock': req.body.stock,
+            'isNew':req.body.type == 'nuevo' ? 1 : 0,
+            'rawApi':null
+        }
+
+        if(product.edition){
+
+            let editions = [];
+            editionArr.forEach(ed => {
+            let editionPriceSplit = ed.split(';')
+
+            editions.push({
+                    name : editionPriceSplit[0],
+                    price: editionPriceSplit[1],
+                })
+            });
+            product.editions = editions;
+        }
+
+>>>>>>> 2bae9d998dcd2b30d57f6211da7c78066e59e740
+          db.Product.update({
+            name: req.body.name,
+            slug: req.body.slug,
+            description: req.body.description,
+            price: Number(req.body.price),
+            image1: mainImage.originalname,
+            image2: secondImage.originalname,
+            category: req.body.subcategory,
+            hasEdition: req.body.hasEdition,
+            edition: req.body.edition,
+            stock: req.body.stock,
+            isNew: req.body.type == 'nuevo' ? 1 : 0
+
+          }, {
+            where: { id: id }
+          }).then(
+            res.redirect("/productos/")
+          )
+    },
+
+updateInfoRaw: async (req, res) => {
+  let id = parseInt(req.params.id);
+  // infoFound=await RawInfo.findByPk(id)
+  console.log("actualizando rawinfo")
+  console.log(JSON.stringify(req.body))
+  await RawInfo.update({
+    synopsis: req.body.synopsis,
+    launchDate: req.body.launchDate,
+    metacritic: req.body.metacritic,
+    metacriticUrl: req.body.metacriticUrl,
+    rating: req.body.rating,
+    developer: req.body.developer,
+    genres: req.body.genres,
+    platforms: req.body.platforms,
+    tags: req.body.tags,
+    recommendedAge: req.body.recommendedAge
+  }, {
+    where: { id: id }
+  }).then(a => {
+    console.log("Raw Actualizado!")
+    res.redirect("/productos/")
+  }
+
+  )
+},
 
   delete: (req, res) => {
     let id = parseInt(req.params.id);
@@ -870,61 +1072,9 @@ let productsController = {
     }).then(res.redirect("/productos"))
 
   },
+<<<<<<< HEAD
+>>>>>>> 2bae9d998dcd2b30d57f6211da7c78066e59e740
 =======
-        db.Product.update({
-            name: req.body.name,
-            slug: req.body.slug,
-            description:req.body.description,
-            price:  Number(req.body.price),
-            image1: mainImage.originalname,
-            image2: secondImage.originalname,
-            category: req.body.subcategory,
-            hasEdition: req.body.hasEdition,
-            edition: req.body.edition,
-            stock: req.body.stock,
-            isNew:req.body.type == 'nuevo' ? 1 : 0
-         
-        },{
-            where:{id:id}
-        }).then(
-            res.redirect("/productos/")
-        )
-    },
-
-    updateInfoRaw: async (req, res) => {
-        let id = parseInt(req.params.id);
-       // infoFound=await RawInfo.findByPk(id)
-        console.log("actualizando rawinfo")
-        console.log(JSON.stringify(req.body))
-     await RawInfo.update({
-            synopsis:req.body.synopsis,
-            launchDate:  req.body.launchDate,
-            metacritic: req.body.metacritic,
-            metacriticUrl: req.body.metacriticUrl,
-            rating: req.body.rating,
-            developer: req.body.developer,
-            genres: req.body.genres,
-            platforms: req.body.platforms,
-            tags:req.body.tags,
-            recommendedAge:req.body.recommendedAge
-        },{
-            where:{id:id}
-        }).then(a=>
-            {
-              console.log("Raw Actualizado!")
-              res.redirect("/productos/")
-            }
-    
-            )
-    },
-
-    delete: (req, res) => {
-        let id = parseInt(req.params.id);
-        db.Product.destroy({
-            where:{id:id}
-        }).then(res.redirect("/productos"))
-        
-    },
 >>>>>>> 2bae9d998dcd2b30d57f6211da7c78066e59e740
 }
 

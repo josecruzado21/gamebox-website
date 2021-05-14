@@ -39,6 +39,11 @@
     padding-right: 30px;
 }
 
+.botones_admin{
+    margin-left: 10px;
+    padding-right: 30px;
+}
+
 .button-list{
     font-size: 16px;
     align-self: center;
@@ -51,6 +56,26 @@
     @include respond-to('tablet'){
         font-size: 22px;
     }
+}
+
+
+
+.button-edit{
+    font-size: 10px;
+    align-self: center;
+    font-weight: bold;
+    margin-right: 15px;
+    background-color: $red;
+    color:white;
+    border:none;
+    @include respond-to('tablet'){
+        font-size: 12px;
+    }
+}
+
+.button-edit:hover{
+    border:solid 2px black;
+    cursor: pointer;
 }
 
 .button-list:hover{
@@ -67,3 +92,26 @@
         width:10%;
     }
 }
+
+
+.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 15px;
+}
+
+.pagination li {display: inline;}
+
+.pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+.pagination li a.active {
+    background-color:$red;
+    color: white;
+}
+
+.pagination li a:hover:not(.active) {background-color: #ddd;}
