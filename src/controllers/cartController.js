@@ -51,21 +51,21 @@ const cartController = {
                 res.render('pages/productCart', {
                     title,
                     productList,
-                    'user' : user,
-                    total: data?.totalPrice,
-                    tax: data?.totalPrice * 0.19,
-                    totalBeforeTax: data?.totalPrice - (data?.totalPrice * 0.19)
+                    total:data?.totalPrice,
+                    tax:data?.totalPrice*0.19,
+                    totalBeforeTax:data?.totalPrice -(data?.totalPrice*0.19),
+                    user:req.session.userLogged,
                 });
             } else {
 
 
                 res.render('pages/productCart', {
                     'title': title,
-                    'user' : user,
-                    productList,
-                    total: 0,
-                    tax: 0,
-                    totalBeforeTax: 0
+                    productList,   
+                    total:0,
+                    tax:0,
+                    totalBeforeTax:0,
+                    user:req.session.userLogged,
                 });
             }
 
