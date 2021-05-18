@@ -99,6 +99,8 @@ const usersController = {
         let userindb = await db.User.findAll({
             where: { email: req.body.email }
         })
+
+        console.log(req.file);
         if(errors.isEmpty()){
 
             
@@ -108,6 +110,18 @@ const usersController = {
                     errors: {
                         email: {
                             msg: 'Ya existe una cuenta asociada a este correo'
+                        },
+                    },
+                    oldData: req.body
+                });
+            }
+
+            if(req.file.mimetype !== 'image/jpeg' || req.file.mimetype !== 'image/gif' || req.file.mimetype !== 'image/png'){
+                return res.render('pages/users/register', {
+                    'title': title,
+                    errors: {
+                        image: {
+                            msg: 'Debes subir solo archivos de imagen (JPG, PNG, GIF)'
                         },
                     },
                     oldData: req.body
@@ -141,16 +155,28 @@ const usersController = {
                     'title': title,
                     errors: errors.mapped(),
                     oldData: req.body,
-                    errorMailExist:'Ya existe una cuenta asociada a este correo'
+                    errorMailExist:'Ya existe una cuenta asociada a este correo',
+                    errorImage:null
                 });
                
+            }
+
+            if(req.file.mimetype !== 'image/jpeg' || req.file.mimetype !== 'image/gif' || req.file.mimetype !== 'image/png'){
+                return res.render('pages/users/register', {
+                    'title': title,
+                    errors:errors.mapped(),
+                    oldData: req.body,
+                    errorMailExist:null,
+                    errorImage:'Debes subir solo archivos de imagen (JPG, PNG, GIF)'
+                });
             }
 
             return res.render('pages/users/register', {
                 'title': title,
                 errors: errors.mapped(),
                 oldData: req.body,
-                errorMailExist:null
+                errorMailExist:null,
+                errorImage:null
             });
         }
     

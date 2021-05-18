@@ -26,9 +26,15 @@ const validacionesRegister = [
    
     check('password')
     .isLength({min:8}).withMessage('Tu contraseña debe tener al menos 8 caracteres').bail()
-        .notEmpty().withMessage('Debes completar el campo contraseña!')
+        .notEmpty().withMessage('Debes completar el campo contraseña!'),
 
-    //body('image').notEmpty(),
+    check('image').custom((value, {req}) => {
+        let file = req.file;
+        if(!file){
+            throw new Error('Debes subir la imagen')
+        }
+        return true;
+    })
 ]
 
 const router = express.Router();

@@ -80,6 +80,16 @@
                     </div>
 
 
+                    <% if(locals.errors && errors.image && (errorImage==null || errorImage==undefined) ){ %>
+                        <p style="color:red;">
+                            <%= errors.image.msg  %>
+                        </p>
+                    <% } %>
+                    <% if(locals.errors && errorImage){ %>
+                        <p style="color:red;">
+                            <%= errorImage  %>
+                        </p>
+                    <% } %>
                     <div class="input-wrapper">
                         <input class="input" type="file" name="image" accept="image/*" id="image">
                         <label for="image" class="label" id="label">Imagen de perfil</label>
