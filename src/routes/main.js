@@ -37,6 +37,19 @@ const validacionesRegister = [
     })
 ]
 
+const validacionesLogin = [
+
+   
+    check('email')
+        .isEmail().withMessage('El email no es válido').bail()
+        .notEmpty().withMessage('Debes completar el campo email!'),
+   
+   
+    check('password').notEmpty().withMessage('Debes completar el campo contraseña!'),
+
+
+]
+
 const router = express.Router();
 
 const storage=multer.diskStorage({
@@ -63,7 +76,7 @@ router.get('/', mainController.home);
 router.get('/carrito-de-compras', authMiddleware,cartController.cart);
 router.get('/login', guestMiddleware, usersController.login);
 router.get('/registro', guestMiddleware, usersController.register);
-router.post('/login',  usersController.loginProcess);
+router.post('/login', validacionesLogin,  usersController.loginProcess);
 router.post('/registro',  [upload.single('image'), validacionesRegister], usersController.register_new_user);
 router.get('/logout', usersController.logout);
 

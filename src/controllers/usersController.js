@@ -18,58 +18,71 @@ const usersController = {
 
 
     loginProcess: async (req, res) => {
-        //return res.send(req.body)
-
+       //res.send(user[0].password)
+        //res.send(bcryptjs.compareSync(req.body.password, user[0].password))
+        let errors = validationResult(req);
         let user = await db.User.findAll({
             where: {
                 email: req.body.email
             }
         });
+        console.log(errors);
+        if(errors.isEmpty()){
+            if (user != "") {
 
-        //res.send(user[0].password)
-        //res.send(bcryptjs.compareSync(req.body.password, user[0].password))
-
-        if (user != "") {
-
-            let checkPass = bcryptjs.compareSync(req.body.password, user[0].password);
-            if (checkPass) {
-                delete user[0].password;
-                req.session.userLogged = user[0];
-
-                if (req.body.sesion) {
-                    res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 30 })
-                }
-
-                // return res.send(req.session.userLogged)
-
-                // res.render('pages/index', {
-                //     title: title,
-                //     user : req.session.userLogged
-                // })
-
-                return res.redirect('/');
-            } else {
-                return res.render('pages/users/login', {
-                    title: titleLogin,
-                    errors: {
-                        email: {
-                            msg: 'Las credenciales son inválidas'
-                        }
+                let checkPass = bcryptjs.compareSync(req.body.password, user[0].password);
+                if (checkPass) {
+                    delete user[0].password;
+                    req.session.userLogged = user[0];
+    
+                    if (req.body.sesion) {
+                        res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 30 })
                     }
-                });
+    
+                    // return res.send(req.session.userLogged)
+    
+                    // res.render('pages/index', {
+                    //     title: title,
+                    //     user : req.session.userLogged
+                    // })
+    
+                    return res.redirect('/');
+                } else {
+                    return res.render('pages/users/login', {
+                        title: titleLogin,
+                        errors: {
+                            email: {
+                                msg: 'Las credenciales son inválidas'
+                            }
+                        },
+                        oldData: req.body
+                    });
+                }
             }
+    
+    
+    
+            return res.render('pages/users/login', {
+                title: titleLogin,
+                errors: {
+                    email: {
+                        msg: 'No se encuentra este email en la base de datos'
+                    }
+                },
+                oldData: req.body
+            });
+        }else{
+
+            return res.render('pages/users/login', {
+                title: titleLogin,
+                errors: errors.mapped(),
+                oldData: req.body
+            });
         }
 
+        
 
 
-        return res.render('pages/users/login', {
-            title: titleLogin,
-            errors: {
-                email: {
-                    msg: 'No se encuentra este email en la base de datos'
-                }
-            }
-        });
 
     },
 
@@ -100,7 +113,7 @@ const usersController = {
             where: { email: req.body.email }
         })
 
-        console.log(req.file);
+       
         if(errors.isEmpty()){
 
             

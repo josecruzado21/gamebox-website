@@ -23,22 +23,27 @@
                         ¡Bienvenido de nuevo! Ingresa con tu correo electrónico y contraseña
                     </p>
                     <% if (locals.errors && errors.email) { %>
-                     <p>
+                     <p style="color:red;">
                          <%= errors.email.msg  %> 
                      </p>
                     <% } %>
+                    <% if (locals.errors && errors.password) { %>
+                        <p style="color:red;">
+                            <%= errors.password.msg  %> 
+                        </p>
+                       <% } %>
                 </div>
 
                 <div class="form-login">
                     <form action="/login" method="POST">
 
                         <div class="input-wrapper">
-                            <input type="text" name="email" class="input" placeholder=" " id="email">
+                            <input type="text" name="email" class="input" placeholder=" " id="email"  value="<%= locals.oldData && oldData.email ? oldData.email : ''  %> ">
                             <label for="email" class="label">Correo electrónico</label>
                         </div>
 
                         <div class="input-wrapper">
-                            <input class="input" type="password" name="password" placeholder=" ">
+                            <input class="input" type="password" name="password" placeholder=" "  value="<%= locals.oldData && oldData.password ? oldData.password : ''  %> ">
                             <label for="password" class="label" id="label">Password</label>
                             <span class="icon"></span>
                         </div>
