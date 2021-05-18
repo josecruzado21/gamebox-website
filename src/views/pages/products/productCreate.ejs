@@ -32,6 +32,11 @@
                 <% } %>
                 <div class="form-create-product">
                
+                    <% if(locals.errors && errors.name){ %>
+                        <p style="color:red;">
+                            <%= errors.name.msg  %>
+                        </p>
+                    <% } %>
                     <div class="input-wrapper">
                         <input class="input"  type="text" name="name"  placeholder=" " id="name" value="<%= product?.name %>">
                         <label for="name" class="label">Nombre del producto</label>
@@ -72,6 +77,7 @@
                     </div>
 
 
+
                     <div class="input-wrapper">
 
                         <label for="hasEdition">Tiene Edicion?</label>
@@ -95,6 +101,11 @@
                         <label for="stock" class="label">Stock</label>
                     </div>
 
+                    <% if(locals.errors && errors.description){ %>
+                        <p style="color:red;">
+                            <%= errors.description.msg  %>
+                        </p>
+                    <% } %>
                     <div class="input-wrapper">
                         <textarea class="input"  name="description"  placeholder="" id="description"><%= product?.description %></textarea>
                         <label for="description" class="label">Descripcion del producto</label>
@@ -111,23 +122,44 @@
                         </select>
                     </div>
 
+
+                    <% if(locals.errors && errors.mainImage && (errorImage==null || errorImage==undefined) ){ %>
+                        <p style="color:red;">
+                            <%= errors.mainImage.msg  %>
+                        </p>
+                    <% } %>
+                    <% if(locals.errors && errorImage){ %>
+                        <p style="color:red;">
+                            <%= errorImage  %>
+                        </p>
+                    <% } %>
                     <div class="input-wrapper">
 
                         <label for="mainImage">Imagen principal</label>
 
                         <input type="file"
                             id="mainImage" name="mainImage" value="<%= product?.mainImage %>"
-                            accept="image/png, image/jpeg">
+                            accept="image/*">
     
                     </div>
 
+                    <% if(locals.errors && errors.secondImage && (errorImage==null || errorImage==undefined) ){ %>
+                        <p style="color:red;">
+                            <%= errors.secondImage.msg  %>
+                        </p>
+                    <% } %>
+                    <% if(locals.errors && errorImage){ %>
+                        <p style="color:red;">
+                            <%= errorImage  %>
+                        </p>
+                    <% } %>
                     <div class="input-wrapper">
 
                         <label for="secondImage">Imagen Secundaria</label>
 
                         <input type="file"
                             id="secondImage" name="secondImage"
-                            accept="image/png, image/jpeg">
+                            accept="image/*">
     
                     </div>
 

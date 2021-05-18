@@ -13,7 +13,7 @@ const {check} = require('express-validator');
 //Validaciones
 const validacionesRegister = [
     check('name')
-    .isLength({min:2}).withMessage('Tu nombre debe tener al menos 2 caracteres').bail()
+    .isLength({min:2}).withMessage('Tu nombre debe tener al menos 2 carácteres').bail()
         .notEmpty().withMessage('Debes completar el campo nombre!'),
         
    
@@ -25,7 +25,7 @@ const validacionesRegister = [
    
    
     check('password')
-    .isLength({min:8}).withMessage('Tu contraseña debe tener al menos 8 caracteres').bail()
+    .isLength({min:8}).withMessage('Tu contraseña debe tener al menos 8 carácteres').bail()
         .notEmpty().withMessage('Debes completar el campo contraseña!'),
 
     check('image').custom((value, {req}) => {
