@@ -2,6 +2,8 @@
 const path = require('path');
 const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
+const {validationResult} = require('express-validator');
+
 //Requiero el modelo
 const User = db.User;
 const UserType = db.UserType;
@@ -90,39 +92,70 @@ const usersController = {
         })
     },
 
+
     register_new_user: async (req, res) => {
+        let errors = validationResult(req);
         let title = 'Gamebox | Registro ';
         let userindb = await db.User.findAll({
             where: { email: req.body.email }
         })
-        if (userindb != "") {
+        if(errors.isEmpty()){
+
+            
+            if (userindb != "") {
+                return res.render('pages/users/register', {
+                    'title': title,
+                    errors: {
+                        email: {
+                            msg: 'Ya existe una cuenta asociada a este correo'
+                        },
+                    },
+                    oldData: req.body
+                });
+            }
+
+    
+            if(req.file && req.file!== undefined){
+                req.body.avatar=req.file.filename
+            } else{
+                req.body.avatar='default-avatar.jpg'
+            }
+    
+            req.body.password=bcryptjs.hashSync(req.body.password,10)
+            //res.send(req.body)
+            db.User.create({
+                firstName: req.body.name,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                avatar: req.body.avatar,
+                password: req.body.password,
+                type: 1,
+            }).then(() => res.redirect('/login')).catch(error => res.send(error))
+        }else{
+            console.log(errors);
+           // console.log(errors.mapped);
+            console.log(req.body)
+
+            if (userindb != "") {
+                return res.render('pages/users/register', {
+                    'title': title,
+                    errors: errors.mapped(),
+                    oldData: req.body,
+                    errorMailExist:'Ya existe una cuenta asociada a este correo'
+                });
+               
+            }
+
             return res.render('pages/users/register', {
                 'title': title,
-                errors: {
-                    email: {
-                        msg: 'Ya existe una cuenta asociada a este correo'
-                    },
-                },
-                oldData: req.body
+                errors: errors.mapped(),
+                oldData: req.body,
+                errorMailExist:null
             });
         }
+    
+      
 
-        if(req.file && req.file!== undefined){
-            req.body.avatar=req.file.filename
-        } else{
-            req.body.avatar='default-avatar.jpg'
-        }
-
-        req.body.password=bcryptjs.hashSync(req.body.password,10)
-        //res.send(req.body)
-        db.User.create({
-            firstName: req.body.name,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            avatar: req.body.avatar,
-            password: req.body.password,
-            type: 1,
-        }).then(() => res.redirect('/login')).catch(error => res.send(error))
 
     },
 

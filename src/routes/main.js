@@ -5,8 +5,31 @@ const usersController = require('../controllers/usersController');
 const User = require('../models/User');
 const guestMiddleware = require('../middlewares/guestMiddleware');
 const authMiddleware = require('../middlewares/authMiddleware');
-const path=require('path')
-const multer=require('multer')
+const path=require('path');
+const multer=require('multer');
+const {check} = require('express-validator');
+
+
+//Validaciones
+const validacionesRegister = [
+    check('name')
+    .isLength({min:2}).withMessage('Tu nombre debe tener al menos 2 caracteres').bail()
+        .notEmpty().withMessage('Debes completar el campo nombre!'),
+        
+   
+    check('lastName').notEmpty().withMessage('Debes completar el campo apellido!'),
+   
+        check('email')
+        .isEmail().withMessage('El email no es válido').bail()
+    .notEmpty().withMessage('Debes completar el campo email!'),
+   
+   
+    check('password')
+    .isLength({min:8}).withMessage('Tu contraseña debe tener al menos 8 caracteres').bail()
+        .notEmpty().withMessage('Debes completar el campo contraseña!')
+
+    //body('image').notEmpty(),
+]
 
 const router = express.Router();
 
@@ -26,6 +49,8 @@ const storage=multer.diskStorage({
 //     }
 // }})
 
+
+
 let upload = multer({ storage });
 
 router.get('/', mainController.home);
@@ -33,7 +58,7 @@ router.get('/carrito-de-compras', authMiddleware,cartController.cart);
 router.get('/login', guestMiddleware, usersController.login);
 router.get('/registro', guestMiddleware, usersController.register);
 router.post('/login',  usersController.loginProcess);
-router.post('/registro', upload.single('image'), usersController.register_new_user);
+router.post('/registro',  [upload.single('image'), validacionesRegister], usersController.register_new_user);
 router.get('/logout', usersController.logout);
 
 module.exports = router; 
