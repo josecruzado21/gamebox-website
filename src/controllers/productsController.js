@@ -543,6 +543,8 @@ let productsController = {
        //let editionArr = req.body.edition.split(',')
 
 
+       
+
        console.log(errors);
 
        if(!errors.isEmpty()){
