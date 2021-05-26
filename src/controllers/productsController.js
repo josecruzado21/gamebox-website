@@ -553,8 +553,8 @@ let productsController = {
     
             let categories  =  {};
 
-            if(mainImage.mimetype !== 'image/jpeg' || mainImage.mimetype !== 'image/gif' || mainImage.mimetype !== 'image/png'
-              || secondImage.mimetype !== 'image/jpeg' || secondImage.mimetype !== 'image/gif' || secondImage.mimetype !== 'image/png'){
+            if(mainImage && mainImage != undefined &&  secondImage && secondImage != undefined &&  !(mainImage.mimetype == 'image/jpeg' || mainImage.mimetype == 'image/gif' || mainImage.mimetype == 'image/png'
+              || secondImage.mimetype == 'image/jpeg' || secondImage.mimetype == 'image/gif' || secondImage.mimetype == 'image/png')){
 
                                       //Get Categories
                                       db.sequelize.query(

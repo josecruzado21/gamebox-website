@@ -56,7 +56,7 @@
                             <%= errors.email.msg  %>
                         </p>
                     <% } %>
-                    <% if(locals.errors && errorMailExist){ %>
+                    <% if(locals.errors && errorMailExist!=undefined && errorMailExist!=null){ %>
                         <p style="color:red;">
                             <%= errorMailExist  %>
                         </p>

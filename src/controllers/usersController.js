@@ -101,7 +101,9 @@ const usersController = {
         let title = 'Gamebox | Registro ';
 
         res.render('pages/users/register', {
-            'title': title
+            'title': title,
+            errorMailExist:null,
+            errorImage:null
         })
     },
 
@@ -113,11 +115,13 @@ const usersController = {
             where: { email: req.body.email }
         })
 
+        
        
         if(errors.isEmpty()){
-
+            console.log("aca no hay errores: ");
             
             if (userindb != "") {
+                console.log("aca userindb: ");
                 return res.render('pages/users/register', {
                     'title': title,
                     errors: {
@@ -129,7 +133,8 @@ const usersController = {
                 });
             }
 
-            if(req.file.mimetype !== 'image/jpeg' || req.file.mimetype !== 'image/gif' || req.file.mimetype !== 'image/png'){
+            if(req.file && req.file != undefined && !(req.file.mimetype == 'image/jpeg' || req.file.mimetype == 'image/gif' || req.file.mimetype == 'image/png')){
+                console.log("aca mimetype: ");
                 return res.render('pages/users/register', {
                     'title': title,
                     errors: {
@@ -142,7 +147,8 @@ const usersController = {
             }
 
     
-            if(req.file && req.file!== undefined){
+            if(req.file && req.file !== undefined){
+              
                 req.body.avatar=req.file.filename
             } else{
                 req.body.avatar='default-avatar.jpg'
@@ -159,6 +165,7 @@ const usersController = {
                 type: 1,
             }).then(() => res.redirect('/login')).catch(error => res.send(error))
         }else{
+            console.log("aca hay errores: ");
             console.log(errors);
            // console.log(errors.mapped);
             console.log(req.body)
@@ -174,7 +181,7 @@ const usersController = {
                
             }
 
-            if(req.file.mimetype !== 'image/jpeg' || req.file.mimetype !== 'image/gif' || req.file.mimetype !== 'image/png'){
+            if(req.file && req.file != undefined && !(req.file.mimetype == 'image/jpeg' || req.file.mimetype == 'image/gif' || req.file.mimetype == 'image/png')){
                 return res.render('pages/users/register', {
                     'title': title,
                     errors:errors.mapped(),
