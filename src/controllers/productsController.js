@@ -105,6 +105,8 @@ let productsController = {
        
         let title = 'Gamebox | Lista de Productos ';
        
+
+        
         let queryString = req.query.search; 
 
         let page = req.query.page;
@@ -543,7 +545,7 @@ let productsController = {
        //let editionArr = req.body.edition.split(',')
 
 
-       
+
 
        console.log(errors);
 
