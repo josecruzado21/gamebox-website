@@ -4,7 +4,7 @@ const db = require('../database/models');
 
 const LanguageTranslatorV3 = require('ibm-watson/language-translator/v3');
 const { IamAuthenticator } = require('ibm-watson/auth');
-
+const {validationResult} = require('express-validator');
 var moment = require('moment'); // require
 
 const languageTranslator = new LanguageTranslatorV3({
@@ -513,8 +513,7 @@ let productsController = {
                            type: QueryTypes.SELECT,
                            nest: true,
                          }).then(cats => {  
-                            console.log("consulta db")
-                             console.log(cats)
+
                             categories = cats
 
                             res.render('pages/products/productCreate', {
@@ -540,7 +539,94 @@ let productsController = {
        let secondImage = files.find((f) => f.fieldname == "secondImage");
        console.log(secondImage);
 
+       let errors = validationResult(req);
        //let editionArr = req.body.edition.split(',')
+
+
+       
+
+       console.log(errors);
+
+       if(!errors.isEmpty()){
+
+            let title = 'Gamebox | Crear Producto ';
+
+            let product = null;
+    
+            let categories  =  {};
+
+            if(mainImage && mainImage != undefined &&  secondImage && secondImage != undefined &&  !(mainImage.mimetype == 'image/jpeg' || mainImage.mimetype == 'image/gif' || mainImage.mimetype == 'image/png'
+              || secondImage.mimetype == 'image/jpeg' || secondImage.mimetype == 'image/gif' || secondImage.mimetype == 'image/png')){
+
+                                      //Get Categories
+                                      db.sequelize.query(
+                                        'select c1.id'+
+                                        ', c1.name'+
+                                        ', (select name from categories where c1.parent_id = categories.id) as ParentName'+
+                                        ' from categories c1' + 
+                                        ' where (select name from categories where c1.parent_id = categories.id) is null'
+                                       , {
+                                           type: QueryTypes.SELECT,
+                                           nest: true,
+                                         }).then(cats => {  
+            
+                                            categories = cats
+                
+                                            res.render('pages/products/productCreate', {
+                                                title,
+                                                product,
+                                                categories:cats,
+                                                user:req.session.userLogged,
+                                                errors: errors.mapped(),
+                                                oldData: req.body,
+                                                errorImage:'Debes subir solo archivos de imagen (JPG, PNG, GIF)'
+                                            })
+                
+                
+                                         }).catch(error => {  
+                                             console.log(error.message);
+                                             
+                                           })
+
+          }
+
+    
+                        //Get Categories
+                        db.sequelize.query(
+                            'select c1.id'+
+                            ', c1.name'+
+                            ', (select name from categories where c1.parent_id = categories.id) as ParentName'+
+                            ' from categories c1' + 
+                            ' where (select name from categories where c1.parent_id = categories.id) is null'
+                           , {
+                               type: QueryTypes.SELECT,
+                               nest: true,
+                             }).then(cats => {  
+
+                                categories = cats
+    
+                                res.render('pages/products/productCreate', {
+                                    title,
+                                    product,
+                                    categories:cats,
+                                    user:req.session.userLogged,
+                                    errors: errors.mapped(),
+                                    oldData: req.body,
+                                    errorImage:null
+                                })
+    
+    
+                             }).catch(error => {  
+                                 console.log(error.message);
+                                 
+                               })
+    
+          
+
+       }else{
+
+       
+
 
        if (req.body.category == "Juegos" || req.body.category == "Juegos") {
          let rawSearch = await fetch(
@@ -698,7 +784,7 @@ let productsController = {
            .catch((error) => res.send(error));
        }
 
-
+      }
 
     },
 
@@ -771,6 +857,8 @@ let productsController = {
         productFound=await db.Product.findByPk(id)
 
         let files =  req.files;
+
+        let errors = validationResult(req);
 
         if (req.body.mainImage==undefined || req.body.secondImage==undefined){
             mainImage = productFound.image1
