@@ -1,7 +1,7 @@
 module.exports = {
   "development": {
     "username": "root",
-    "password": "BatmanIsBruceWayne100%Sure",
+    "password": null,
     "database": "gamebox",
     "host": "127.0.0.1",
     "dialect": "mysql"

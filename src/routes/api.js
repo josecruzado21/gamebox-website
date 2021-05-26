@@ -1,5 +1,6 @@
 const express = require('express');
 const productsApiController = require('../controllers/productsApiController');
+const usersApiController = require('../controllers/usersApiController');
 const cartApiController = require('../controllers/cartApiController');
 const router = express.Router();
 
@@ -10,5 +11,9 @@ router.post('/carrito-compras/', cartApiController.createCart)
 router.put('/carrito-compras/', cartApiController.updateCart)
 router.post('/carrito-compras-producto/', cartApiController.createCartProduct)
 router.put('/carrito-compras-producto/', cartApiController.updateCartProduct)
+
+
+router.get('/users/', usersApiController.getUsers)
+router.get('/users/:id', usersApiController.getUserDetail)
 
 module.exports = router;
