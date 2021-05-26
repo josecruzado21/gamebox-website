@@ -25,35 +25,71 @@
                     </p>
                 </div>
 
+
             <div class="form-register">
                 <form action="/registro" method="POST" enctype='multipart/form-data'>
              
+                    <% if(locals.errors && errors.name){ %>
+                        <p style="color:red;">
+                            <%= errors.name.msg  %>
+                        </p>
+                    <% } %>
                     <div class="input-wrapper">
-                        <input class="input"  type="text" name="name"  placeholder=" " id="name">
+                        <input class="input"  type="text" name="name"  placeholder=" " id="name"  value="<%= locals.oldData && oldData.name ? oldData.name : ''  %> ">
                         <label for="name" class="label">Nombre</label>
                     </div>
+ 
 
+                    <% if(locals.errors && errors.lastName){ %>
+                        <p style="color:red;">
+                            <%= errors.lastName.msg  %>
+                        </p>
+                    <% } %>
                     <div class="input-wrapper">
-                        <input class="input"  type="text" name="lastName"  placeholder=" " id="lastName">
+                        <input class="input"  type="text" name="lastName"  placeholder=" " id="lastName"  value="<%= locals.oldData && oldData.lastName ? oldData.lastName : ''  %> ">
                         <label for="lastName" class="label">Apellido</label>
+
                     </div>
 
-                    <div class="input-wrapper">
-                        <input class="input" type="text" name="email"  placeholder=" " id="email">
-                        <label for="email" class="label">Correo electrónico</label>
-                    </div>
-                    <% if(locals.errors && errors.email){ %>
+                    <% if(locals.errors && errors.email && (errorMailExist==null || errorMailExist==undefined) ){ %>
                         <p style="color:red;">
                             <%= errors.email.msg  %>
                         </p>
                     <% } %>
-
+                    <% if(locals.errors && errorMailExist!=undefined && errorMailExist!=null){ %>
+                        <p style="color:red;">
+                            <%= errorMailExist  %>
+                        </p>
+                    <% } %>
                     <div class="input-wrapper">
-                        <input class="input" type="password" name="password" placeholder=" " id="password">
-                        <label for="password" class="label" id="label">Password</label>
-                        <span class="icon"></span>
+                        <input class="input" type="text" name="email"  placeholder=" " id="email"  value="<%= locals.oldData && oldData.email ? oldData.email : ''  %> ">
+                        <label for="email" class="label">Correo electrónico</label>
+
                     </div>
 
+                    <% if(locals.errors && errors.password){ %>
+                        <p style="color:red;">
+                            <%= errors.password.msg  %>
+                        </p>
+                    <% } %>
+                    <div class="input-wrapper">
+                        <input class="input" type="password" name="password" placeholder=" " id="password"  value="<%= locals.oldData && oldData.password ? oldData.password : ''  %> ">
+                        <label for="password" class="label" id="label">Password</label>
+                        <span class="icon"></span>
+
+                    </div>
+
+
+                    <% if(locals.errors && errors.image && (errorImage==null || errorImage==undefined) ){ %>
+                        <p style="color:red;">
+                            <%= errors.image.msg  %>
+                        </p>
+                    <% } %>
+                    <% if(locals.errors && errorImage){ %>
+                        <p style="color:red;">
+                            <%= errorImage  %>
+                        </p>
+                    <% } %>
                     <div class="input-wrapper">
                         <input class="input" type="file" name="image" accept="image/*" id="image">
                         <label for="image" class="label" id="label">Imagen de perfil</label>

@@ -63,6 +63,6 @@ https://trello.com/b/OlDI0UFB/gambox-sprint-4
 
 ## MercadoLiebre
 
-- Jaime Rivera: https://github.com/tatos85/mliebre
+- Jaime Rivera: https://mercado-liebre-jr-dh.herokuapp.com/
 - Juan Castañeda: https://mercadoliebrejc.herokuapp.com/
 - Jose Cruzado: https://mercado-liebre-jc.herokuapp.com/

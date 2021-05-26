@@ -2,6 +2,8 @@
 const path = require('path');
 const bcryptjs = require('bcryptjs');
 const db = require('../database/models');
+const {validationResult} = require('express-validator');
+
 //Requiero el modelo
 const User = db.User;
 const UserType = db.UserType;
@@ -16,58 +18,71 @@ const usersController = {
 
 
     loginProcess: async (req, res) => {
-        //return res.send(req.body)
-
+       //res.send(user[0].password)
+        //res.send(bcryptjs.compareSync(req.body.password, user[0].password))
+        let errors = validationResult(req);
         let user = await db.User.findAll({
             where: {
                 email: req.body.email
             }
         });
+        console.log(errors);
+        if(errors.isEmpty()){
+            if (user != "") {
 
-        //res.send(user[0].password)
-        //res.send(bcryptjs.compareSync(req.body.password, user[0].password))
-
-        if (user != "") {
-
-            let checkPass = bcryptjs.compareSync(req.body.password, user[0].password);
-            if (checkPass) {
-                delete user[0].password;
-                req.session.userLogged = user[0];
-
-                if (req.body.sesion) {
-                    res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 30 })
-                }
-
-                // return res.send(req.session.userLogged)
-
-                // res.render('pages/index', {
-                //     title: title,
-                //     user : req.session.userLogged
-                // })
-
-                return res.redirect('/');
-            } else {
-                return res.render('pages/users/login', {
-                    title: titleLogin,
-                    errors: {
-                        email: {
-                            msg: 'Las credenciales son inválidas'
-                        }
+                let checkPass = bcryptjs.compareSync(req.body.password, user[0].password);
+                if (checkPass) {
+                    delete user[0].password;
+                    req.session.userLogged = user[0];
+    
+                    if (req.body.sesion) {
+                        res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 30 })
                     }
-                });
+    
+                    // return res.send(req.session.userLogged)
+    
+                    // res.render('pages/index', {
+                    //     title: title,
+                    //     user : req.session.userLogged
+                    // })
+    
+                    return res.redirect('/');
+                } else {
+                    return res.render('pages/users/login', {
+                        title: titleLogin,
+                        errors: {
+                            email: {
+                                msg: 'Las credenciales son inválidas'
+                            }
+                        },
+                        oldData: req.body
+                    });
+                }
             }
+    
+    
+    
+            return res.render('pages/users/login', {
+                title: titleLogin,
+                errors: {
+                    email: {
+                        msg: 'No se encuentra este email en la base de datos'
+                    }
+                },
+                oldData: req.body
+            });
+        }else{
+
+            return res.render('pages/users/login', {
+                title: titleLogin,
+                errors: errors.mapped(),
+                oldData: req.body
+            });
         }
 
+        
 
 
-        return res.render('pages/users/login', {
-            title: titleLogin,
-            errors: {
-                email: {
-                    msg: 'No se encuentra este email en la base de datos'
-                }
-            }
-        });
 
     },
 
@@ -86,43 +101,107 @@ const usersController = {
         let title = 'Gamebox | Registro ';
 
         res.render('pages/users/register', {
-            'title': title
+            'title': title,
+            errorMailExist:null,
+            errorImage:null
         })
     },
 
+
     register_new_user: async (req, res) => {
+        let errors = validationResult(req);
         let title = 'Gamebox | Registro ';
         let userindb = await db.User.findAll({
             where: { email: req.body.email }
         })
-        if (userindb != "") {
+
+        
+       
+        if(errors.isEmpty()){
+            console.log("aca no hay errores: ");
+            
+            if (userindb != "") {
+                console.log("aca userindb: ");
+                return res.render('pages/users/register', {
+                    'title': title,
+                    errors: {
+                        email: {
+                            msg: 'Ya existe una cuenta asociada a este correo'
+                        },
+                    },
+                    oldData: req.body
+                });
+            }
+
+            if(req.file && req.file != undefined && !(req.file.mimetype == 'image/jpeg' || req.file.mimetype == 'image/gif' || req.file.mimetype == 'image/png')){
+                console.log("aca mimetype: ");
+                return res.render('pages/users/register', {
+                    'title': title,
+                    errors: {
+                        image: {
+                            msg: 'Debes subir solo archivos de imagen (JPG, PNG, GIF)'
+                        },
+                    },
+                    oldData: req.body
+                });
+            }
+
+    
+            if(req.file && req.file !== undefined){
+              
+                req.body.avatar=req.file.filename
+            } else{
+                req.body.avatar='default-avatar.jpg'
+            }
+    
+            req.body.password=bcryptjs.hashSync(req.body.password,10)
+            //res.send(req.body)
+            db.User.create({
+                firstName: req.body.name,
+                lastName: req.body.lastName,
+                email: req.body.email,
+                avatar: req.body.avatar,
+                password: req.body.password,
+                type: 1,
+            }).then(() => res.redirect('/login')).catch(error => res.send(error))
+        }else{
+            console.log("aca hay errores: ");
+            console.log(errors);
+           // console.log(errors.mapped);
+            console.log(req.body)
+
+            if (userindb != "") {
+                return res.render('pages/users/register', {
+                    'title': title,
+                    errors: errors.mapped(),
+                    oldData: req.body,
+                    errorMailExist:'Ya existe una cuenta asociada a este correo',
+                    errorImage:null
+                });
+               
+            }
+
+            if(req.file && req.file != undefined && !(req.file.mimetype == 'image/jpeg' || req.file.mimetype == 'image/gif' || req.file.mimetype == 'image/png')){
+                return res.render('pages/users/register', {
+                    'title': title,
+                    errors:errors.mapped(),
+                    oldData: req.body,
+                    errorMailExist:null,
+                    errorImage:'Debes subir solo archivos de imagen (JPG, PNG, GIF)'
+                });
+            }
+
             return res.render('pages/users/register', {
                 'title': title,
-                errors: {
-                    email: {
-                        msg: 'Ya existe una cuenta asociada a este correo'
-                    },
-                },
-                oldData: req.body
+                errors: errors.mapped(),
+                oldData: req.body,
+                errorMailExist:null,
+                errorImage:null
             });
         }
+    
+      
 
-        if(req.file && req.file!== undefined){
-            req.body.avatar=req.file.filename
-        } else{
-            req.body.avatar='default-avatar.jpg'
-        }
-
-        req.body.password=bcryptjs.hashSync(req.body.password,10)
-        //res.send(req.body)
-        db.User.create({
-            firstName: req.body.name,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            avatar: req.body.avatar,
-            password: req.body.password,
-            type: 1,
-        }).then(() => res.redirect('/login')).catch(error => res.send(error))
 
     },
 
