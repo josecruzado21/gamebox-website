@@ -97,6 +97,8 @@
 .checkboxLabel {
     cursor: pointer;
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     align-items: center;
     font-size: 1.1rem;
     position: relative;
@@ -104,14 +106,17 @@
 
     &:before {
         content: '';
-        display: inline-block;
+        display: block;
         border: 2px solid $darkBlue;
         border-radius: 4px;
         height: 24px;
         margin-right: 12px;
-        vertical-align: middle;
         width: 24px;
         transition: all .3s;
+    }
+
+    span {
+        max-width: 80%;
     }
 }
 
@@ -130,4 +135,35 @@
     outline: none;
     padding: 16px;
     background: none;
+}
+
+// Errores validación
+
+.inputError {
+    border: 2px solid $red;
+}
+
+.input:not(:placeholder-shown).input:not(:focus)+.label.labelError {
+    color: $red;
+}
+
+.inlineError {
+    color: $red;
+    font-size: 1rem;
+    margin: 0;
+    margin-top: -16px;
+    margin-bottom: 24px;
+    padding: 0;
+}
+
+.errorValidation {
+    color: $red;
+    display: none;
+    font-size: 1em;
+    margin-top: -16px;
+    margin-bottom: 24px;
+}
+
+.showErrorMessage {
+    display: block !important;
 }

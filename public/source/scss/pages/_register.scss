@@ -1,101 +1,97 @@
-.register{
+.register {
     display: flex;
     flex-direction: row;
+    align-items: flex-start;
     justify-content: center;
     width: 100%;
 }
 
-.register-2{
-
-      display: none;
-
-      @include respond-to('desktop') {
-          animation: slide 60s infinite;
-          animation-timing-function: ease-out;
-          background: url('../../images/ac-valhalla.png') center center no-repeat;
-          background-size: cover;
-          display: flex;
-          height: 100vh;
-          padding: 32px;
-          position: relative;
-          width: 60%;
-  
-          .register-img-text {
-              align-self: flex-end;
-              font-family: $primary-font;
-              font-style: normal;
-              font-weight: 700;
-              font-size: 48px;
-              line-height: 56px;
-              color: $white;
-              z-index: 9;
-          }
-      }
-  
-      &:after {
-          background: rgb(0, 0, 0);
-          background: linear-gradient(0deg, rgba(0, 0, 0, .7) 10%, rgba(0, 0, 0, 0) 100%);
-          content: '';
-          height: 100vh;
-          left: 0;
-          position: absolute;
-          top: 0;
-          width: 100%;
-      }
-
-}
-
-@keyframes slide {
-    0% {
-        background: url('../../images/products/luigui.jpg') center center no-repeat;
-        background-size: cover;
-    }
-
-    25% {
-        background: url('../../images/products/cyber.jpg') center center no-repeat;
-        background-size: cover;
-    }
-
-    50% {
-        background: url('../../images/products/tomb.jpg') center center no-repeat;
-        background-size: cover;
-    }
-
-    75% {
-        background: url('../../images/products/last-of-us2.png') center center no-repeat;
-        background-size: cover;
-    }
-}
-
-
-.register-1{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 32px;
-    width: 95%;
-
-    .logoBrand {
-        align-self: flex-start;
-        margin-bottom: 32px;
-    }
-
-    @include respond-to('tablet') {
-        width: 80%;
-
-        .logoBrand {
-            margin-bottom: 180px;
-        }
-    }
+.register-2 {
+    display: none;
 
     @include respond-to('desktop') {
-        padding: 56px 5%;
-        width: 40%;
+        display: block;
+        position: fixed;
+        right: 0;
+        width: 60%;
+    }
+
+
+    .imgWrapper {
+        @include respond-to('desktop') {
+            background: url('/images/ac-valhalla.png') center left no-repeat;
+            background-size: cover;
+            display: flex;
+            height: 100vh;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+
+            .register-img-text {
+                align-self: flex-end;
+                font-family: $primary-font;
+                font-style: normal;
+                font-weight: 700;
+                font-size: 48px;
+                line-height: 56px;
+                color: $white;
+                z-index: 9;
+            }
+        }
+
+        &:after {
+            background: rgb(0, 0, 0);
+            background: linear-gradient(0deg, rgba(0, 0, 0, .7) 10%, rgba(0, 0, 0, 0) 100%);
+            content: '';
+            height: 100vh;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+    }
+}
+
+
+
+.register-1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    position: relative;
+    left: 0;
+
+    .formWrapper {
+        margin: 0 auto;
+        padding: 24px;
+        width: 95%;
 
         .logoBrand {
-            align-self: flex-start;
-            margin-bottom: 0;
+            display: block;
+            margin-bottom: 32px;
+        }
+
+        @include respond-to('tablet') {
+            margin: 0 auto;
+            padding: 56px;
+            width: 80%;
+
+            .logoBrand {
+                margin-bottom: 80px;
+            }
+        }
+
+        @include respond-to('desktop') {
+            margin: inherit;
+            padding: 56px;
+            width: 40%;
+
+            .logoBrand {
+                align-self: flex-start;
+                margin-bottom: 80px;
+            }
         }
     }
 }
@@ -106,7 +102,7 @@
     @extend .h4;
 }
 
-.welcome-register {
+.register-login {
     color: $darkGrey;
     font-family: $secondary-font;
     font-style: normal;
@@ -118,14 +114,15 @@
 }
 
 
-.form-register{
-    
-    width: 80%;
+.form-register {
+    width: 100%;
 
-    form{
+    form {
         display: flex;
         flex-direction: column;
+
         a.linkSmall {
+            display: inline-block;
             margin-top: 12px;
             text-align: right;
         }
@@ -137,20 +134,19 @@
 
 }
 
-
-
-.btn-create-account{
+.btn-create-account {
     @extend .btn-primary;
     margin-bottom: 24px;
 
     @include respond-to('desktop') {
         margin-bottom: 0;
     }
-    
+
 }
 
-.already-account{
+.already-account {
     margin: 0;
+    margin-top: 32px;
     padding: 0;
+    text-align: center;
 }
-
