@@ -59,12 +59,13 @@ const usersApiController = {
         User.findByPk(req.params.id)
         .then(user => {  
 
-      
-             user.password = undefined
-             user.type = undefined
-             user.avatar = req.protocol + '://' + req.get('host') +"/images/avatars/"+user.avatar
+            let resp = JSON.parse(JSON.stringify(user));
 
-            res.json(user)
+            resp.password = undefined
+            resp.type = undefined
+            resp.avatar = req.protocol + '://' + req.get('host') +"/images/avatars/"+user.avatar
+
+            res.json(resp)
         }).catch(error => {  
             console.log(error.message);
             let resp = {
