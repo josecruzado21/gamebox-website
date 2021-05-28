@@ -71,10 +71,10 @@ const usersApiController = {
             model:ShoppingCart,
             as : 'shoppingCarUser',
             include: [
-                // {
-                //     model:ShoppingCartProduct,
-                //     as : 'shoppingCartShoppingCartProducts',
-                // },
+                {
+                    model:ShoppingCartProduct,
+                    as : 'shoppingCartShoppingCartProducts',
+                },
                {
                     model:ShoppingCartStatus,
                     as : 'statusShoppingCart',
