@@ -6,10 +6,12 @@ var _ = require('lodash');
 const { QueryTypes, Sequelize } = require('sequelize');
 
 
+
 const productsPath = path.resolve(__dirname, '../data/products.json');
 const Category = db.Category;
 const Product = db.Product;
 const RawInfo = db.RawInfo;
+const User = db.User;
 
 let productsApiController = {
   
@@ -278,6 +280,97 @@ let productsApiController = {
             res.json(resp);
           })
   
+      },
+
+      getTotals:(req,res) => {
+        let catChilds = 0;
+        let catBase = 0;
+        let products = 0;
+        let users  =  0;
+
+
+
+        Category.findAll({
+            include: [    
+                { 
+                model:Category,
+                as : 'parentCategory'
+                }, 
+                {
+                    model:Product,
+                    as : 'products'
+                }       
+            ]
+   
+      }).then(categories => {
+            
+            let childCategories  = (categories.filter(cat => cat.parent_id != null));
+           // console.log(childCategories);
+            let grouped = Object.values(_.groupBy(childCategories, cat => cat.parent_id))
+            let resp = []
+            grouped.forEach(group => {
+                let cat = {}
+                cat.name = group[0].parentCategory.name
+                let childs = []
+                let countParent = 0;
+                group.forEach(catg => {
+                    let c = {}
+                    c.name = catg.name;
+                    c.id = catg.id;
+                    c.products = catg.products.length
+                    countParent += catg.products.length
+                    childs.push(c)
+                });
+                cat.products = countParent
+                cat.childs = childs;
+                resp.push(cat);  
+            });
+
+
+
+
+            resp.forEach(cats => {
+               catBase++
+                cats.childs.forEach(child => {
+                    catChilds++
+                });
+                
+            });
+
+            Product.findAll({   attributes: {
+                include: [
+                  [Sequelize.fn('COUNT', Sequelize.col('id')), 'count']
+                ]
+              }  })
+                .then(product => {
+
+
+                    products = JSON.parse(JSON.stringify(product[0])).count;
+
+                    User.findAll({   attributes: {
+                        include: [
+                          [Sequelize.fn('COUNT', Sequelize.col('id')), 'count']
+                        ]
+                      }  })
+
+                        .then(user => {
+                    
+                            users = JSON.parse(JSON.stringify(user[0])).count;
+                            products = JSON.parse(JSON.stringify(product[0])).count;
+                        
+                            let resp = {}
+                            resp.users = users;
+                            resp.products = products;
+                            resp.baseCategories = catBase;
+                            resp.childCategories = catChilds;
+        
+                             res.json(resp)
+                        })
+
+                })
+
+          })
+
       },
 
 }

@@ -16,6 +16,7 @@ router.get('/productos/:parentCategory/:childCategory/:slugProduct', productsApi
 router.get('/products', productsApiController.getProducts)
 router.get('/products/:id', productsApiController.getProductById)
 router.get('/categories', productsApiController.getAllCategories)
+router.get('/totals', productsApiController.getTotals)
 router.get('/carrito-compras/', cartApiController.getCart)
 router.post('/carrito-compras/', cartApiController.createCart)
 router.put('/carrito-compras/', cartApiController.updateCart)
