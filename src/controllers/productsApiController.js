@@ -2,7 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const db = require('../database/models');
-
+var _ = require('lodash');
 const { QueryTypes, Sequelize } = require('sequelize');
 
 
@@ -147,7 +147,11 @@ let productsApiController = {
                 {
                     model:RawInfo,
                     as : 'rawInfoObj',
-                }]
+                }],
+                order: [
+                    ['id', 'DESC']
+                   
+                ],
             })
             .then(products => {
 
@@ -155,6 +159,9 @@ let productsApiController = {
 
                 for(i in prds) {
                     prds[i].detail =  req.protocol + '://' + req.get('host') + "/api/products/"+prds[i].id
+                 
+                    prds[i].img1 = req.protocol + '://' + req.get('host') +"/images/products/"+prds[i].image1
+                    prds[i].img2 = req.protocol + '://' + req.get('host') +"/images/products/"+prds[i].image2
 
                   }
                   
@@ -204,7 +211,75 @@ let productsApiController = {
             }
             res.json(resp);
           })
-    }
+    },
+
+    // getAllCategories:(req,res) => {
+
+    //     Category.findAll({
+    //         include: [    
+    //             { 
+    //             model:Category,
+    //             as : 'parentCategory'
+    //             }       
+    //         ]
+   
+    //   })
+    //       .then(categories => {
+  
+    //         res.json(categories)
+    //       })
+  
+    //   },
+
+
+      getAllCategories:(req,res) => {
+
+        Category.findAll({
+            include: [    
+                { 
+                model:Category,
+                as : 'parentCategory'
+                }, 
+                {
+                    model:Product,
+                    as : 'products'
+                }       
+            ]
+   
+      }).then(categories => {
+            
+            let childCategories  = (categories.filter(cat => cat.parent_id != null));
+           // console.log(childCategories);
+            let grouped = Object.values(_.groupBy(childCategories, cat => cat.parent_id))
+            let resp = []
+            grouped.forEach(group => {
+                let cat = {}
+                cat.name = group[0].parentCategory.name
+                let childs = []
+                let countParent = 0;
+                group.forEach(catg => {
+                    let c = {}
+                    c.name = catg.name;
+                    c.id = catg.id;
+                    c.products = catg.products.length
+                    countParent += catg.products.length
+                    childs.push(c)
+                });
+                cat.products = countParent
+                cat.childs = childs;
+                resp.push(cat);  
+            });
+
+         //   console.log("res");
+        //    console.log(resp);
+
+            //console.log(grouped);
+
+            res.json(resp);
+          })
+  
+      },
+
 }
 
 
