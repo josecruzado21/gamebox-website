@@ -1,268 +1,110 @@
-
-const path = require('path');
-const bcryptjs = require('bcryptjs');
+'use strict';
 const db = require('../database/models');
-const {validationResult} = require('express-validator');
 
 //Requiero el modelo
 const User = db.User;
 const UserType = db.UserType;
-const titleLogin = 'Gamebox | Login '
+const ShoppingCart = db.ShoppingCart;
+const ShoppingCartStatus = db.ShoppingCartStatus;
+const ShoppingCartProduct = db.ShoppingCartProduct;
 
-const usersController = {
-   
-   
+
+const usersApiController = {
+
     getUsers:(req, res) => {
-        let users = await db.User.findAll({ limit });
+        let page = req.query.page;
+        let offset = 0;
+
+        if(page == null || page ==undefined){
+            page = 1
+        }else if(page > 1){
+            offset = (page - 1 )*10;
+        }
+
+        User.findAll({ limit : 10, offset:offset,
+
+        order: [
+            ['id', 'DESC']
+
+        ], })
+        .then(users => {
+
+            let respUsers = [];
+            let resp = {}
+
+            if(users == null || users == undefined || users.lenght <= 0){
+                 resp = {"count": 0, users:[] }
+            }
+
+            users.forEach(user =>
+            {
+                let r = {}
+                r.name = user.firstName + " " +user.lastName;
+                r.email = user.email;
+                r.id = user.id;
+                r.detail = req.protocol + '://' + req.get('host') + "/api/users/"+r.id
+                r.avatar = req.protocol + '://' + req.get('host') +"/images/avatars/"+user.avatar
+
+                respUsers.push(r);
+            });
+
+             resp = {"count": respUsers.length, users:respUsers }
+
+
+            res.json(resp)
+
+        }).catch(error => {
+            console.log(error.message);
+            let resp = {
+                error: "Error obteniendo los usuarios " + error.message
+            }
+            res.json(resp);
+          })
+
     },
 
     getUserDetail:(req, res) => {
-        
-    },
-   
-   
 
-
-    loginProcess: async (req, res) => {
-       //res.send(user[0].password)
-        //res.send(bcryptjs.compareSync(req.body.password, user[0].password))
-        let errors = validationResult(req);
-        let user = await db.User.findAll({
-            where: {
-                email: req.body.email
-            }
-        });
-        console.log(errors);
-        if(errors.isEmpty()){
-            if (user != "") {
-
-                let checkPass = bcryptjs.compareSync(req.body.password, user[0].password);
-                if (checkPass) {
-                    delete user[0].password;
-                    req.session.userLogged = user[0];
-    
-                    if (req.body.sesion) {
-                        res.cookie('userEmail', req.body.email, { maxAge: (1000 * 60) * 30 })
-                    }
-    
-                    // return res.send(req.session.userLogged)
-    
-                    // res.render('pages/index', {
-                    //     title: title,
-                    //     user : req.session.userLogged
-                    // })
-    
-                    return res.redirect('/');
-                } else {
-                    return res.render('pages/users/login', {
-                        title: titleLogin,
-                        errors: {
-                            email: {
-                                msg: 'Las credenciales son inválidas'
-                            }
-                        },
-                        oldData: req.body
-                    });
-                }
-            }
-    
-    
-    
-            return res.render('pages/users/login', {
-                title: titleLogin,
-                errors: {
-                    email: {
-                        msg: 'No se encuentra este email en la base de datos'
-                    }
+        User.findByPk(req.params.id,
+      {  include: [
+            {
+            model:ShoppingCart,
+            as : 'shoppingCarUser',
+            include: [
+                {
+                    model:ShoppingCartProduct,
+                    as : 'shoppingCartShoppingCartProducts',
                 },
-                oldData: req.body
-            });
-        }else{
+               {
+                    model:ShoppingCartStatus,
+                    as : 'statusShoppingCart',
 
-            return res.render('pages/users/login', {
-                title: titleLogin,
-                errors: errors.mapped(),
-                oldData: req.body
-            });
-        }
-
-        
-
-
-
-    },
-
-
-    logout: (req, res) => {
-        req.session.destroy();
-
-        res.clearCookie('userEmail');
-
-        return res.redirect('/');
-    },
-
-    register: (req, res) => {
-
-
-        let title = 'Gamebox | Registro ';
-
-        res.render('pages/users/register', {
-            'title': title,
-            errorMailExist:null,
-            errorImage:null
-        })
-    },
-
-
-    register_new_user: async (req, res) => {
-        let errors = validationResult(req);
-        let title = 'Gamebox | Registro ';
-        let userindb = await db.User.findAll({
-            where: { email: req.body.email }
-        })
-
-        
-       
-        if(errors.isEmpty()){
-            console.log("aca no hay errores: ");
-            
-            if (userindb != "") {
-                console.log("aca userindb: ");
-                return res.render('pages/users/register', {
-                    'title': title,
-                    errors: {
-                        email: {
-                            msg: 'Ya existe una cuenta asociada a este correo'
-                        },
-                    },
-                    oldData: req.body
-                });
-            }
-
-            if(req.file && req.file != undefined && !(req.file.mimetype == 'image/jpeg' || req.file.mimetype == 'image/gif' || req.file.mimetype == 'image/png')){
-                console.log("aca mimetype: ");
-                return res.render('pages/users/register', {
-                    'title': title,
-                    errors: {
-                        image: {
-                            msg: 'Debes subir solo archivos de imagen (JPG, PNG, GIF)'
-                        },
-                    },
-                    oldData: req.body
-                });
-            }
-
-    
-            if(req.file && req.file !== undefined){
-              
-                req.body.avatar=req.file.filename
-            } else{
-                req.body.avatar='default-avatar.jpg'
-            }
-    
-            req.body.password=bcryptjs.hashSync(req.body.password,10)
-            //res.send(req.body)
-            db.User.create({
-                firstName: req.body.name,
-                lastName: req.body.lastName,
-                email: req.body.email,
-                avatar: req.body.avatar,
-                password: req.body.password,
-                type: 1,
-            }).then(() => res.redirect('/login')).catch(error => res.send(error))
-        }else{
-            console.log("aca hay errores: ");
-            console.log(errors);
-           // console.log(errors.mapped);
-            console.log(req.body)
-
-            if (userindb != "") {
-                return res.render('pages/users/register', {
-                    'title': title,
-                    errors: errors.mapped(),
-                    oldData: req.body,
-                    errorMailExist:'Ya existe una cuenta asociada a este correo',
-                    errorImage:null
-                });
-               
-            }
-
-            if(req.file && req.file != undefined && !(req.file.mimetype == 'image/jpeg' || req.file.mimetype == 'image/gif' || req.file.mimetype == 'image/png')){
-                return res.render('pages/users/register', {
-                    'title': title,
-                    errors:errors.mapped(),
-                    oldData: req.body,
-                    errorMailExist:null,
-                    errorImage:'Debes subir solo archivos de imagen (JPG, PNG, GIF)'
-                });
-            }
-
-            return res.render('pages/users/register', {
-                'title': title,
-                errors: errors.mapped(),
-                oldData: req.body,
-                errorMailExist:null,
-                errorImage:null
-            });
-        }
-    
-      
-
-
-    },
-
-    profile: (req, res) => {
-
-        let title = 'Gamebox | Perfil ';
-
-        if (req.session.userLogged) {
-            res.render('pages/users/profile', {
-                'title': title,
-                user: req.session.userLogged
-            })
-        } else {
-            res.redirect('/')
-        }
-    },
-
-    list:(req,res) => {
-        let title = 'Gamebox | Lista de usuarios';
-
-        User.findAll({
-            //include:[{association:'UserUserType'}],
-            include:[{
-                model:UserType,
-                as:'UserTypeObj'
-
-            }]
-        })
-            .then(users => {
-
-                console.log(JSON.stringify(users))
-                if(users == null || users == undefined ){
-                    res.render('pages/products/productNotFound', {
-                        'title': 'Sin resultados',
-                        'description':'Usuarios no encontrados',
-                        user:req.session.userLogged
-                    })
                 }
-                
-                //console.log(product)
-                res.render('pages/users/userList', {
-                    title: title, 
-                    users:users,
-                    user:req.session.userLogged
-                    })
-            })
+            ]
+            }
+        ] })
 
-    },
-    edit:(req,res) => {
-        let title = 'Gamebox | Editar usuarios';
+        .then(user => {
 
-       
+            let resp = JSON.parse(JSON.stringify(user));
 
+            resp.password = undefined
+            resp.type = undefined
+            resp.avatar = req.protocol + '://' + req.get('host') +"/images/avatars/"+user.avatar
+
+            res.json(resp)
+        }).catch(error => {
+            console.log(error.message);
+            let resp = {
+                error: "Error obteniendo los usuarios"
+            }
+            res.json(resp);
+          })
     }
+
+
+
 
 };
 
-module.exports = usersController;
+module.exports = usersApiController;

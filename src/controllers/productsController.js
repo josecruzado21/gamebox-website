@@ -115,13 +115,13 @@ let productsController = {
 
         let pagesNumber = 0;
 
-        if(page > 1){
+        if(page == null || page ==undefined){
+          page =1
+        }else if(page > 1){
             offset = (page - 1 )*10;
         }
 
-        if(page == null || page ==undefined){
-            page =1
-        }
+
 
         let parentCategory = req.params.parentCategory;
         let childCategory = req.params.childCategory;
