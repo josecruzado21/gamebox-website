@@ -29,75 +29,70 @@
             <div class="form-register">
                 <form action="/registro" method="POST" enctype='multipart/form-data'>
              
-                    <% if(locals.errors && errors.name){ %>
-                        <p style="color:red;">
-                            <%= errors.name.msg  %>
-                        </p>
-                    <% } %>
                     <div class="input-wrapper">
-                        <input class="input"  type="text" name="name"  placeholder=" " id="name"  value="<%= locals.oldData && oldData.name ? oldData.name : ''  %> ">
+                        <input class="input"  type="text" name="name"  placeholder="" id="name"  value="<%= locals.oldData && oldData.name ? oldData.name : ''%>">
                         <label for="name" class="label">Nombre</label>
+                        <% if(locals.errors && errors.name){ %>
+                            <div style="color:red;">
+                                <%= errors.name.msg  %>
+                            </div>
+                        <% } %>
                     </div>
  
-
-                    <% if(locals.errors && errors.lastName){ %>
-                        <p style="color:red;">
-                            <%= errors.lastName.msg  %>
-                        </p>
-                    <% } %>
                     <div class="input-wrapper">
-                        <input class="input"  type="text" name="lastName"  placeholder=" " id="lastName"  value="<%= locals.oldData && oldData.lastName ? oldData.lastName : ''  %> ">
+                        <input class="input"  type="text" name="lastName"  placeholder="" id="lastName"  value="<%= locals.oldData && oldData.lastName ? oldData.lastName : '' %>">
                         <label for="lastName" class="label">Apellido</label>
-
+                        <% if(locals.errors && errors.lastName){ %>
+                            <div style="color:red;">
+                                <%= errors.lastName.msg  %>
+                            </div>
+                        <% } %>
                     </div>
 
-                    <% if(locals.errors && errors.email && (errorMailExist==null || errorMailExist==undefined) ){ %>
-                        <p style="color:red;">
-                            <%= errors.email.msg  %>
-                        </p>
-                    <% } %>
-                    <% if(locals.errors && errorMailExist!=undefined && errorMailExist!=null){ %>
-                        <p style="color:red;">
-                            <%= errorMailExist  %>
-                        </p>
-                    <% } %>
                     <div class="input-wrapper">
-                        <input class="input" type="text" name="email"  placeholder=" " id="email"  value="<%= locals.oldData && oldData.email ? oldData.email : ''  %> ">
+                        <input class="input" type="text" name="email"  placeholder="" id="email"  value="<%= locals.oldData && oldData.email ? oldData.email : ''  %>">
                         <label for="email" class="label">Correo electrónico</label>
-
+                        <% if(locals.errors && errors.email && (errorMailExist==null || errorMailExist==undefined) ){ %>
+                            <div style="color:red;">
+                                <%= errors.email.msg  %>
+                            </div>
+                        <% } %>
+                        <% if(locals.errors && errorMailExist!=undefined && errorMailExist!=null){ %>
+                            <div style="color:red;">
+                                <%= errorMailExist  %>
+                            </div>
+                        <% } %>
                     </div>
 
-                    <% if(locals.errors && errors.password){ %>
-                        <p style="color:red;">
-                            <%= errors.password.msg  %>
-                        </p>
-                    <% } %>
                     <div class="input-wrapper">
-                        <input class="input" type="password" name="password" placeholder=" " id="password"  value="<%= locals.oldData && oldData.password ? oldData.password : ''  %> ">
+                        <input class="input" type="password" name="password" placeholder="" id="password"  value="">
                         <label for="password" class="label" id="label">Password</label>
                         <span class="icon"></span>
-
+                        <% if(locals.errors && errors.password){ %>
+                            <div style="color:red;">
+                                <%= errors.password.msg  %>
+                            </div>
+                        <% } %>
                     </div>
 
-
-                    <% if(locals.errors && errors.image && (errorImage==null || errorImage==undefined) ){ %>
-                        <p style="color:red;">
-                            <%= errors.image.msg  %>
-                        </p>
-                    <% } %>
-                    <% if(locals.errors && errorImage){ %>
-                        <p style="color:red;">
-                            <%= errorImage  %>
-                        </p>
-                    <% } %>
                     <div class="input-wrapper">
                         <input class="input" type="file" name="image" accept="image/*" id="image">
                         <label for="image" class="label" id="label">Imagen de perfil</label>
+                        <% if(locals.errors && errors.image && (errorImage==null || errorImage==undefined) ){ %>
+                            <div style="color:red;">
+                                <%= errors.image.msg  %>
+                            </div>
+                        <% } %>
+                        <% if(locals.errors && errorImage){ %>
+                            <div style="color:red;">
+                                <%= errorImage  %>
+                            </div>
+                        <% } %>
                     </div>
 
                     <div class="checkboxWrapper">
                         <input type="checkbox" name="terms" id="checkboxTerms" class="checkbox">
-                        <label for="checkboxTerms" class="checkboxLabel">Acepto <a class="linkNormal" href="#"> términos y condiciones </a> del servicio
+                        <label for="checkboxTerms" class="checkboxLabel"> Acepto &nbsp <a class="linkNormal" href="#"> t&c </a> &nbsp del servicio
                         </label>
                     </div>
 
