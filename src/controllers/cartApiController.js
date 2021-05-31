@@ -161,7 +161,7 @@ let cartApiController = {
 
         db.sequelize.query(
 
-            'SELECT sum(sp.quantity) as total, p.name, p.id, p.price, p.image1, c.name as category, pc.name as parentCategory FROM gamebox.shoppingcartproducts sp '+
+            'SELECT sum(sp.quantity) as total, p.name, p.id, p.price, p.image1, p.image2, c.name as category, pc.name as parentCategory FROM gamebox.shoppingcartproducts sp '+
             'inner join products p on p.id = sp.product ' +
             'inner join shoppingcart s on s.id = sp.shoppingCart and s.shoppingCartStatus = :shoppingCartStatus '+
             'inner join categories c on c.id = p.category '+
@@ -174,7 +174,13 @@ let cartApiController = {
            nest: true,
            replacements: { shoppingCartStatus: status, limit: limit },
          }).then(resp => { 
-              res.json(resp)
+            let response = JSON.parse(JSON.stringify(resp));
+
+            response.forEach(prd => {
+              prd.img1 =  req.protocol + '://' + req.get('host') +"/images/products/"+prd.image1  
+              prd.img2 =  req.protocol + '://' + req.get('host') +"/images/products/"+prd.image2  
+            });  
+              res.json(response)
          }).catch(error => {  
              console.log(error.message);
              res.send(error)
@@ -196,7 +202,7 @@ let cartApiController = {
 
         db.sequelize.query(
 
-            'SELECT p.name, p.id, p.price, p.image1, c.name as category, pc.name as parentCategory FROM gamebox.shoppingcartproducts sp '+
+            'SELECT p.name, p.id, p.price, p.image1, p.image2, c.name as category, pc.name as parentCategory FROM gamebox.shoppingcartproducts sp '+
             'inner join products p on p.id = sp.product ' +
             'inner join shoppingcart s on s.id = sp.shoppingCart and s.shoppingCartStatus = 3 '+
             'inner join categories c on c.id = p.category '+
@@ -208,7 +214,15 @@ let cartApiController = {
            nest: true,
            replacements: { limit: limit },
          }).then(resp => { 
-              res.json(resp)
+              let response = JSON.parse(JSON.stringify(resp));
+
+              response.forEach(prd => {
+                prd.img1 =  req.protocol + '://' + req.get('host') +"/images/products/"+prd.image1  
+                prd.img2 =  req.protocol + '://' + req.get('host') +"/images/products/"+prd.image2  
+              });  
+
+             
+              res.json(response)
          }).catch(error => {  
              console.log(error.message);
              res.send(error)
