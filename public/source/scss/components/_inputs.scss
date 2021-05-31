@@ -1,3 +1,5 @@
+@import 'buttons';
+
 // Checkbox type Text
 
 .input-wrapper {
@@ -56,7 +58,8 @@
     z-index: 1;
 }
 
-.input:focus, .input:active {
+.input:focus,
+.input:active {
     border: 2px solid $lightBlue;
 }
 
@@ -72,7 +75,7 @@
     transform: translateY(-50%);
     width: 24px;
 
-    
+
 }
 
 .icon-eyeClose {
@@ -90,7 +93,7 @@
 
 // Checkbox
 
-.checkbox[type="checkbox"]{
+.checkbox[type="checkbox"] {
     display: none;
 }
 
@@ -120,7 +123,7 @@
     }
 }
 
-.checkbox[type="checkbox"]:checked + .checkboxLabel::before {
+.checkbox[type="checkbox"]:checked+.checkboxLabel::before {
     background-color: $lightBlue;
     background-image: url('../images/iconCheck.svg');
     border-color: $lightBlue;
@@ -166,4 +169,100 @@
 
 .showErrorMessage {
     display: block !important;
+}
+
+.pillGroup {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.pill {
+    background-color: #EEEEEE;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    margin-right: 16px;
+    padding: 8px 16px;
+
+    &:last-child {
+        margin-right: 0;
+    }
+
+    .check {
+        background-image: url('/images/iconCheckWhite.svg');
+        background-size: contain;
+        display: none;
+        height: 16px;
+        margin-right: 8px;
+        width: 16px;
+    }
+
+    span {
+        font-size: 1em;
+    }
+
+}
+
+.pillActive {
+    background-color: $lightBlue;
+
+    span {
+        color: $white;
+    }
+}
+
+/* input file */
+
+.previewWrapper {
+    background-color: $white;
+    border: 2px dashed rgba($darkGrey, .2);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    padding: 24px;
+
+    .imgUserPreview {
+        border-radius: 200px;
+        height: 180px;
+        object-fit: cover;
+        width: 180px;
+    }
+
+    p {
+        margin-bottom: 8px;
+        margin-top: 0;
+    }
+
+    span {
+        margin-bottom: 8px;
+    }
+
+    #previewBtn {
+        @extend .btn-secondary;
+        padding: 16px 24px;
+        width: 50%;
+    }
+}
+
+.previewWrapperActive {
+    border: 2px solid rgba($darkGrey, .2);
+}
+
+.previewWrapperSelected {
+    border: none;
+    padding: 0;
+
+    .imgUserPreview {
+        border: 2px solid $darkBlue;
+    }
 }
