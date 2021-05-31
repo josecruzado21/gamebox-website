@@ -22,6 +22,11 @@ router.post('/carrito-compras/', cartApiController.createCart)
 router.put('/carrito-compras/', cartApiController.updateCart)
 router.post('/carrito-compras-producto/', cartApiController.createCartProduct)
 router.put('/carrito-compras-producto/', cartApiController.updateCartProduct)
+router.get('/shopping-cart/', cartApiController.getShoppingCarts)
+router.get('/shopping-cart/lastBuyed', cartApiController.getLastBuyedProducts)
+router.get('/shopping-cart/productsQuantity', cartApiController.getShoppingCartsProductsQuantity)
+router.get('/shopping-cart/', cartApiController.getShoppingCarts)
+
 
 
 router.get('/users', usersApiController.getUsers)
