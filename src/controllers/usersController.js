@@ -129,7 +129,9 @@ const usersController = {
                             msg: 'Ya existe una cuenta asociada a este correo'
                         },
                     },
-                    oldData: req.body
+                    oldData: req.body,
+                    errorMailExist:null,
+                    errorImage:null
                 });
             }
 
@@ -142,7 +144,9 @@ const usersController = {
                             msg: 'Debes subir solo archivos de imagen (JPG, PNG, GIF)'
                         },
                     },
-                    oldData: req.body
+                    oldData: req.body,
+                    errorMailExist:null,
+                    errorImage:null
                 });
             }
 
