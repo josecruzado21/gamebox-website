@@ -43,6 +43,10 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.STRING(500),
             allowNull: true
         },
+        homeTags: {
+            type: dataTypes.STRING(500),
+            allowNull: true
+        },
         stock: {
             type: dataTypes.INTEGER,
             allowNull: false
