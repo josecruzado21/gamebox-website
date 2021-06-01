@@ -3,21 +3,18 @@
 
 <head>
     <%- include('../../partials/head.ejs') %>
-        <title>
-            <%= title %>
-        </title>
+    <title><%= title %></title>
 </head>
 
 <body>
     <section class="login">
 
         <article class="login-1">
+            <a href="/" target="_self" class="logoBrand">
+                <img src="images/logoColor.svg" alt="Ir a gamebox home">
+            </a>
 
             <div class="formWrapper">
-                <a href="/" target="_self" class="logoBrand">
-                    <img src="images/logoColor.svg" alt="Ir a gamebox home">
-                </a>
-
                 <div class="login-introWrapper">
                     <h1 class="small-title-login">
                         Inicia Sesión
@@ -25,106 +22,55 @@
                     <p class="welcome-login">
                         ¡Bienvenido de nuevo! Ingresa con tu correo electrónico y contraseña
                     </p>
-
-                    <% if (locals.errors && (errors.email && errors.password)) { %>
-                        <div class="generalError">
-                            <p>Completa la siguiente información para continuar:</p>
-                            <div class="closeIcon"></div>
-                        </div>
-                    <% } %>
-
-                    <div class="generalErrorValidation">
-                        <p>Completa la siguiente información para continuar:</p>
-                    </div>
                 </div>
 
                 <div class="form-login">
-                    <form action="/login" method="POST" id="formLogin">
+                    <form action="/login" method="POST">
 
-                        <div class="input-wrapper input-wrapper__email">
-                            <input 
-                                autocomplete="username email"
-                                type="email" 
-                                name="email"
-                                class="input <%= (locals.errors && errors.email) ? 'inputError' : '' %>" 
-                                placeholder=" " 
-                                id="email"
-                                <% if(locals.oldData && oldData.email) { %> 
-                                    value="<%= locals.oldData && oldData.email ? oldData.email : ''  %>"
-                                <% } %>
-                            >
-                            
-                            <label for="email" class="label">
-                                Correo electrónico
-                            </label>
-
+                        <div class="input-wrapper">
+                            <input type="text" name="email" class="input" placeholder="" id="email"  value="<%= locals.oldData && oldData.email ? oldData.email : ''  %>">
+                            <label for="email" class="label">Correo electrónico</label>
+                            <% if (locals.errors && errors.email) { %>
+                                <div style="color:red;">
+                                    <%= errors.email.msg  %> 
+                                </div>
+                               <% } %>
                         </div>
-                        
-                        <span class="errorValidation" id="validationemail">Debes completar tu email</span>
 
-                        <% if (locals.errors && errors.email) { %> 
-                            <p class="inlineError">
-                                <%= errors.email.msg %>
-                            </p>
-                        <% } %> 
-
-                        
-
-                        <div class="input-wrapper input-wrapper__password">
-                            <input 
-                                autocomplete="current-password"
-                                class="input <%= locals.errors && errors.password ? 'inputError' : '' %>" 
-                                type="password" 
-                                name="password" 
-                                placeholder=" "
-                                id="password"
-                                <% if(locals.oldData && oldData.email) { %> 
-                                    value="<%= locals.oldData && oldData.password ? oldData.password : ''  %>"
-                                <% } %>
-                            >
-
-                            <label for="password" class="label" id="label">Contraseña</label>
-                            <span class="icon togglePassword"></span>
-
+                        <div class="input-wrapper">
+                            <input class="input" type="password" name="password" placeholder=""  value="">
+                            <label for="password" class="label" id="label">Password</label>
+                            <span class="icon"></span>
+                            <% if (locals.errors && errors.password) { %>
+                                <div style="color:red;">
+                                    <%= errors.password.msg  %> 
+                                </div>
+                               <% } %>
                         </div>
-                        
-                        <span class="errorValidation" id="validationpassword">Debes ingresar tu contraseña</span>
-                        
-                        <% if(locals.errors && errors.password) {%> 
-                            <p class="inlineError">
-                                <%= errors.password.msg %>
-                            </p>
-                        <% } %>
 
                         <a class="linkSmall" href="#">Recuperar contraseña</a>
 
                         <div class="checkboxWrapper">
-                            <input type="checkbox" name="sesion" id="checkboxSesion" class="checkbox">
+                            <input  type="checkbox" name="sesion" id="checkboxSesion" class="checkbox">
                             <label for="checkboxSesion" class="checkboxLabel">Mantener mi sesión
                                 iniciada</label>
                         </div>
 
                         <button class="btn-get-in" type="submit">Ingresa ahora</button>
                     </form>
-
-                    <p class="no-account">¿No tienes una cuenta? <a class="linkNormal" href="/registro">Regístrate</a></p>
                 </div>
             </div>
+
+            <p class="no-account">¿No tienes una cuenta? <a class="linkNormal" href="/registro">Regístrate</a></p>
         </article>
 
         <article class="login-2">
-            <div class="glitchWrapper">
-                <div class="login-img-text">
-                    ¿Qué esperas para vivir <br> tu próxima gran aventura?
-                </div>
+            <div class="login-img-text">
+                ¿Qué esperas para vivir <br> tu próxima gran aventura?
             </div>
         </article>
 
     </section>
-
-    <script src="/js/uiFunctions.js"></script>
-    <script src="/js/formValidations.js"></script>
-    
 </body>
 
 </html>

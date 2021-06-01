@@ -58,8 +58,6 @@ https://trello.com/b/OlDI0UFB/gambox-sprint-4
 
 - Sprint 5: https://jamboard.google.com/d/1GZci6opPdLs50E1FV2wJuqtRLLY8uvD5wPBcmXBIHGA/edit?usp=sharing
 
-- Sprint 6: https://jamboard.google.com/d/1JW5FcED__FaVRruwm5YJeFIK9otoedD_jhHIwzwMOxo/viewer
-
 ## Diseño
 - Figma: https://www.figma.com/file/cxfNzhyACkm0akeE4y2ajh/gameBox?node-id=0%3A1
 

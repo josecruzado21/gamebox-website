@@ -1,4 +1,4 @@
-
+  
 const path = require('path');
 const db = require('../database/models');
 
@@ -20,58 +20,59 @@ const cartController = {
         ShoppingCart.findOne({
             include: [
                 {
-                    model: User,
-                    as: 'userShoppingCart',
+                    model:User,
+                    as : 'userShoppingCart',
                 },
                 {
-                    model: ShoppingCartProduct,
-                    as: 'shoppingCartShoppingCartProducts',
-                    include: [
-                        {
-                            model: Category,
-                            as: 'categories'
-                        },
-                        {
-                            model: Product,
-                            as: 'productShoppingCartProducts'
-                        }
-                    ]
+                  model:ShoppingCartProduct,
+                  as : 'shoppingCartShoppingCartProducts',
+                  include:[
+                      {
+                          model:Category,
+                          as:'categories'
+                      },
+                      {
+                            model:Product,
+                            as:'productShoppingCartProducts'
+                      }
+                  ]
                 }
             ],
             where: {
-                [db.Sequelize.Op.and]: [{ user: user.id }, { shoppingCartStatus: 1 }]
+                [db.Sequelize.Op.and]  : [{user: user.id}, {shoppingCartStatus:1} ]
             },
-        }).then(data => {
+          }).then(data => {
 
-            if (data) {
-                let productsFound = data.shoppingCartShoppingCartProducts;
-                console.log("Productos Encontrados: " + JSON.stringify(productsFound))
+            if(data){
+                let productsFound =  data.shoppingCartShoppingCartProducts;
+                console.log("Productos Encontrados: " +  JSON.stringify(productsFound) )
                 productList = productsFound
 
                 res.render('pages/productCart', {
                     title,
                     productList,
-                    total: data?.totalPrice,
-                    tax: data?.totalPrice * 0.19,
-                    totalBeforeTax: data?.totalPrice - (data?.totalPrice * 0.19),
-                    user:req.session.userLogged
+                    total:data?.totalPrice,
+                    tax:data?.totalPrice*0.19,
+                    totalBeforeTax:data?.totalPrice -(data?.totalPrice*0.19),
+                    user:req.session.userLogged,
                 });
-            } else {
+            }else{
 
 
                 res.render('pages/productCart', {
                     'title': title,
-                    productList,
-                    total: 0,
-                    tax: 0,
-                    totalBeforeTax: 0
+                    productList,   
+                    total:0,
+                    tax:0,
+                    totalBeforeTax:0,
+                    user:req.session.userLogged,
                 });
             }
 
-        })
+            })
             .catch(error => {
-                console.log(error)
-                res.send(error)
+              console.log(error)
+              res.send(error)
             })
 
 

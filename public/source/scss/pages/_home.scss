@@ -137,7 +137,7 @@
     width: 70%;
     margin:auto;
     margin-top: 50px;
-    margin-bottom: 50px;
+    margin-bottom: 400px;
 }
 
 .nuevas-aventuras .opcion-aventuras-1{
@@ -343,7 +343,7 @@
 .secciones-pc-gaming .imagen-headphones,.imagen-silla{
     width: 190px;
     position:absolute;
-    bottom:10px;
+    bottom:0px;
     left: 20px;
 
     @include respond-to('desktop'){
@@ -362,6 +362,7 @@
     height: 170px;
     position: relative;
     border-radius: 10px;
+    color: white;
 
     @include respond-to('desktop'){
         height: 215px;
@@ -385,13 +386,8 @@
     padding-right: 50px;
     font-size: 32px;
     font-weight: bold;
-    color: white;
 
 }
-
-//.secciones-pc-gaming .textos-sillas-gamer{
-//    padding-left: 50px;
-//}
 
 .secciones-pc-gaming .headphones{
     background-color: #333333;

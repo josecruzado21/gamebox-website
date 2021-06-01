@@ -136,8 +136,13 @@
 
         .userAccountInfo {
             display: none;
-            position: relative;
         }
+    }
+
+    .userLogout {
+        margin-left: 18px;
+        font-size: 24px;
+        color: white;
     }
 
     @include respond-to('tablet') {
@@ -145,7 +150,6 @@
         margin-left: 24px;
         margin-bottom: 0;
         order: 3;
-        position: relative;
 
         .userAccount {
             display: flex;
@@ -161,8 +165,6 @@
                 display: block;
 
                 p {
-                    display: flex;
-                    justify-content: space-between;
                     font-weight: 700;
                     margin: 0;
                     padding: 0;
@@ -388,119 +390,33 @@
 }
 
 .fixed {
-    overflow-y: hidden;
-}
-
-.userMenuParent {
-    background-color: $white;
-    border-radius: 4px;
-    left: 0;
-    margin: 0 auto;
-    position: absolute;
-    top: 80px;
-    right: 0;
-    width: calc(100% - 48px);
-    z-index: 9;
-
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(8px);
-    transition: all .4s ease;
-
-    @include respond-to('tablet') {
-        left: inherit;
-        margin: 0 0;
-        max-width: 270px;
-        right: 0;
-        width: 100%;
-        top: 56px;
-    }
-
-    &::after {
-        content: '';
-        width: 0;
-        height: 0;
-        border-style: solid;
-        border-width: 0 12px 12px 12px;
-        border-color: transparent transparent #ffffff transparent;
-        border-radius: 8px;
-        position: absolute;
-        top: -8px;
-        right: 0px;
-
-        @include respond-to('tablet') {
-            right: 8px;
-        }
-    }
-
-    .userMenu {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-
-        .itemMenu {
-            padding: 12px 24px;
-            border-bottom: 1px solid rgba($darkGrey, 0.1);
-            transition: .2s;
-            
-            &:hover {
-                background-color: rgba($darkGrey, 0.1);
-                overflow: hidden;
-            }
-
-            &:last-child {
-                padding-bottom: 16px;
-                border-bottom: 0;
-            }
-
-            a {
-                color: $darkBlue;
-                display: flex;
-                flex-direction: row;
-                flex-wrap: nowrap;
-                align-items: center;
-                justify-content: space-between;
-                text-decoration: none;
-                transition: .2s;
-
-                img {
-                    width: 24px;
-                }
-            }
-        }
-    }
-}
-
-.userMenuActive {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateY(0);
+    position: fixed;
 }
 
 /* Preguntar a Jaime */
 
-// .fa-stack[data-count]:after {
-//     position: absolute;
-//     right: 0%;
-//     top: 0%;
-//     content: attr(data-count);
-//     font-size: 40%;
-//     padding: .6em;
-//     border-radius: 999px;
-//     line-height: .75em;
-//     color: red;
-//     text-align: center;
-//     min-width: 2em;
-//     font-weight: bold;
-//     background: white;
-//     border-style: solid;
-// }
+.fa-stack[data-count]:after {
+    position: absolute;
+    right: 0%;
+    top: 0%;
+    content: attr(data-count);
+    font-size: 40%;
+    padding: .6em;
+    border-radius: 999px;
+    line-height: .75em;
+    color: red;
+    text-align: center;
+    min-width: 2em;
+    font-weight: bold;
+    background: white;
+    border-style: solid;
+}
 
-// .fa-circle {
-//     color: #DF0000;
-// }
+.fa-circle {
+    color: #DF0000;
+}
 
-// .red-cart {
-//     color: #DF0000;
-//     background: white;
-// }
+.red-cart {
+    color: #DF0000;
+    background: white;
+}
