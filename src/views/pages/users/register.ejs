@@ -52,14 +52,14 @@
                     <div class="input-wrapper">
                         <input class="input" type="text" name="email"  placeholder="" id="email"  value="<%= locals.oldData && oldData.email ? oldData.email : ''  %>">
                         <label for="email" class="label">Correo electrónico</label>
-                        <% if(locals.errors && errors.email && (errorMailExist==null || errorMailExist==undefined) ){ %>
+                        <% if(locals.errors && errors.email ){ %>
                             <div style="color:red;">
                                 <%= errors.email.msg  %>
                             </div>
                         <% } %>
-                        <% if(locals.errors && errorMailExist!=undefined && errorMailExist!=null){ %>
+                        <% if(locals.errors){ %>
                             <div style="color:red;">
-                                <%= errorMailExist  %>
+                                <%=   %>
                             </div>
                         <% } %>
                     </div>
