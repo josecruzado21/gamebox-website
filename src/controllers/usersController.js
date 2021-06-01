@@ -124,6 +124,8 @@ const usersController = {
                 console.log("aca userindb: ");
                 return res.render('pages/users/register', {
                     'title': title,
+                    errorMailExist:'Ya existe una cuenta asociada a este correo',
+                    errorImage:null,
                     errors: {
                         email: {
                             msg: 'Ya existe una cuenta asociada a este correo'
@@ -161,6 +163,8 @@ const usersController = {
 
             req.body.password = bcryptjs.hashSync(req.body.password, 10)
             //res.send(req.body)
+
+            //
             db.User.create({
                 firstName: req.body.name,
                 lastName: req.body.lastName,
