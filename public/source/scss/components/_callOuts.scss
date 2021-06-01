@@ -1,0 +1,18 @@
+.generalError {
+    background-color: #fcede9;
+    border: 1.5px solid $red;
+    border-radius: 4px;
+    margin-bottom: 24px;
+    padding: 16px;
+
+    p {
+        font-size: 1em;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+.generalErrorValidation {
+    @extend .generalError;
+    display: none;
+}

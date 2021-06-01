@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <%- include('../../partials/head.ejs') %>
-    <title><%= title %></title>
+        <title>
+            <%= title %>
+        </title>
 </head>
+
 <body>
 
-    <section class= "register">
+    <section class="register">
 
 
         <article class="register-1">
-            <a href="/" target="_self" class="logoBrand">
-                <img src="images/logoColor.svg" alt="Ir a gamebox home">
-            </a>
-
             <div class="formWrapper">
+                <a href="/" target="_self" class="logoBrand">
+                    <img src="images/logoColor.svg" alt="Ir a gamebox home">
+                </a>
+
 
                 <div class="register-introWrapper">
                     <h1 class="small-title-register">
@@ -23,34 +27,44 @@
                     <p class="register-login">
                         Recibirás un correo electrónico para completar la configuración en unos segundos
                     </p>
+
+                    <div class="generalErrorValidation">
+                        <p>Completa la siguiente información para continuar:</p>
+                    </div>
                 </div>
 
 
             <div class="form-register">
-                <form action="/registro" method="POST" enctype='multipart/form-data'>
-             
-                    <div class="input-wrapper">
-                        <input class="input"  type="text" name="name"  placeholder="" id="name"  value="<%= locals.oldData && oldData.name ? oldData.name : ''%>">
+                <form action="/registro" method="POST" enctype='multipart/form-data' id="formRegister">
+
+                    <div class="input-wrapper input-wrapper__name">
+                        <input class="input"  type="text" name="name"  placeholder=" " id="name"  value="<%= locals.oldData && oldData.name ? oldData.name : ''  %>">
                         <label for="name" class="label">Nombre</label>
-                        <% if(locals.errors && errors.name){ %>
-                            <div style="color:red;">
-                                <%= errors.name.msg  %>
-                            </div>
-                        <% } %>
-                    </div>
- 
-                    <div class="input-wrapper">
-                        <input class="input"  type="text" name="lastName"  placeholder="" id="lastName"  value="<%= locals.oldData && oldData.lastName ? oldData.lastName : '' %>">
-                        <label for="lastName" class="label">Apellido</label>
-                        <% if(locals.errors && errors.lastName){ %>
-                            <div style="color:red;">
-                                <%= errors.lastName.msg  %>
-                            </div>
-                        <% } %>
                     </div>
 
-                    <div class="input-wrapper">
-                        <input class="input" type="text" name="email"  placeholder="" id="email"  value="<%= locals.oldData && oldData.email ? oldData.email : ''  %>">
+                    <span class="errorValidation" id="validationname">Debes ingresar un nombre válido</span>
+
+                    <% if(locals.errors && errors.name){ %>
+                        <p class="inlineError">
+                            <%= errors.name.msg  %>
+                        </p>
+                    <% } %>
+
+                    <div class="input-wrapper input-wrapper__lastName">
+                        <input class="input"  type="text" name="lastName"  placeholder=" " id="lastName"  value="<%= locals.oldData && oldData.lastName ? oldData.lastName : ''  %>">
+                        <label for="lastName" class="label">Apellido</label>
+                    </div>
+
+                    <span class="errorValidation" id="validationlastName">Debes ingresar un Apellido válido</span>
+
+                    <% if(locals.errors && errors.lastName){ %>
+                        <p class="inlineError">
+                            <%= errors.lastName.msg  %>
+                        </p>
+                    <% } %>
+
+                    <div class="input-wrapper input-wrapper__email">
+                        <input autocomplete="username email" class="input" type="email" name="email"  placeholder=" " id="email"  value="<%= locals.oldData && oldData.email ? oldData.email : ''  %>">
                         <label for="email" class="label">Correo electrónico</label>
                         <% if(locals.errors && errors.email ){ %>
                             <div style="color:red;">
@@ -64,35 +78,91 @@
                         <% } %>
                     </div>
 
-                    <div class="input-wrapper">
-                        <input class="input" type="password" name="password" placeholder="" id="password"  value="">
+                    <span class="errorValidation" id="validationemail">Debes ingresar un correo electrónico válido</span>
+
+                    <% if(locals.errors && errors.email && (errorMailExist==null || errorMailExist==undefined) ){ %>
+                        <p class="inlineError">
+                            <%= errors.email.msg  %>
+                        </p>
+                    <% } %>
+
+                    <% if(locals.errors && errorMailExist!=undefined && errorMailExist!=null){ %>
+                        <p class="inlineError">
+                            <%= errorMailExist  %>
+                        </p>
+                    <% } %>
+
+                    <div class="input-wrapper input-wrapper__password">
+                        <input autocomplete="current-password new-password" class="input" type="password" name="password" placeholder=" " id="password"  value="<%= locals.oldData && oldData.password ? oldData.password : ''  %>">
                         <label for="password" class="label" id="label">Password</label>
-                        <span class="icon"></span>
-                        <% if(locals.errors && errors.password){ %>
-                            <div style="color:red;">
-                                <%= errors.password.msg  %>
-                            </div>
-                        <% } %>
+                        <span class="icon togglePassword"></span>
                     </div>
 
-                    <div class="input-wrapper">
-                        <input class="input" type="file" name="image" accept="image/*" id="image">
-                        <label for="image" class="label" id="label">Imagen de perfil</label>
-                        <% if(locals.errors && errors.image && (errorImage==null || errorImage==undefined) ){ %>
-                            <div style="color:red;">
-                                <%= errors.image.msg  %>
+                    <span class="errorValidation" id="validationpassword">Debes completar los requerimientos mínimos</span>
+
+                    <div class="passwordMust">
+                        <p>Tu contraseña debe incluir:</p>
+
+                        <div class="pillGroup">
+
+                            <div class="pill" id="uppercaseRule">
+                                <i class="check"></i>
+                                <span>1 Mayúscula</span>
                             </div>
-                        <% } %>
-                        <% if(locals.errors && errorImage){ %>
-                            <div style="color:red;">
-                                <%= errorImage  %>
+
+                            <div class="pill" id="lowercaseRule">
+                                <i class="check"></i>
+                                <span>1 Minúscula</span>
                             </div>
-                        <% } %>
+
+                            <div class="pill" id="numberRule">
+                                <i class="check"></i>
+                                <span>1 Número</span>
+                            </div>
+
+                            <div class="pill" id="specialcharacterRule">
+                                <i class="check"></i>
+                                <span>1 carácter especial</span>
+                            </div>
+
+                            <div class="pill" id="mincharacterRule">
+                                <i class="check"></i>
+                                <span>6 carácteres</span>
+                            </div>
+                        </div>
                     </div>
+
+                    <% if(locals.errors && errors.password){ %>
+                        <p class="inlineError">
+                            <%= errors.password.msg  %>
+                        </p>
+                    <% } %>
+
+                    <div class="input-file-wrapper">
+                        <p class="sectionTitle">Sube tu imagen de perfil:</p>
+
+                        <input class="input-file input-file-button" type="file" name="image" accept="image/*" id="image">
+
+                    </div>
+
+                    <% if(locals.errors && errors.image && (errorImage == null || errorImage == undefined)){ %>
+                        <p class="inlineError">
+                            <%= errors.image.msg  %>
+                        </p>
+                    <% } %>
+
+                    <% if(locals.errors && errorImage){ %>
+                        <p class="inlineError">
+                            <%= errorImage  %>
+                        </p>
+                    <% } %>
 
                     <div class="checkboxWrapper">
                         <input type="checkbox" name="terms" id="checkboxTerms" class="checkbox">
-                        <label for="checkboxTerms" class="checkboxLabel"> Acepto &nbsp <a class="linkNormal" href="#"> t&c </a> &nbsp del servicio
+                        <label for="checkboxTerms" class="checkboxLabel">
+                            <span>
+                                Acepto <a class="linkNormal" href="#"> términos y condiciones </a> del servicio
+                            </span>
                         </label>
                     </div>
 
@@ -102,22 +172,20 @@
             </div>
 
             </div>
-    
-            <p class="already-account">
-                ¿Ya tienes cuenta? <a class="linkNormal" href="/login">Inicia sesión</a>
-            </p>
         </article>
-    
-        <article class="register-2"> 
-            <div class="register-img-text">        
-                Únete a nuestra comunidad y accede a descuentos exclusivos
+
+        <article class="register-2">
+            <div class="imgWrapper">
+                <div class="register-img-text">
+                    Únete a nuestra comunidad y accede a descuentos exclusivos
+                </div>
             </div>
         </article>
-    
-        </section>
-   
-   
-   
-    
+
+    </section>
+
+    <script src="/js/uiFunctions.js"></script>
+    <script src="/js/formValidations.js"></script>
 </body>
+
 </html>
