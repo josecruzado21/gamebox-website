@@ -66,6 +66,19 @@
                     <div class="input-wrapper input-wrapper__email">
                         <input autocomplete="username email" class="input" type="email" name="email"  placeholder=" " id="email"  value="<%= locals.oldData && oldData.email ? oldData.email : ''  %>">
                         <label for="email" class="label">Correo electrónico</label>
+<<<<<<< HEAD
+                        <% if(locals.errors && errors.email ){ %>
+                            <div style="color:red;">
+                                <%= errors.email.msg  %>
+                            </div>
+                        <% } %>
+                        <% if(locals.errors){ %>
+                            <div style="color:red;">
+                                <%=   %>
+                            </div>
+                        <% } %>
+=======
+>>>>>>> 18bff6a7757e309e94966b7c166260b669c1805f
                     </div>
 
                     <span class="errorValidation" id="validationemail">Debes ingresar un correo electrónico válido</span>
