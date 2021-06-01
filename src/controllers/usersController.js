@@ -158,6 +158,8 @@ const usersController = {
     
             req.body.password=bcryptjs.hashSync(req.body.password,10)
             //res.send(req.body)
+
+            //
             db.User.create({
                 firstName: req.body.name,
                 lastName: req.body.lastName,
