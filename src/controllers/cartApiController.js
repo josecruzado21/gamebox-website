@@ -12,7 +12,7 @@ const Product = db.Product;
 const User = db.User;
 
 let cartApiController = {
-//
+
     createCart:(req,res) => {
         console.log("body crear carrito")
         console.log(req.body)

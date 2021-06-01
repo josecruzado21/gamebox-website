@@ -53,8 +53,7 @@ const cartController = {
                     productList,
                     total: data?.totalPrice,
                     tax: data?.totalPrice * 0.19,
-                    totalBeforeTax: data?.totalPrice - (data?.totalPrice * 0.19),
-                    user:req.session.userLogged
+                    totalBeforeTax: data?.totalPrice - (data?.totalPrice * 0.19)
                 });
             } else {
 
