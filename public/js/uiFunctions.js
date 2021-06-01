@@ -59,59 +59,59 @@ window.addEventListener('load', function () {
     }
 
     // Drag and drop
-    // const dragArea = document.querySelector('.previewWrapper');
-    // const fileButton = document.querySelector('#previewBtn');
-    // const inputButton = document.querySelector('.input-file-button');
-    // let previewDragText = document.querySelector('.previewText');
-    // let file;
+    const dragArea = document.querySelector('.previewWrapper');
+    const fileButton = document.querySelector('#previewBtn');
+    const inputButton = document.querySelector('.input-file-button');
+    let previewDragText = document.querySelector('.previewText');
+    let file;
 
-    // if (dragArea) {
-    //     fileButton.onclick = (e) => {
-    //         e.stopPropagation();
-    //         inputButton.click();
-    //     }
+    if (dragArea) {
+        fileButton.onclick = (e) => {
+            e.stopPropagation();
+            inputButton.click();
+        }
     
-    //     inputButton.addEventListener('change', function() {
-    //         file = this.files[0];
-    //         showFile();
-    //     })
+        inputButton.addEventListener('change', function() {
+            file = this.files[0];
+            showFile();
+        })
 
-    //     dragArea.addEventListener('dragover', (e) => {
-    //         e.preventDefault();
-    //         dragArea.classList.add('previewWrapperActive');
-    //         previewDragText.textContent = "Suelta la imagen para cargarla";
-    //     });
+        dragArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dragArea.classList.add('previewWrapperActive');
+            previewDragText.textContent = "Suelta la imagen para cargarla";
+        });
 
-    //     dragArea.addEventListener('dragleave', () => {
-    //         dragArea.classList.remove('previewWrapperActive');
-    //         previewDragText.textContent = "Selecciona un archivo";
-    //     });
+        dragArea.addEventListener('dragleave', () => {
+            dragArea.classList.remove('previewWrapperActive');
+            previewDragText.textContent = "Selecciona un archivo";
+        });
 
-    //     dragArea.addEventListener('drop', (e) => {
-    //         e.preventDefault();
-    //         // Seleccionamos unicamente el primer archivo en caso de que el usuario suba varios
-    //         file = e.dataTransfer.files[0];
-    //         showFile();
-    //     })
+        dragArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            // Seleccionamos unicamente el primer archivo en caso de que el usuario suba varios
+            file = e.dataTransfer.files[0];
+            showFile();
+        })
 
-    //     function showFile() {
-    //         let fileType = file.type;
-    //         let validExtensions = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
+        function showFile() {
+            let fileType = file.type;
+            let validExtensions = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif']
             
-    //         if(validExtensions.includes(fileType)) {
-    //             let fileReader = new FileReader();
-    //             fileReader.onload = () => {
-    //                 let fileURL = fileReader.result;
-    //                 let imgTag = `<img class="imgUserPreview" src="${fileURL}" alt="">`;
-    //                 dragArea.innerHTML = imgTag;
-    //                 dragArea.classList.add('previewWrapperSelected');
-    //             }
+            if(validExtensions.includes(fileType)) {
+                let fileReader = new FileReader();
+                fileReader.onload = () => {
+                    let fileURL = fileReader.result;
+                    let imgTag = `<img class="imgUserPreview" src="${fileURL}" alt="">`;
+                    dragArea.innerHTML = imgTag;
+                    dragArea.classList.add('previewWrapperSelected');
+                }
 
-    //             fileReader.readAsDataURL(file);
-    //         } else {
-    //             previewDragText.textContent = "Selecciona un archivo";
-    //             dragArea.classList.remove('previewWrapperActive');
-    //         }
-    //     }
-    // }
+                fileReader.readAsDataURL(file);
+            } else {
+                previewDragText.textContent = "Selecciona un archivo";
+                dragArea.classList.remove('previewWrapperActive');
+            }
+        }
+    }
 })
