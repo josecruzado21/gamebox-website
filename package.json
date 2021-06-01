@@ -11,7 +11,6 @@
     "express-session": "^1.17.1",
     "express-validator": "^6.11.1",
     "ibm-watson": "^6.0.4",
-    "lodash": "^4.17.21",
     "method-override": "^3.0.0",
     "moment": "^2.29.1",
     "multer": "^1.4.2",

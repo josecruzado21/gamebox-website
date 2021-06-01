@@ -1,143 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <%- include('../partials/head.ejs') %>
-    <title><%= title %></title>
-  </head>
-  <body>
-    <header> <%- include('../partials/header.ejs') %></header>
 
-    <section class="cart">
-      <article class="cart-1">
-        <h1 class="small-title-cart">Carrito de compras</h1>
-        <a class="linkSmall" href="#">Continuar comprando</a>
-      </article>
+<head>
+  <%- include('../partials/head.ejs') %>
+    <title>
+      <%= title %>
+    </title>
+</head>
+
+<body>
+  <header>
+    <%- include('../partials/header.ejs') %>
+  </header>
+
+  <section class="cart">
+    <article class="cart-1">
+      <h1 class="small-title-cart">Carrito de compras</h1>
+      <a class="linkSmall" href="#">Continuar comprando</a>
+    </article>
 
     <article class="desktop">
 
 
       <section class="desktop-1">
         <article class="cart-2">
-            <section class="products">
-              <div class="cart-titles">
-                <p>
-                    Producto
-                </p>
-                <p>
-                    Cantidad
-                </p>
-                <p>
-                    Precio
-                </p>
-    
-              </div>  
+          <section class="products">
+            <div class="cart-titles">
+              <p>
+                Producto
+              </p>
+              <p>
+                Cantidad
+              </p>
+              <p>
+                Precio
+              </p>
 
-              <% if (productList.length > 0) { %>
-               
-                <% productList.forEach(product => { %>
-                  <article class="product">
-                    <div class="product-1-title">
-                        <p>Producto</p>
-                        <span class="icon-erase">X</span>
+            </div>
+
+            <% if (productList.length> 0) { %>
+
+              <% productList.forEach(product=> { %>
+                <article class="product">
+                  <div class="product-1-title">
+                    <p>Producto</p>
+                    <span class="icon-erase">X</span>
+                  </div>
+                  <div class="product-1">
+                    <img src="/images/products/<%=product.image%>" alt="the last of us 2" />
+                    <div class="product-texts">
+                      <p class="product-title">
+                        <%=product.productShoppingCartProducts.name%>
+                      </p>
+                      <p class="product-subtitle">
+                        <%=product.categories.name%>
+                      </p>
                     </div>
-                    <div class="product-1">
-                      <img
-                        src="/images/products/<%=product.image%>" 
-                        alt="the last of us 2"
-                      />
-                      <div class="product-texts">
-                        <p class="product-title"><%=product.productShoppingCartProducts.name%></p>
-                        <p class="product-subtitle"><%=product.categories.name%></p>
-                      </div>
+                  </div>
+                  <div class="product-2-title">
+                    <p>Cantidad</p>
+                    <p>Precio</p>
+                  </div>
+                  <div class="product-2">
+                    <div class="product-quantity">
+                      <%=product.quantity%>
                     </div>
-                    <div class="product-2-title">
-                        <p>Cantidad</p>
-                        <p>Precio</p>
-                    </div>
-                    <div class="product-2">
-                        <div class="product-quantity"><%=product.quantity%></div>
-                        <p class="product-price">$ <%= new Intl.NumberFormat("es-CO").format(product.price) %></p>
-                    </div>
-                    <!-- <img src="images/icon-close.svg" alt=""> -->
-                    <span class="icon-erase2">X</span>
-        
-                  </article>
+                    <p class="product-price">$ <%= new Intl.NumberFormat("es-CO").format(product.price) %>
+                    </p>
+                  </div>
+                  <!-- <img src="images/icon-close.svg" alt=""> -->
+                  <span class="icon-erase2">X</span>
+
+                </article>
                 <% }) %>
 
 
-              <% } %>
+                  <% } %>
 
-            <section class="payment-methods">
-              <h4 class="small-title-cart">Medios de pago</h4>
-              <div class="payment-methods-types">
-                <img
-                  src="/images/credit-cards.png"
-                  alt="tarjetas de credito"
-                />
-                <!-- <img class="daviplata" src="images/daviplata.png" alt="daviplata" />
+                    <section class="payment-methods">
+                      <h4 class="small-title-cart">Medios de pago</h4>
+                      <div class="payment-methods-types">
+                        <img src="/images/credit-cards.png" alt="tarjetas de credito" />
+                        <!-- <img class="daviplata" src="images/daviplata.png" alt="daviplata" />
                 <img class="nequi" src="images/nequi.png" alt="nequi" /> -->
-              </div>
-            </section>
+                      </div>
+                    </section>
         </article>
       </section>
 
       <section class="desktop-2">
 
         <section class="order-summary">
-            <h4 class="small-title-cart">Resumen de tu orden</h4>
-           
-             <div class="summary">
-                  <p>Productos</p>
-                  <p>$ <%= new Intl.NumberFormat("es-CO").format(totalBeforeTax) %></p>
-             </div>
-             <div class="summary">
-                  <p>Impuesto 19%</p>
-                  <p>$ <%= new Intl.NumberFormat("es-CO").format(tax) %></p>
-             </div>
+          <h4 class="small-title-cart">Resumen de tu orden</h4>
+
+          <div class="summary">
+            <p>Productos</p>
+            <p>$ <%= new Intl.NumberFormat("es-CO").format(totalBeforeTax) %>
+            </p>
+          </div>
+          <div class="summary">
+            <p>Impuesto 19%</p>
+            <p>$ <%= new Intl.NumberFormat("es-CO").format(tax) %>
+            </p>
+          </div>
+          <div class="summary">
+            <p>Envio</p>
+            <p>Gratis</p>
+          </div>
+
+
+
+          <div class="form-cart">
+            <form action="" method="POST">
+              <div class="input-wrapper">
+                <input type="text" name="discount" class="input" placeholder=" " id="discount" />
+                <label for="discount" class="label">¿Tienes un descuento?</label>
+              </div>
               <div class="summary">
-                  <p>Envio</p>
-                  <p>Gratis</p>
+                <p>Total</p>
+                <p>$ <%= new Intl.NumberFormat("es-CO").format(total) %>
+                </p>
               </div>
-  
-           
-  
-            <div class="form-cart">
-              <form action="" method="POST">
-                <div class="input-wrapper">
-                  <input
-                    type="text"
-                    name="discount"
-                    class="input"
-                    placeholder=" "
-                    id="discount"
-                  />
-                  <label for="discount" class="label"
-                    >¿Tienes un descuento?</label
-                  >
-                </div>
-                <div class="summary">
-                  <p>Total</p>
-                  <p>$ <%= new Intl.NumberFormat("es-CO").format(total) %></p>
-              </div>
-  
-  
-                <button class="btn-pay">Proceder con el pago</button>
-              </form>
-            </div>
-          </section>
-  
-          <section class="banner-cart">
-            <p class="banner-txt-1">Preocúpate solo por jugar</p>
-            <p class="banner-txt-2">Envios gratis con compras superiores a $200.000</p>
-            <img src="/images/banner-cart.png" alt="" />
-          </section>
+
+
+              <button class="btn-pay">Proceder con el pago</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="banner-cart">
+          <p class="banner-txt-1">Preocúpate solo por jugar</p>
+          <p class="banner-txt-2">Envios gratis con compras superiores a $200.000</p>
+          <img src="/images/banner-cart.png" alt="" />
+        </section>
       </section>
 
     </article>
 
-    </section>
+  </section>
 
-    <footer><%- include('../partials/footer.ejs') %></footer>
-    <script src="/js/shoppingCart.js"></script>
-  </body>
+  <footer>
+    <%- include('../partials/footer.ejs') %>
+  </footer>
+  <script src="/js/shoppingCart.js"></script>
+</body>
+
 </html>

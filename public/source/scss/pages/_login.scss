@@ -1,7 +1,7 @@
 .login {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
 }
 
@@ -9,90 +9,251 @@
     display: none;
 
     @include respond-to('desktop') {
-        animation: slide 60s infinite;
-        animation-timing-function: ease-out;
-        background: url('../../images/last-of-us2.png') center center no-repeat;
-        background-size: cover;
-        display: flex;
-        height: 100vh;
-        padding: 32px;
-        position: relative;
+        display: block;
+        position: fixed;
+        right: 0;
         width: 60%;
+    }
 
-        .login-img-text {
-            align-self: flex-end;
-            font-family: $primary-font;
-            font-style: normal;
-            font-weight: 700;
-            font-size: 48px;
-            line-height: 56px;
-            color: $white;
-            z-index: 9;
+    .glitchWrapper {
+        @include respond-to('desktop') {
+            background: url('/images/imgTLOUII.png') center center no-repeat;
+            background-size: cover;
+            display: flex;
+            height: 100vh;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+
+            &::after,
+            &::before {
+                content: '';
+                background: inherit;
+                position: absolute;
+                left: 0;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                transform: translateX(10px);
+                animation-duration: 4s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+                animation-fill-mode: forwards;
+                background-blend-mode: difference;
+            }
+
+            &::before {
+                animation-name: glitchAnim1;
+            }
+
+            &::after {
+                animation-name: glitchAnim2;
+            }
+
+            @keyframes glitchAnim1 {
+                0%, 25.1%, 100% {
+                    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+                }
+                4% {
+                    clip-path: polygon(0 0, 100% 0, 100% 10%, 0 10%);
+                }
+                5% {
+                    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                }
+                9% {
+                    clip-path: polygon(0 20%, 100% 20%, 100% 30%, 0 30%);
+                }
+                10% {
+                    clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
+                }
+                14% {
+                    clip-path: polygon(0 40%, 100% 40%, 100% 50%, 0 50%);
+                }
+                15% {
+                    clip-path: polygon(0 40%, 100% 40%, 100% 40%, 0 40%);
+                }
+                19% {
+                    clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%);
+                }
+                20% {
+                    clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
+                }
+                24% {
+                    clip-path: polygon(0 80%, 100% 80%, 100% 90%, 0 90%);
+                    background-color: rgba(255, 0, 0, 0.2);
+                }
+                25% {
+                    clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
+                }
+            }
+
+            @keyframes glitchAnim2 {
+                0%, 25.1%, 100% {
+                    clip-path: polygon(0 0, 0 0, 0 0, 0 0);
+                }
+                4% {
+                    clip-path: polygon(0 80%, 100% 80%, 100% 90%, 0 90%);
+                    background-color: rgba(0, 0, 255, 0.2);
+                }
+                5% {
+                    clip-path: polygon(0 80%, 100% 80%, 100% 80%, 0 80%);
+                    background-color: transparent;
+                }
+                9% {
+                    clip-path: polygon(0 60%, 100% 60%, 100% 70%, 0 70%);
+                }
+                10% {
+                    clip-path: polygon(0 60%, 100% 60%, 100% 60%, 0 60%);
+                }
+                14% {
+                    clip-path: polygon(0 40%, 100% 40%, 100% 50%, 0 50%);
+                }
+                15% {
+                    clip-path: polygon(0 40%, 100% 40%, 100% 40%, 0 40%);
+                }
+                19% {
+                    clip-path: polygon(0 20%, 100% 20%, 100% 30%, 0 30%);
+                }
+                20% {
+                    clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%);
+                }
+                24% {
+                    clip-path: polygon(0 0, 100% 0, 100% 10%, 0 10%);
+                }
+                25% {
+                    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+                }
+            }
+
+            .login-img-text {
+                align-self: flex-end;
+                color: $white;
+                font-family: $primary-font;
+                font-style: normal;
+                font-weight: 700;
+                font-size: 48px;
+                line-height: 56px;
+                padding-left: 32px;
+                padding-bottom: 32px;
+                z-index: 9;
+            }
+        }
+
+        &:after {
+            background: rgb(0, 0, 0);
+            background: linear-gradient(0deg, rgba(0, 0, 0, .3) 10%, rgba(0, 0, 0, 0) 100%);
+            content: '';
+            height: 100vh;
+            left: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
         }
     }
-
-    &:after {
-        background: rgb(0, 0, 0);
-        background: linear-gradient(0deg, rgba(0, 0, 0, .7) 10%, rgba(0, 0, 0, 0) 100%);
-        content: '';
-        height: 100vh;
-        left: 0;
-        position: absolute;
-        top: 0;
-        width: 100%;
-    }
 }
 
-@keyframes slide {
-    0% {
-        background: url('../../images/products/luigui.jpg') center center no-repeat;
-        background-size: cover;
-    }
+// .login-2 {
+//     display: none;
 
-    25% {
-        background: url('../../images/products/cyber.jpg') center center no-repeat;
-        background-size: cover;
-    }
+//     @include respond-to('desktop') {
+//         animation: slide 60s infinite;
+//         animation-timing-function: ease-out;
+//         background: url('../../images/last-of-us2.png') center center no-repeat;
+//         background-size: cover;
+//         display: flex;
+//         height: 100vh;
+//         padding: 32px;
+//         position: fixed;
+//         right: 0;
+//         width: 60%;
 
-    50% {
-        background: url('../../images/products/tomb.jpg') center center no-repeat;
-        background-size: cover;
-    }
+//         .login-img-text {
+//             align-self: flex-end;
+//             font-family: $primary-font;
+//             font-style: normal;
+//             font-weight: 700;
+//             font-size: 48px;
+//             line-height: 56px;
+//             color: $white;
+//             z-index: 9;
+//         }
+//     }
 
-    75% {
-        background: url('../../images/products/last-of-us2.png') center center no-repeat;
-        background-size: cover;
-    }
-}
+//     &:after {
+//         background: rgb(0, 0, 0);
+//         background: linear-gradient(0deg, rgba(0, 0, 0, .7) 10%, rgba(0, 0, 0, 0) 100%);
+//         content: '';
+//         height: 100vh;
+//         left: 0;
+//         position: absolute;
+//         top: 0;
+//         width: 100%;
+//     }
+// }
+
+// @keyframes slide {
+//     0% {
+//         background: url('../../images/products/luigui.jpg') center center no-repeat;
+//         background-size: cover;
+//     }
+
+//     25% {
+//         background: url('../../images/products/cyber.jpg') center center no-repeat;
+//         background-size: cover;
+//     }
+
+//     50% {
+//         background: url('../../images/products/tomb.jpg') center center no-repeat;
+//         background-size: cover;
+//     }
+
+//     75% {
+//         background: url('../../images/products/last-of-us2.png') center center no-repeat;
+//         background-size: cover;
+//     }
+// }
 
 .login-1 {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding: 32px;
-    width: 95%;
+    align-items: flex-start;
+    width: 100%;
+    position: relative;
+    left: 0;
 
-    .logoBrand {
-        align-self: flex-start;
-        margin-bottom: 32px;
-    }
-
-    @include respond-to('tablet') {
-        width: 80%;
+    .formWrapper {
+        height: 100vh;
+        margin: 0 auto;
+        padding: 24px;
+        width: 95%;
 
         .logoBrand {
-            margin-bottom: 180px;
+            display: block;
+            margin-bottom: 32px;
         }
-    }
 
-    @include respond-to('desktop') {
-        padding: 56px 5%;
-        width: 40%;
+        @include respond-to('tablet') {
+            height: 100vh;
+            margin: 0 auto;
+            padding: 56px;
+            width: 80%;
 
-        .logoBrand {
-            align-self: flex-start;
-            margin-bottom: 0;
+            .logoBrand {
+                margin-bottom: 80px;
+            }
+        }
+
+        @include respond-to('desktop') {
+            margin: inherit;
+            padding: 56px;
+            width: 40%;
+
+            .logoBrand {
+                align-self: flex-start;
+                margin-bottom: 80px;
+            }
         }
     }
 }
@@ -136,11 +297,18 @@
     margin-bottom: 24px;
 
     @include respond-to('desktop') {
+        align-self: flex-end;
         margin-bottom: 0;
     }
 }
 
 .no-account {
     margin: 0;
+    margin-top: 8px;
     padding: 0;
+    text-align: center;
+
+    @include respond-to('desktop') {
+        margin-top: 32px;
+    }
 }

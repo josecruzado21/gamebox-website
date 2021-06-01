@@ -80,7 +80,7 @@ module.exports = (sequelize, dataTypes) => {
         })
 
         Product.hasMany(models.ShoppingCartProduct, {
-            as:"productsShoppingCartProducts",
+            as:"products-shoppingCartProducts",
             foreignKey:"product"
         })
 
