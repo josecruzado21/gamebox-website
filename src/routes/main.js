@@ -13,8 +13,8 @@ const {check} = require('express-validator');
 //Validaciones
 const validacionesRegister = [
     check('name')
-    .notEmpty().withMessage('Debe completar el campo nombre!')
-    .isLength({min:2}).withMessage('Tu nombre debe tener al menos 2 carácteres').bail(),
+    .isLength({min:2}).withMessage('Tu nombre debe tener al menos 2 carácteres').bail()
+        .notEmpty().withMessage('Debes completar el campo nombre!'),
         
    
     check('lastName').notEmpty().withMessage('Debes completar el campo apellido!'),

@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const db = require('../database/models');
 
-const { QueryTypes, Sequelize } = require('sequelize');
+const { QueryTypes } = require('sequelize');
 
 
 const ShoppingCart = db.ShoppingCart;
@@ -117,121 +117,6 @@ let cartApiController = {
             res.send(error)
           }  )
     },
-
-    getShoppingCarts:(req,res) => {
-      
-        let status = req.query.status;
-      
-        ShoppingCart.findAll({
-          include: [
-              {
-              model:User,
-              as : 'userShoppingCart',
-            //   where:{
-            //       slug:childCategory
-            //   }
-          },
-            {
-                model:ShoppingCartProduct,
-                as : 'shoppingCartShoppingCartProducts',
-            } ],
-          where: {
-              [db.Sequelize.Op.and]  : [ {shoppingCartStatus:status} ]
-          },
-        })
-          .then(product => {
-  
-            res.json(product)
-          })   .catch(error => {
-            console.log(error)
-            res.send(error)
-          }  )
-    },
-
-    getShoppingCartsProductsQuantity:(req,res) => {
-      
-        let status = req.query.status;
-        let limit = req.query.limit;
-
-        if(limit == undefined || limit == null){
-            limit = 1000;
-        }
-
-        limit = Number(limit)
-
-        db.sequelize.query(
-
-            'SELECT sum(sp.quantity) as total, p.name, p.id, p.price, p.image1, p.image2, c.name as category, pc.name as parentCategory FROM gamebox.shoppingcartproducts sp '+
-            'inner join products p on p.id = sp.product ' +
-            'inner join shoppingcart s on s.id = sp.shoppingCart and s.shoppingCartStatus = :shoppingCartStatus '+
-            'inner join categories c on c.id = p.category '+
-            'inner join categories pc on c.parent_id = pc.id '+
-            'group by product ' +
-            'order by total desc ' +
-            'limit :limit',
-         {
-           type: QueryTypes.SELECT,
-           nest: true,
-           replacements: { shoppingCartStatus: status, limit: limit },
-         }).then(resp => { 
-            let response = JSON.parse(JSON.stringify(resp));
-
-            response.forEach(prd => {
-              prd.img1 =  req.protocol + '://' + req.get('host') +"/images/products/"+prd.image1  
-              prd.img2 =  req.protocol + '://' + req.get('host') +"/images/products/"+prd.image2  
-            });  
-              res.json(response)
-         }).catch(error => {  
-             console.log(error.message);
-             res.send(error)
-           })
-
-        },
-
-
-    getLastBuyedProducts:(req,res) => {
-      
-        let limit = req.query.limit;
-        
-
-        if(limit == undefined || limit == null){
-            limit = 1000;
-        }
-
-        limit = Number(limit)
-
-        db.sequelize.query(
-
-            'SELECT p.name, p.id, p.price, p.image1, p.image2, c.name as category, pc.name as parentCategory FROM gamebox.shoppingcartproducts sp '+
-            'inner join products p on p.id = sp.product ' +
-            'inner join shoppingcart s on s.id = sp.shoppingCart and s.shoppingCartStatus = 3 '+
-            'inner join categories c on c.id = p.category '+
-            'inner join categories pc on c.parent_id = pc.id '+
-            'order by s.date desc ' +
-            'limit :limit',
-         {
-           type: QueryTypes.SELECT,
-           nest: true,
-           replacements: { limit: limit },
-         }).then(resp => { 
-              let response = JSON.parse(JSON.stringify(resp));
-
-              response.forEach(prd => {
-                prd.img1 =  req.protocol + '://' + req.get('host') +"/images/products/"+prd.image1  
-                prd.img2 =  req.protocol + '://' + req.get('host') +"/images/products/"+prd.image2  
-              });  
-
-             
-              res.json(response)
-         }).catch(error => {  
-             console.log(error.message);
-             res.send(error)
-           })
-
-        },
-   
-
-
 
 
 }
