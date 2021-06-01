@@ -162,3 +162,15 @@
     padding: 0;
     text-align: center;
 }
+
+.btnLabel {
+    @extend .btn-secondary;
+    display: block;
+    padding: 16px 24px;
+    width: 100%;
+}
+
+.btnLabel.active {
+    background-color: $red;
+    color: $white;
+}

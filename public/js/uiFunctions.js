@@ -57,4 +57,21 @@ window.addEventListener('load', function () {
             }
         })
     }
+
+    const formRegister = document.querySelector('#formRegister');
+
+    if (formRegister) {
+        let loader = function(e){
+            let file = e.target.files;
+            let show = "<span>Archivo seleccionado: </span>" + file[0].name;
+        
+            let output = document.getElementById('btnLabel');
+            output.innerHTML = show;
+            output.classList.add('active');
+        }
+
+        let fileInput = document.getElementById('image');
+        fileInput.addEventListener('change', loader);
+
+    }
 })
