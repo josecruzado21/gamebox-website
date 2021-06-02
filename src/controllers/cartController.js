@@ -97,13 +97,19 @@ const cartController = {
         }).then(a=>
             {
               console.log("Carrito actualizado!")
-              res.render('pages/successPurchase', {
-                title: title, 
-                user:req.session.userLogged
-                })
+              res.redirect('/thanks')
             }
     
             )
+    },
+
+    thanksPurchase: (req, res) => {
+        
+        res.render('pages/successPurchase', 
+        {
+            title: title, 
+            user:req.session.userLogged
+        });
     },
 };
 
