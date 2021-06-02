@@ -8,12 +8,12 @@ const ShoppingCartProduct = db.ShoppingCartProduct;
 const Product = db.Product;
 const User = db.User;
 const Category = db.Category;
-
+const title = 'Carrito de Compras';
 
 const cartController = {
     cart: (req, res) => {
 
-        let title = 'Carrito de Compras';
+       
         let user = req.session.userLogged;
         let productList = [];
 
@@ -43,6 +43,7 @@ const cartController = {
             },
           }).then(data => {
 
+      
             if(data){
                 let productsFound =  data.shoppingCartShoppingCartProducts;
                 console.log("Productos Encontrados: " +  JSON.stringify(productsFound) )
@@ -55,6 +56,9 @@ const cartController = {
                     tax:data?.totalPrice*0.19,
                     totalBeforeTax:data?.totalPrice -(data?.totalPrice*0.19),
                     user:req.session.userLogged,
+                    cartId:data.id
+
+
                 });
             }else{
 
@@ -77,7 +81,36 @@ const cartController = {
 
 
 
-    }
+    },
+
+    update: async (req, res) => {
+   
+   
+        let id = parseInt(req.params.id);
+        console.log("actualizando carrito")
+        console.log(JSON.stringify(req.body))
+     await ShoppingCart.update({
+            shoppingCartStatus:  3,
+        
+        },{
+            where:{id:id}
+        }).then(a=>
+            {
+              console.log("Carrito actualizado!")
+              res.redirect('/thanks')
+            }
+    
+            )
+    },
+
+    thanksPurchase: (req, res) => {
+        
+        res.render('pages/successPurchase', 
+        {
+            title: title, 
+            user:req.session.userLogged
+        });
+    },
 };
 
 module.exports = cartController;

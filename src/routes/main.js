@@ -74,6 +74,8 @@ let upload = multer({ storage });
 
 router.get('/', mainController.home);
 router.get('/carrito-de-compras', authMiddleware,cartController.cart);
+router.post('/carrito-de-compras/:id', authMiddleware,cartController.update);
+router.get('/thanks', authMiddleware, cartController.thanksPurchase);
 router.get('/login', guestMiddleware, usersController.login);
 router.get('/registro', guestMiddleware, usersController.register);
 router.post('/login', validacionesLogin,  usersController.loginProcess);
