@@ -8,7 +8,7 @@ window.addEventListener('load', () => {
         name: /^[a-zA-ZÀ-ÿ\s]{2,40}$/,
         surname: /^[a-zA-ZÀ-ÿ\s]{2,40}$/,
         email: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        password: /^(?=.*\d)(?=.*[\u0021-\u002b\u003c-\u0040])(?=.*[A-Z])(?=.*[a-z])\S{6,16}$/,
+        password: /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])\S{6,16}$/,
         passwordLogin: /^.{4,}$/
     }
 
@@ -68,8 +68,8 @@ window.addEventListener('load', () => {
                     input.classList.add('inputError');
                 })
 
-                for(let i = 0; i < errorsInLine.length; i++) {
-                    if(!fields.email || !fields.password) {
+                for (let i = 0; i < errorsInLine.length; i++) {
+                    if (!fields.email || !fields.password) {
                         errorsInLine[i].classList.add('showErrorMessage')
                     }
                 }
@@ -86,10 +86,12 @@ window.addEventListener('load', () => {
 
     // Validando form login
     const formRegister = document.querySelector('#formRegister');
-    
-    /* if(formRegister) {
+
+    if (formRegister) {
         const formRegisterInput = document.querySelectorAll('#formRegister input');
         const formRegisterPassword = document.querySelector('#password');
+        const termsConditionsCheck = document.querySelector('#checkboxTerms');
+
         // Representa si el campo esta valido o no
         const fields = {
             name: false,
@@ -146,70 +148,63 @@ window.addEventListener('load', () => {
             const numberRule = document.querySelector('#numberRule');
             const specialcharacterRule = document.querySelector('#specialcharacterRule');
             const mincharacterRule = document.querySelector('#mincharacterRule');
-            
+
             const expRegPassword = {
-                regUppercase : /[A-Z]/g,
-                regLowercase : /[a-z]/g,
-                regnumber : /[0-9]/g,
-                regEspCharacter : /[!@#$%^&*]/g,
-                regMinCarRule : /^.{8,}$/
+                regUppercase: /[A-Z]/g,
+                regLowercase: /[a-z]/g,
+                regnumber: /[0-9]/g,
+                regMinCarRule: /^.{6,}$/
             }
 
-            if(e.target.value.match(expRegPassword.regUppercase)) {
+            if (e.target.value.match(expRegPassword.regUppercase)) {
                 uppercaseRule.classList.add('pillActive');
             } else {
                 uppercaseRule.classList.remove('pillActive');
             }
 
-            if(e.target.value.match(expRegPassword.regLowercase)) {
+            if (e.target.value.match(expRegPassword.regLowercase)) {
                 lowercaseRule.classList.add('pillActive');
             } else {
                 lowercaseRule.classList.remove('pillActive');
             }
 
-            if(e.target.value.match(expRegPassword.regnumber)) {
+            if (e.target.value.match(expRegPassword.regnumber)) {
                 numberRule.classList.add('pillActive');
             } else {
                 numberRule.classList.remove('pillActive');
             }
 
-            if(e.target.value.match(expRegPassword.regEspCharacter)) {
-                specialcharacterRule.classList.add('pillActive');
-            } else {
-                specialcharacterRule.classList.remove('pillActive');
-            }
-
-            if(e.target.value.match(expRegPassword.regMinCarRule)) {
+            if (e.target.value.match(expRegPassword.regMinCarRule)) {
                 mincharacterRule.classList.add('pillActive');
             } else {
                 mincharacterRule.classList.remove('pillActive');
             }
         })
 
+
         // Validación final
         formRegister.addEventListener('submit', (e) => {
             e.stopPropagation();
             let errorsInLine = document.querySelectorAll('.errorValidation');
-            console.log('nombre = ' + fields.name);
-            console.log('apellido = ' + fields.lastName);
-            console.log('email = ' + fields.email);
-            console.log('contraseña = ' + fields.password);
-
-            if (fields.name && fields.lastName && fields.email && fields.password) {
+            
+            if (fields.name && fields.lastName && fields.email && fields.password && termsConditionsCheck.checked) {
                 //
             } else {
                 e.preventDefault();
                 document.querySelector('.generalErrorValidation').classList.add('showErrorMessage');
 
-                // errorsInLine.forEach((error) => {
-                //     error.classList.add('showErrorMessage');
-                // })
+                const checkboxAlert = document.querySelector('.checkboxLabel span');
+                const checkboxAlertLink = document.querySelector('.checkboxLabel span a');
 
-                formRegisterInput.forEach((input) => {
-                    input.classList.add('inputError');
-                })
+                if (termsConditionsCheck.checked) {
+                    checkboxAlert.classList.remove('activeCheckboxError');
+                    checkboxAlertLink.classList.remove('activeCheckboxError');
+                } else {
+                    checkboxAlert.classList.add('activeCheckboxError')
+                    checkboxAlertLink.classList.add('activeCheckboxError')
+                }
             }
 
         })
-    } */
+    }
 })

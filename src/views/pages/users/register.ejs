@@ -110,11 +110,6 @@
                                 <span>1 Número</span>
                             </div>
 
-                            <div class="pill" id="specialcharacterRule">
-                                <i class="check"></i>
-                                <span>1 carácter especial</span>
-                            </div>
-
                             <div class="pill" id="mincharacterRule">
                                 <i class="check"></i>
                                 <span>6 carácteres</span>
@@ -130,8 +125,8 @@
 
                     <div class="input-file-wrapper">
                         
-                            <p class="sectionTitle">Sube tu imagen de perfil:</p>
-                            <input class="input-file input-file-button" type="file" name="image" accept="image/*" id="image">
+                            <label class="btnLabel" for="image" id="btnLabel">Sube tu imagen de perfil</label>
+                            <input class="input-file input-file-button" type="file" name="image" accept="image/*" id="image" hidden>
 
                     </div>
 
@@ -159,6 +154,8 @@
                     <button class="btn-get-in" type='submit'>Crear cuenta</button>
 
                 </form> 
+
+                <p class="no-account">¿Ya tienes una cuenta? <a class="linkNormal" href="/login">Inicia sesión</a></p>
             </div>
 
             </div>
