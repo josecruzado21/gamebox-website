@@ -30,7 +30,7 @@
                       </div>
                 <% } %>
             </div>
-            <button class="button-list"  
+            <button id="myBtn" class="button-list"  
             data-id = <%=products[i].id%>  
             data-price = <%=products[i].price%> 
             data-name= "<%=products[i].name%>"  
@@ -90,7 +90,24 @@
 
         </div>
 
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
 
+            <!-- Modal content -->
+            <div class="modal-content">
+            <span class="close">&times;</span>
+        
+            <div class="bulletStore bulletStoreThree">
+                <img src="/images/iconHelp.svg" alt="">
+                <div class="BulletInfoWrapper">
+                    <h4>Producto añadido exitosamente!</h4>
+                  
+                    <a href="/carrito-de-compras">Ir al carrito</a>
+                </div>
+            </div>
+            </div>
+        
+        </div>
 
     </main>
 
