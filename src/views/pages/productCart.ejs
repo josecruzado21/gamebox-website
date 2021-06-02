@@ -34,10 +34,10 @@
               </div>  
                
                 <% productList.forEach(product => { %>
-                  <article class="product">
+                  <article class="product" id="product-<%=product.id%>">
                     <div class="product-1-title">
                         <p>Producto</p>
-                        <span class="icon-erase">X</span>
+                        <span class="icon-erase" data-cartid =<%=cartId%>  data-id =<%=product.id%> data-price = <%=product.price%>>X</span>
                     </div>
                     <div class="product-1">
                       <img
@@ -63,7 +63,7 @@
                         <p class="product-price">$ <%= new Intl.NumberFormat("es-CO").format(product.price) %></p>
                     </div>
                     <!-- <img src="images/icon-close.svg" alt=""> -->
-                    <span class="icon-erase2">X</span>
+                    <span class="icon-erase2" data-cartid =<%=cartId%>  data-id =<%=product.id%> data-price = <%=product.price%>>X</span>
         
                   </article>
                 <% }) %>
