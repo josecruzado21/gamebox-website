@@ -173,23 +173,41 @@
     }
 }
 
+#search-link{
+    border:none;
+    color:white;
+    background-color: transparent;
+
+    position: absolute;
+    top: 0;
+    border-radius: 5px;
+    right: 20px;
+    //z-index: 2;
+    border: none;
+    top: 10px;
+    height: 30px;
+    cursor: pointer;
+    transform: translateX(2px);
+    
+    //&:after {
+    //    border:none;
+    //    content: '';
+    //    background: url('../images/iconSearch.svg');
+    //    background-size: cover;
+    //    display: block;
+    //    height: 16px;
+    //    position: absolute;
+    //    right: 16px;
+    //    transform: translateY(-50%);
+    //    top: 50%;
+    //    width: 16px;
+    //}
+}
+
 #searchBar {
-    // margin-top: 16px;
+    margin-top: 16px;
     position: relative;
     width: 100%;
-
-    &:after {
-        content: '';
-        background: url('../images/iconSearch.svg');
-        background-size: cover;
-        display: block;
-        height: 16px;
-        position: absolute;
-        right: 16px;
-        transform: translateY(-50%);
-        top: 50%;
-        width: 16px;
-    }
 
     input[type="text"] {
         background-color: rgba($white, 0.1);
