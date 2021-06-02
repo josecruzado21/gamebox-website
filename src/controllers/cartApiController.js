@@ -79,7 +79,7 @@ let cartApiController = {
      {
          where:{id:req.body.id}
      }).then((data)=> {
-             console.log("createCartProduct actualizado por api")
+             console.log("producto en carrito actualizado por api")
              res.json(data)
          })            
          .catch(error => res.send(error))

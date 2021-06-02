@@ -54,7 +54,12 @@
                         <p>Precio</p>
                     </div>
                     <div class="product-2">
-                        <div class="product-quantity"><%=product.quantity%></div>
+                        <!-- <div class="product-quantity"><%=product.quantity%></div> -->
+                        <div class="number">
+                          <span class="minus"  data-cartid =<%=cartId%>  data-id =<%=product.id%> data-price = <%=product.price%>>-</span>
+                          <input readonly id="productQuantity-<%=product.id%>" class="productQuantity" type="text" value=<%=new Number(product.quantity)%>/>
+                          <span class="plus" data-cartid =<%=cartId%> data-id =<%=product.id%> data-price = <%=product.price%>>+</span>
+                        </div>
                         <p class="product-price">$ <%= new Intl.NumberFormat("es-CO").format(product.price) %></p>
                     </div>
                     <!-- <img src="images/icon-close.svg" alt=""> -->
@@ -82,14 +87,18 @@
         <% if (productList.length > 0) { %>
         <section class="order-summary">
             <h4 class="small-title-cart">Resumen de tu orden</h4>
-           
+         
+                
+             <div class="itemsQuantityHide"><%= itemsQuantity %></div>
+             <div class="totalHide"><%= total %></div>
+
              <div class="summary">
                   <p>Productos</p>
-                  <p>$ <%= new Intl.NumberFormat("es-CO").format(totalBeforeTax) %></p>
+                  <p id="beforeTaxShoppingCart">$ <%= new Intl.NumberFormat("es-CO").format(totalBeforeTax) %></p>
              </div>
              <div class="summary">
                   <p>Impuesto 19%</p>
-                  <p>$ <%= new Intl.NumberFormat("es-CO").format(tax) %></p>
+                  <p  id="taxShoppingCart">$ <%= new Intl.NumberFormat("es-CO").format(tax) %></p>
              </div>
               <div class="summary">
                   <p>Envio</p>
@@ -112,7 +121,7 @@
                 </div>
                 <div class="summary">
                   <p>Total</p>
-                  <p>$ <%= new Intl.NumberFormat("es-CO").format(total) %></p>
+                  <p id="totalShoppingCart">$ <%= new Intl.NumberFormat("es-CO").format(total) %></p>
               </div>
   
   

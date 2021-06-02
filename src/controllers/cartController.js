@@ -56,7 +56,8 @@ const cartController = {
                     tax:data?.totalPrice*0.19,
                     totalBeforeTax:data?.totalPrice -(data?.totalPrice*0.19),
                     user:req.session.userLogged,
-                    cartId:data.id
+                    cartId:data.id,
+                    itemsQuantity:data?.itemsQuantity
 
 
                 });
@@ -70,6 +71,7 @@ const cartController = {
                     tax:0,
                     totalBeforeTax:0,
                     user:req.session.userLogged,
+                    itemsQuantity:0
                 });
             }
 
