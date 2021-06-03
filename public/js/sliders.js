@@ -7,4 +7,22 @@ window.addEventListener('load', function () {
             hoverpause: false
         }).mount()
     }
+
+    if (document.querySelector('.glideNewProducts')) {
+        new Glide('.glideNewProducts', {
+            type: 'carousel',
+            startAt: 0,
+            perView: 4,
+            gap: 16,
+            touchRatio: 1,
+            breakpoints: {
+                990: {
+                    perView: 3
+                },
+                600: {
+                    perView: 1
+                }
+            }
+        }).mount()
+    }
 });

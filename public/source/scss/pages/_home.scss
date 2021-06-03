@@ -1,15 +1,28 @@
 //agregando padding para separar del footer
-.home{
-    padding-bottom: 50px;
+.home {
+    margin: 0 auto;
 }
 
 .nuevas-aventuras {
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    justify-content: space-between;
     margin: 80px 24px 0;
-    margin-top: 80px;
+    margin-top: 40px;
+
+    @include respond-to('tablet') {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 991px;
+        margin: 80px auto 0;
+        width: calc(100% - 32px);
+    }
+
+    @include respond-to('desktop') {
+        max-width: 1440px;
+        width: calc(100% - 48px);
+    }
 }
 
 .title-section {
@@ -18,36 +31,132 @@
     font-weight: bold;
     margin-top: 0;
     margin-bottom: 16px;
+
+    @include respond-to('tablet') {
+        margin-bottom: 0;
+    }
 }
 
-.nueva-generacion{
+.container {
+    margin: 0 auto;
+    width: calc(100% - 48px);
+
+    @include respond-to('tablet') {
+        max-width: 991px;
+        width: calc(100% - 32px);
+    }
+
+    @include respond-to('desktop') {
+        max-width: 1440px;
+        width: calc(100% - 48px);
+    }
+}
+
+.newProductSlider {
+    margin-top: 32px;
+    position: relative;
+}
+
+.glideNewProductsBack, .glideNewProductsNext {
+    all: unset;
+    cursor: pointer;
+    position: absolute;
+    transform: translateX(-50%);
+    top: 50%;
+}
+
+.glideNewProductsBack {
+    left: -10px;
+    transform: rotate(180deg);
+}
+
+.glideNewProductsNext {
+    right: -25px;
+}
+
+.thumbWrapper {
+    border: 1px solid rgba($darkGrey, .1);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    min-height: 380px;
+    padding: 16px;
+    width: 100%;
+
+    .thumbGameCover {
+        object-fit: cover;
+        margin: 0 auto 24px;
+        width: 180px;
+    }
+
+    .gameTitle {
+        color: $darkBlue;
+        font-family: $primary-font;
+        font-weight: bold;
+        margin: 0;
+        padding: 0 0 4px;
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+    }
+
+    .thumbPlatform {
+        color: rgba($darkGrey, .5);
+        font-size: .9em;
+        margin: 0;
+        padding: 0;
+    }
+
+    .gamePrice {
+        align-self: baseline;
+        color: $darkGrey;
+        font-weight: bolder;
+        font-size: 1.2em;
+        padding-top: 32px;
+        margin: 0;
+    }
+
+    .cartBtnThumb {
+        background-color: $red;
+        color: $white;
+        margin-top: 32px;
+        padding: 16px 24px;
+    }
+}
+
+.nueva-generacion {
     width: 70%;
-    margin:auto;
+    margin: auto;
+    margin-top: 120px;
     margin-bottom: 100px;
     text-align: center;
 }
 
-.nueva-generacion p{
+.nueva-generacion p {
     font-size: 28px;
     font-weight: bold;
 }
 
-.nueva-generacion .segunda-parte{
-    color:$red;
+.nueva-generacion .segunda-parte {
+    color: $red;
 }
 
 
 
-.imagenes-consolas{
-    margin:auto;
+.imagenes-consolas {
+    margin: auto;
     flex-direction: column;
     display: flex;
     flex-wrap: nowrap;
-    width:70%;
+    width: 70%;
     justify-content: center;
     align-items: center;
 
-    @include respond-to('desktop'){
+    @include respond-to('desktop') {
         width: 80%;
         flex-direction: row;
         flex-wrap: nowrap;
@@ -55,118 +164,128 @@
     }
 }
 
-.imagenes-consolas .consola-1,.consola-2,.consola-3{
+.imagenes-consolas .consola-1,
+.consola-2,
+.consola-3 {
     width: 300px;
     margin-bottom: 100px;
 
-    @include respond-to('tablet'){
-        width:400px;
+    @include respond-to('tablet') {
+        width: 400px;
     }
 
-    @include respond-to('desktop'){
+    @include respond-to('desktop') {
         width: 350px;
     }
 }
 
-.imagenes-consolas .imagen-consola-1,.imagen-consola-2,.imagen-consola-3{
+.imagenes-consolas .imagen-consola-1,
+.imagen-consola-2,
+.imagen-consola-3 {
     width: 100%;
     height: 250px;
-    position:relative;
+    position: relative;
     border-bottom-left-radius: 7px;
     border-bottom-right-radius: 7px;
 
-    @include respond-to('tablet'){
+    @include respond-to('tablet') {
         height: 300px;
 
     }
 }
 
-.imagenes-consolas .imagen-consola-1:hover,.imagen-consola-2:hover,.imagen-consola-3:hover{
-    box-shadow:0px 0px 50px rgb(100, 100, 100);
+.imagenes-consolas .imagen-consola-1:hover,
+.imagen-consola-2:hover,
+.imagen-consola-3:hover {
+    box-shadow: 0px 0px 50px rgb(100, 100, 100);
     cursor: pointer;
 
 }
 
-.imagen-consola-1{
+.imagen-consola-1 {
     background-color: #0464C2;
 }
 
-.imagen-consola-2{
+.imagen-consola-2 {
     background-color: #107C10;
 }
 
-.imagen-consola-3{
+.imagen-consola-3 {
     background-color: #DB0F1C;
 }
 
-.imagenes-consolas .imagen-ps5,.imagen-xbox,.imagen-switch{
+.imagenes-consolas .imagen-ps5,
+.imagen-xbox,
+.imagen-switch {
     width: 250px;
     height: 250px;
-    position:absolute;
+    position: absolute;
     bottom: 60px;
-    left:30px;
+    left: 30px;
 
-    @include respond-to('tablet'){
-        width:250px;
+    @include respond-to('tablet') {
+        width: 250px;
         bottom: 80px;
-        left:80px;
+        left: 80px;
 
     }
 }
 
-.imagenes-consolas .info-consola-1,.info-consola-2,.info-consola-3{
+.imagenes-consolas .info-consola-1,
+.info-consola-2,
+.info-consola-3 {
     text-align: center;
 }
 
-.imagenes-consolas .nombre-consola{
+.imagenes-consolas .nombre-consola {
     font-weight: bold;
     color: $darkBlue;
     font-size: 20px;
 }
 
-.imagenes-consolas .explorar{
+.imagenes-consolas .explorar {
     color: #31B7FB;
 }
 
-.imagenes-consolas .explorar:hover{
+.imagenes-consolas .explorar:hover {
     color: #31B7FB;
     font-weight: 1000;
     cursor: pointer;
 }
 
 // Color al > rojo al costado de Explorar
-.imagenes-consolas .explorar span{
-    color:$red;
+.imagenes-consolas .explorar span {
+    color: $red;
 }
 
 
 //formato al texto PC Gaming
-.pc-gaming{
+.pc-gaming {
     width: 70%;
-    margin:auto;
+    margin: auto;
     text-align: left;
     font-weight: bold;
     font-size: 28px;
-    color:$darkBlue;
+    color: $darkBlue;
     margin-bottom: 70px;
-    
-    @include respond-to('desktop'){
+
+    @include respond-to('desktop') {
         width: 80%;
     }
 }
 
 //formato de los cuadros de pc gaming, todos en versión mobile seran horizontales
 // en versión escritorio serán dos horizontales y uno vertical
-.secciones-pc-gaming{
-    display:flex;
+.secciones-pc-gaming {
+    display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     width: 70%;
-    margin:auto;
+    margin: auto;
     height: 700px;
     justify-content: space-between;
 
-    @include respond-to('desktop'){
+    @include respond-to('desktop') {
         flex-direction: row;
         flex-wrap: nowrap;
         width: 80%;
@@ -176,49 +295,52 @@
 }
 
 //formato al div que contiene cuadros de hedphones y monitores
-.headphones-monitores{
+.headphones-monitores {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: space-between;
     height: 437px;
 
-    @include respond-to('desktop'){
+    @include respond-to('desktop') {
         width: 60%;
-        height: 90%;     
+        height: 90%;
     }
 }
 
 //tamaño de las imagenes de la seccion pc gaming
 
-.secciones-pc-gaming .headphones-monitores img{
+.secciones-pc-gaming .headphones-monitores img {
     width: 190px;
-    position:absolute;
-    bottom:40px;
+    position: absolute;
+    bottom: 40px;
     left: 25px;
 
-    @include respond-to('desktop'){
-        width:250px;
-        bottom:50px;
+    @include respond-to('desktop') {
+        width: 250px;
+        bottom: 50px;
     }
 
 }
 
-.secciones-pc-gaming .imagen-headphones,.imagen-silla{
+.secciones-pc-gaming .imagen-headphones,
+.imagen-silla {
     width: 190px;
-    position:absolute;
-    bottom:0px;
+    position: absolute;
+    bottom: 0px;
     left: 20px;
 
-    @include respond-to('desktop'){
-        width:250px;
+    @include respond-to('desktop') {
+        width: 250px;
         bottom: 30px;
     }
 
 }
 
 //colores a los fondos de cada uno de los cuadros de la seccion pc gaming
-.secciones-pc-gaming .headphones,.monitores,.sillas-gamer{
+.secciones-pc-gaming .headphones,
+.monitores,
+.sillas-gamer {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -228,24 +350,26 @@
     border-radius: 10px;
     color: white;
 
-    @include respond-to('desktop'){
+    @include respond-to('desktop') {
         height: 215px;
     }
 }
 
-.secciones-pc-gaming .headphones:hover, .monitores:hover,.sillas-gamer:hover{
+.secciones-pc-gaming .headphones:hover,
+.monitores:hover,
+.sillas-gamer:hover {
     cursor: pointer;
-    box-shadow:0px 0px 50px rgb(100, 100, 100);
+    box-shadow: 0px 0px 50px rgb(100, 100, 100);
 }
 
-.secciones-pc-gaming .sillas-gamer{
-    @include respond-to('desktop'){
+.secciones-pc-gaming .sillas-gamer {
+    @include respond-to('desktop') {
         height: 90%;
-        width:37%;
+        width: 37%;
     }
 }
 
-.secciones-pc-gaming p{
+.secciones-pc-gaming p {
     align-self: flex-end;
     padding-right: 50px;
     font-size: 32px;
@@ -253,24 +377,24 @@
 
 }
 
-.secciones-pc-gaming .headphones{
+.secciones-pc-gaming .headphones {
     background-color: #333333;
 }
 
-.secciones-pc-gaming .monitores{
+.secciones-pc-gaming .monitores {
     background-color: #043C60;
 }
 
-.secciones-pc-gaming .sillas-gamer{
+.secciones-pc-gaming .sillas-gamer {
     background-color: #F1A72A;
 }
 
-a{
+a {
     text-decoration: none;
-    color:white;
+    color: white;
 }
 
 #ofertas {
     text-decoration: none;
-    color:white;
+    color: white;
 }
