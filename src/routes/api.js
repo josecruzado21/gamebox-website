@@ -29,7 +29,6 @@ router.get('/shopping-cart/productsQuantity', cartApiController.getShoppingCarts
 router.get('/shopping-cart/', cartApiController.getShoppingCarts)
 
 
-
 router.get('/users', usersApiController.getUsers)
 router.get('/users/:id', usersApiController.getUserDetail)
 

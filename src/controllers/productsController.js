@@ -146,7 +146,8 @@ let productsController = {
                  console.log(error.message);
                  res.render('pages/error', {
                    title: title,
-                   user:req.session.userLogged
+                   user:req.session.userLogged,
+                   parentCategory: parentCategory
                  
                    })
                })
@@ -184,9 +185,11 @@ let productsController = {
                    res.render('pages/products/productNotFound', {
                        'title': 'Sin resultados',
                        'description':'Lo sentimos no encontramos productos',
-                       user:req.session.userLogged
+                       user:req.session.userLogged,
+                       parentCategory: parentCategory,
                    })
                }else{
+                  console.log('a');
                    res.render('pages/products/productList', {
                        title: title, 
                        products:prds,
@@ -205,7 +208,8 @@ let productsController = {
                  console.log(error.message);
                  res.render('pages/error', {
                    title: title,
-                   user:req.session.userLogged
+                   user:req.session.userLogged,
+                   parentCategory: parentCategory
                  
                    })
                })
@@ -232,7 +236,8 @@ let productsController = {
                  console.log(error.message);
                  res.render('pages/error', {
                    title: title,
-                   user:req.session.userLogged
+                   user:req.session.userLogged,
+                   parentCategory: parentCategory
                  
                    })
                })
@@ -269,10 +274,11 @@ let productsController = {
                 res.render('pages/products/productNotFound', {
                     'title': 'Sin resultados',
                     'description':'Lo sentimos no encontramos productos',
-                    user:req.session.userLogged
+                    user:req.session.userLogged,
+                    parentCategory: parentCategory
                 })
             }else{
-                console.log(count);
+                console.log('b');
                 res.render('pages/products/productList', {
                     title: title, 
                     products:prds,
@@ -292,7 +298,8 @@ let productsController = {
               console.log(error.message);
               res.render('pages/error', {
                 title: title,
-                user:req.session.userLogged
+                user:req.session.userLogged,
+                parentCategory: parentCategory
               
                 })
             })
@@ -323,7 +330,8 @@ let productsController = {
                 console.log(error.message);
                 res.render('pages/error', {
                   title: title ,
-                  user:req.session.userLogged
+                  user:req.session.userLogged,
+                  parentCategory: parentCategory
                 
                   })
               });
@@ -341,6 +349,7 @@ let productsController = {
             '`Product`.`edition`, `Product`.`stock`, `Product`.`isNew`, ' +
             '`Product`.`rawInfo`, ' +
             '`Product`.`slug`, ' +
+            '`Product`.`homeTags`, ' +
             '`categories`.`id` AS `categories.id`, ' +
             '`categories`.`name` AS `categories.name`, ' +
             '`categories`.`slug` AS `categories.slug`, ' +
@@ -348,7 +357,7 @@ let productsController = {
             '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
             'FROM `products` AS `Product` ' +
             'LEFT OUTER JOIN `categories` AS `categories` ' +
-            'ON `Product`.`category` = `categories`.`id`' + 
+            'ON `Product`.`category` = `categories`.`id`'+
             'where (select slug from categories as c2 where categories.parent_id = c2.id) = :parentCategory ' +
             'limit 10 offset :offset'
             , 
@@ -364,7 +373,8 @@ let productsController = {
                     res.render('pages/products/productNotFound', {
                         'title': 'Sin resultados',
                         'description':'Lo sentimos no encontramos productos',
-                        user:req.session.userLogged
+                        user:req.session.userLogged,
+                        parentCategory: parentCategory
                     })
                 }else{
                     console.log(count)
@@ -386,7 +396,8 @@ let productsController = {
                 console.log(error.message);
                 res.render('pages/error', {
                   title: title ,
-                  user:req.session.userLogged
+                  user:req.session.userLogged,
+                  parentCategory: parentCategory
                 
                   })
               });
@@ -417,7 +428,8 @@ let productsController = {
                 console.log(error.message);
                 res.render('pages/error', {
                   title: title,
-                  user:req.session.userLogged
+                  user:req.session.userLogged,
+                  parentCategory: parentCategory
                 
                   })
               });
@@ -461,9 +473,11 @@ let productsController = {
                             res.render('pages/products/productNotFound', {
                                 'title': 'Sin resultados',
                                 'description':'Lo sentimos no encontramos productos',
-                                user:req.session.userLogged
+                                user:req.session.userLogged,
+                                parentCategory: parentCategory
                             })
                         }else{
+                            console.log('d');
                             res.render('pages/products/productList', {
                                 title: title, 
                                 products:prds,
@@ -484,7 +498,8 @@ let productsController = {
                 console.log(error.message);
                 res.render('pages/error', {
                   title: title,
-                  user:req.session.userLogged
+                  user:req.session.userLogged,
+                  parentCategory: parentCategory
                 
                   })
               });
@@ -962,6 +977,87 @@ let productsController = {
         }).then(res.redirect("/productos"))
         
     },
+
+    ofertas: async (req,res) => {
+
+      let title = 'Gamebox | Lista de Productos ';
+       
+      let queryString = req.query.search; 
+
+      let page = req.query.page;
+
+      let offset = 0;
+
+      let count = 1;
+
+      let pagesNumber = 1;
+
+      if(page == null || page ==undefined){
+        page =1
+      }else if(page > 1){
+          offset = (page - 1 )*10;
+      }
+
+
+
+      let parentCategory = req.params.ofertas;
+      let childCategory = req.params.childCategory;
+
+      let valor=0;
+      if (parentCategory=='ofertas'){
+        valor=1;
+      }else if (parentCategory=='lanzamientos') {
+        valor=2      
+      } else if (parentCategory=='recomendados'){
+        valor=3
+      } else if(parentCategory=='masvendidos'){
+        valor=4
+      }
+
+
+    db.sequelize.query('SELECT `Product`.`id`,' + 
+    '`Product`.`name`,' +  
+    '`Product`.`description`,' +  
+    '`Product`.`price`, ' +
+    '`Product`.`image1`, ' +
+    '`Product`.`image2`, ' +
+    '`Product`.`category`, ' +
+    '`Product`.`hasEdition`, ' +
+    '`Product`.`edition`, `Product`.`stock`, `Product`.`isNew`, ' +
+    '`Product`.`rawInfo`, ' +
+    '`Product`.`slug`, ' +
+    '`Product`.`homeTags`, ' +
+    '`categories`.`id` AS `categories.id`, ' +
+    '`categories`.`name` AS `categories.name`, ' +
+    '`categories`.`slug` AS `categories.slug`, ' +
+    '(select name from categories as c2 where categories.parent_id = c2.id) as `categories.parent_name`,' +
+    '(select slug from categories as c2 where categories.parent_id = c2.id) as `categories.parent_slug`' +
+    'FROM `products` AS `Product` ' +
+    'LEFT OUTER JOIN `categories` AS `categories` ' +
+    'ON `Product`.`category` = `categories`.`id`'+
+    
+    'where  `Product`.`homeTags`= :oferta',
+       {
+         type: QueryTypes.SELECT,
+         nest:true,
+         replacements: { oferta: valor}
+       }).then(prds => {
+        res.render('pages/products/productList', {
+          title: title, 
+          products:prds,
+          user:req.session.userLogged,
+          count,
+          pagesNumber:pagesNumber,
+          page:page,
+          parentCategory:parentCategory,
+          childCategory:childCategory,
+          queryString:queryString
+          })
+         }
+       ).catch(error => {  
+           res.send(error.message);
+         })
+    }
 }
 
 module.exports = productsController;
