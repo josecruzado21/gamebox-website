@@ -30,17 +30,56 @@ const mainController = {
                
             ],
         })
-            .then(products => {
+            .then(productsBanner => {
                 console.log("products banner")
-              console.log(products)
+                console.log(productsBanner)
             //  res.json(products)
 
-              res.render('pages/index', 
-              {
-                  'title': title,
-                  'user' : req.session.userLogged,
-                   productsBanner:products
-              });
+
+            Product.findAll({limit : 6,
+                include: [{
+                    model:Category,
+                    as : 'categories',
+                    include: [{
+                        model:Category,
+                        as : 'parentCategory',
+                        
+                    } ],
+                } ],
+                where: {
+                    homeTags: {
+                        [Op.like]: '%slider%'
+                      }
+                },
+                order: [
+                    ['id', 'DESC']
+                   
+                ],
+            })
+                .then(productsSlider => {
+                    console.log("products banner")
+                    console.log(productsSlider)
+                //  res.json(products)
+    
+    
+    
+                  res.render('pages/index', 
+                  {
+                      'title': title,
+                      'user' : req.session.userLogged,
+                       productsBanner,
+                       productsSlider
+                  });
+    
+                })   
+
+
+            //   res.render('pages/index', 
+            //   {
+            //       'title': title,
+            //       'user' : req.session.userLogged,
+            //        productsBanner:products
+            //   });
 
             })
 
