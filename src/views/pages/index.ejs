@@ -29,7 +29,7 @@
                 <p class="bannerName"><%=product.name %></p>
                 <h2 class="bannerTitle"><%=product.description %></h2>
                 <p class="available"><%=product.categories.name %></p>
-                <p class="price"><%=product.price %></p>
+                <p class="price">$ <%= new Intl.NumberFormat("es-CO").format(product.price)  %>  </p>
               </div>
               <div>
                 <a href="/productos/<%=product.categories.parentCategory.slug %>/<%=product.categories.slug %>/<%=product.slug %>" class="btn-secondary detailBanner">Ver detallles</a>
@@ -65,17 +65,22 @@
       <div class="glideNewProducts">
         <div class="glide__track" data-glide-el="track">
           <ul class="glide__slides">
-            <li class="glide__slide">
-              <div class="thumbWrapper">
-                <img src="/images/re8-cover-ps5.jpeg" class="thumbGameCover" alt="">
-                <p class="gameTitle">Resident Evil Village</p>
-                <p class="thumbPlatform">Play Station 5</p>
-                <p class="gamePrice">$200.000</p>
-                <a class="cartBtnThumb" href="#">Añadir al carrito</a>
-              </div>
-            </li>
+         
+         <% productsSlider.forEach(product => { %>
+          <li class="glide__slide">
+            <div class="thumbWrapper">
+              <img src="/images/products/<%= product.image2 %>" class="thumbGameCover" alt="">
+              <p class="gameTitle"><%= product.name %></p>
+              <p class="thumbPlatform"><%=product.categories.name %></p>
+              <p class="gamePrice">$ <%= new Intl.NumberFormat("es-CO").format(product.price)  %></p>
+              <a class="cartBtnThumb" href="#">Añadir al carrito</a>
+            </div>
+          </li>
+         <% }) %>
+         
 
-            
+
+
             <!-- <li class="glide__slide">
               <div class="thumbWrapper">
                 <img src="/images/ittakestwo-cover-ps4.jpeg" class="thumbGameCover" alt="">

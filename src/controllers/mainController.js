@@ -59,7 +59,7 @@ const mainController = {
                 .then(productsSlider => {
                     console.log("products banner")
                     console.log(productsSlider)
-                //  res.json(products)
+                  //  res.json(productsSlider)
     
     
     
@@ -74,21 +74,11 @@ const mainController = {
                 })   
 
 
-            //   res.render('pages/index', 
-            //   {
-            //       'title': title,
-            //       'user' : req.session.userLogged,
-            //        productsBanner:products
-            //   });
 
             })
 
      
-        // res.render('pages/index', 
-        // {
-        //     'title': title,
-        //     'user' : req.session.userLogged,
-        // });
+ 
     },
 };
 
