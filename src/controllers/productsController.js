@@ -894,21 +894,19 @@ let productsController = {
         let secondImage = null;
         let bannerImage = null;
 
-        if(req.body.bannerImage!=undefined && req.body.bannerImage!=null){
-          bannerImage = req.body.bannerImage;
-        }
 
-        if (req.body.mainImage==undefined || req.body.secondImage==null){
-            mainImage = productFound.image1
-            secondImage = productFound.image2
+          bannerImage  = files.find(f=>f.fieldname == 'bannerImage').originalname
+          console.log("bannerImage")
+          console.log(bannerImage)
+          
+          mainImage = files.find(f=>f.fieldname == 'mainImage').originalname
+          console.log("mainImage")
+          console.log(mainImage)
+           
+          secondImage = files.find(f=>f.fieldname == 'secondImage').originalname
+          console.log("secondImage")
+          console.log(secondImage)
 
-        } else{
-            console.log(files);
-             mainImage = files.find(f=>f.fieldname == 'mainImage').originalname
-            console.log(mainImage)
-             secondImage = files.find(f=>f.fieldname == 'secondImage').originalname
-            console.log(secondImage)
-        }
         
         //let products = fs.readFileSync(productsPath, 'utf-8');
         //products = JSON.parse(products);
@@ -920,7 +918,7 @@ let productsController = {
             'price':  Number(req.body.price),
             'image1': mainImage,
             'image2': secondImage,
-             'bannerImage':bannerImage,
+            'bannerImage':bannerImage,
             'category': req.body.subcategory,
             'hasEdition': req.body.hasEdition,
             'edition': editionArr,
@@ -949,9 +947,9 @@ let productsController = {
             slug: req.body.slug,
             description:req.body.description,
             price:  Number(req.body.price),
-            image1: mainImage.originalname,
-            image2: secondImage.originalname,
-            bannerImage: bannerImage==null ? null : bannerImage.originalname,
+            image1: mainImage,
+            image2: secondImage,
+            bannerImage: bannerImage==null ? null : bannerImage,
             category: req.body.subcategory,
             hasEdition: req.body.hasEdition,
             homeTags: req.body.homeTags,
