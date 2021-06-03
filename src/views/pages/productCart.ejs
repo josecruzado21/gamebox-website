@@ -10,7 +10,7 @@
     <section class="cart">
       <article class="cart-1">
         <h1 class="small-title-cart">Carrito de compras</h1>
-        <a class="linkSmall" href="#">Continuar comprando</a>
+        <a class="linkSmall" href="/productos">Continuar comprando</a>
       </article>
 
     <article class="desktop">
@@ -18,6 +18,7 @@
 
       <section class="desktop-1">
         <article class="cart-2">
+          <% if (productList.length > 0) { %>
             <section class="products">
               <div class="cart-titles">
                 <p>
@@ -31,14 +32,12 @@
                 </p>
     
               </div>  
-
-              <% if (productList.length > 0) { %>
                
                 <% productList.forEach(product => { %>
-                  <article class="product">
+                  <article class="product" id="product-<%=product.id%>">
                     <div class="product-1-title">
                         <p>Producto</p>
-                        <span class="icon-erase">X</span>
+                        <span class="icon-erase" data-cartid =<%=cartId%>  data-id =<%=product.id%> data-price = <%=product.price%>>X</span>
                     </div>
                     <div class="product-1">
                       <img
@@ -55,17 +54,22 @@
                         <p>Precio</p>
                     </div>
                     <div class="product-2">
-                        <div class="product-quantity"><%=product.quantity%></div>
+                        <!-- <div class="product-quantity"><%=product.quantity%></div> -->
+                        <div class="number">
+                          <span class="minus"  data-cartid =<%=cartId%>  data-id =<%=product.id%> data-price = <%=product.price%>>-</span>
+                          <input readonly id="productQuantity-<%=product.id%>" class="productQuantity" type="text" value=<%=new Number(product.quantity)%>/>
+                          <span class="plus" data-cartid =<%=cartId%> data-id =<%=product.id%> data-price = <%=product.price%>>+</span>
+                        </div>
                         <p class="product-price">$ <%= new Intl.NumberFormat("es-CO").format(product.price) %></p>
                     </div>
                     <!-- <img src="images/icon-close.svg" alt=""> -->
-                    <span class="icon-erase2">X</span>
+                    <span class="icon-erase2" data-cartid =<%=cartId%>  data-id =<%=product.id%> data-price = <%=product.price%>>X</span>
         
                   </article>
                 <% }) %>
-
-
-              <% } %>
+           
+            </section>
+            <% } %>
 
             <section class="payment-methods">
               <h4 class="small-title-cart">Medios de pago</h4>
@@ -74,35 +78,35 @@
                   src="/images/credit-cards.png"
                   alt="tarjetas de credito"
                 />
-                <!-- <img class="daviplata" src="images/daviplata.png" alt="daviplata" />
-                <img class="nequi" src="images/nequi.png" alt="nequi" /> -->
               </div>
             </section>
         </article>
       </section>
 
       <section class="desktop-2">
-
+        <% if (productList.length > 0) { %>
         <section class="order-summary">
             <h4 class="small-title-cart">Resumen de tu orden</h4>
-           
+         
+                
+             <div class="itemsQuantityHide"><%= itemsQuantity %></div>
+             <div class="totalHide"><%= total %></div>
+
              <div class="summary">
                   <p>Productos</p>
-                  <p>$ <%= new Intl.NumberFormat("es-CO").format(totalBeforeTax) %></p>
+                  <p id="beforeTaxShoppingCart">$ <%= new Intl.NumberFormat("es-CO").format(totalBeforeTax) %></p>
              </div>
              <div class="summary">
                   <p>Impuesto 19%</p>
-                  <p>$ <%= new Intl.NumberFormat("es-CO").format(tax) %></p>
+                  <p  id="taxShoppingCart">$ <%= new Intl.NumberFormat("es-CO").format(tax) %></p>
              </div>
               <div class="summary">
                   <p>Envio</p>
                   <p>Gratis</p>
               </div>
   
-           
-  
             <div class="form-cart">
-              <form action="" method="POST">
+              <form action="/carrito-de-compras/<%= cartId %>" method="POST">
                 <div class="input-wrapper">
                   <input
                     type="text"
@@ -117,15 +121,17 @@
                 </div>
                 <div class="summary">
                   <p>Total</p>
-                  <p>$ <%= new Intl.NumberFormat("es-CO").format(total) %></p>
+                  <p id="totalShoppingCart">$ <%= new Intl.NumberFormat("es-CO").format(total) %></p>
               </div>
   
   
                 <button class="btn-pay">Proceder con el pago</button>
               </form>
             </div>
+               
+
           </section>
-  
+          <% } %>  
           <section class="banner-cart">
             <p class="banner-txt-1">Preocúpate solo por jugar</p>
             <p class="banner-txt-2">Envios gratis con compras superiores a $200.000</p>

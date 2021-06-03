@@ -37,6 +37,7 @@ CREATE TABLE `Products` (
 	`category` INT NOT NULL,
 	`hasEdition` INT NOT NULL DEFAULT 0,
 	`edition` varchar(500),
+	`homeTags` varchar(500),
 	`stock` INT NOT NULL,
 	`isNew` INT NOT NULL DEFAULT 1,
 	`rawInfo` INT DEFAULT NULL,

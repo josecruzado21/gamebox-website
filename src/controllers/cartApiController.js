@@ -49,6 +49,8 @@ let cartApiController = {
     },
 
 
+
+
     createCartProduct:(req,res) => {
         console.log("body crear producto-carrito")
         console.log(req.body)
@@ -79,12 +81,25 @@ let cartApiController = {
      {
          where:{id:req.body.id}
      }).then((data)=> {
-             console.log("createCartProduct actualizado por api")
+             console.log("producto en carrito actualizado por api")
              res.json(data)
          })            
          .catch(error => res.send(error))
     },
 
+    deleteCartProduct:(req,res) => {
+      console.log("body borrar producto-carrito")
+      console.log(req.body)
+
+      ShoppingCartProduct.destroy(
+   {
+       where:{id:req.body.id}
+   }).then((data)=> {
+           console.log("producto en carrito eliminado por api")
+           res.json(data)
+       })            
+       .catch(error => res.send(error))
+  },
 
     getCart:(req,res) => {
       

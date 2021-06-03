@@ -5,7 +5,7 @@ const mainController = {
         res.render('pages/index', 
         {
             'title': title,
-            'user' : req.session.userLogged
+            'user' : req.session.userLogged,
         });
     },
 };
