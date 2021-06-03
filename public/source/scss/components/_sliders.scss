@@ -32,6 +32,7 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    position: inherit;
     width: 100%;
 
     @include respond-to('tablet') {
@@ -151,6 +152,7 @@
         .glide__bullet--active {
             background-color: $red !important;
             border-top: 4px solid $lightBlue;
+            font-weight: bold;
         }
     }
 }

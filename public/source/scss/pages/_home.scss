@@ -3,157 +3,21 @@
     padding-bottom: 50px;
 }
 
-//espacio donde irá la imagen del inicio, en la que aparecerá el boton de comprar
-.container-images-slider{
-    display: block;
-    margin:0;
-    width: 100%;
-    height: 300px;
-    position:relative;
-
-    @include respond-to('tablet'){
-        height: 500px;
-    }
-}
-
-
-//imagen del inicio
-.container-images-slider img{
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
-
-    @include respond-to('tablet'){
-
-        height: 100%;
-    }
-
-}
-
-//formato de la caja que irá encima de la imagen. 
-//En esta estará el nombre del juego y el botón comprar.
-.titulo-juego-home{
+.nuevas-aventuras {
     display: flex;
     flex-direction: column;
-    background-color: $red;
-    position:absolute;
-    bottom:50px;
-    right:20px;
-    width:150px;
-    height: 120px;
-    font-size: 15px;
-    border-radius: 5px;
-
-    @include respond-to('tablet'){
-        font-size: 15px;
-        width:250px;
-        height: 200px;
-        right:100px;
-        bottom:90px;
-    }
-}
-
-//formato del texto dentro de la caja encima de la imagen en el home.
-.titulo-juego-home p{
-    font-size: 20px;
-    padding-right:10px;
-    padding-left: 10px;
-    color:white;
-
-    @include respond-to('tablet'){
-        font-size: 30px;
-    }
-
-}
-
-//formato del botón de la caja de la imagen principal del inicio
-.boton-juego-home{
-    width:80%;
-    align-self: center;
-    color:$red;
-    font-weight: bold;
-
-    @include respond-to('tablet'){
-        padding:10px;
-        position:relative;
-        top:20px;
-    }
-
-}
-
-.boton-juego-home:hover{
-    border:solid 2px black;
-    cursor: pointer;
-}
-
-
-//formato al contenedor que tendrá las opciones del menú de inicio
-.barra-opciones-home{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    background-color: $darkBlue;
-    border-top: none;
-    height:60px;
-    color:white;
-    align-items: center;
-    padding-top:0;
-    padding-bottom: 0;
-    font-size: 14px;
-    border-radius: 5px;
-
-    @include respond-to('tablet'){
-        width: 70%;
-        margin: auto;
-        position:relative;
-        bottom: 30px;
-    }
-}
-
-//formato a cada una de las opciones que compone la barra de inicio
-//estas son: Lanzamientos, Ofertas, Recomendados, Más Vendidos
-.barra-opciones-home div{
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
-
-.barra-opciones-home div:hover{
-    background-color: $red;
-    border-top: solid 3px #31B7FB;
-    cursor: pointer;
-}
-
-.nuevas-aventuras{
-    display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
-    width: 70%;
-    margin:auto;
-    margin-top: 50px;
-    margin-bottom: 400px;
+    margin: 80px 24px 0;
+    margin-top: 80px;
 }
 
-.nuevas-aventuras .opcion-aventuras-1{
-    color:$darkBlue;
-    font-size: 22px;
+.title-section {
+    color: $darkBlue;
+    font-size: 24px;
     font-weight: bold;
-}
-
-.nuevas-aventuras .opcion-aventuras-2{
-    color:#31B7FB;
-    font-size: 16px;
-}
-
-.nuevas-aventuras .opcion-aventuras-2:hover{
-    text-decoration: underline;
-    cursor: pointer;
+    margin-top: 0;
+    margin-bottom: 16px;
 }
 
 .nueva-generacion{
