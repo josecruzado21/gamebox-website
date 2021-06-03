@@ -61,6 +61,7 @@ router.get('/', productsController.list)
 router.get('/:parentCategory', productsController.list)
 router.get('/:parentCategory/:childCategory', productsController.list)
 router.get('/:parentCategory/:childCategory/:slugProduct', productsController.product);
+router.get('/especiales/clientes/promocion/:ofertas',productsController.ofertas)
 
 router.post('/crear' ,[upload.any(), validacionesSaveUpdate],productsController.save);
 router.put('/editar/:id',  [upload.any(), validacionesSaveUpdate],productsController.update);
