@@ -15,6 +15,9 @@
   </header>
 
   <div class="home">
+    <% if (productsBanner != null && productsBanner.length > 0) { %>
+     
+
     <div class="glideHeroHome">
       <div class="glide__track" data-glide-el="track">
         <ul class="glide__slides">
@@ -55,6 +58,11 @@
           <button class="glide__bullet" data-glide-dir="=3"><%=productsBanner[3].name %></button>
       </div>
     </div>
+    <% } %>
+
+
+    <% if (productsSlider != null && productsSlider.length > 0) { %>
+     
 
     <div class="nuevas-aventuras">
       <h4 class="title-section">Explora nuevas aventuras</h4>
@@ -150,6 +158,8 @@
         </div>
       </div>
     </div>
+    <% } %>
+
 
     <div class="nueva-generacion">
       <p>Bienvenido a la<span class="segunda-parte"> nueva generación</span></p>
