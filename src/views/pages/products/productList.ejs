@@ -3,111 +3,121 @@
 
 <head>
     <%- include('../../partials/head.ejs') %>
-    <title><%= title %></title>
+        <title>
+            <%= title %>
+        </title>
 </head>
 
 <body>
     <header>
-         <%- include('../../partials/header.ejs') %>
+        <%- include('../../partials/header.ejs') %>
     </header>
 
-    <main>
+    <main class="container">
 
 
         <% for(let i=0;i < products.length;i++) {%>
-        <div class='lista_productos'>
-            <img class='imagen_lista_productos' src="/images/products/<%= products[i].image2 %>">
-            <div class="titulo_precio_descripcion">
-                <div class="nombre_lista"><a href="/productos/<%= products[i].categories.parent_slug %>/<%= products[i].categories.slug %>/<%= products[i].slug %>"><%=products[i].name%></a></div>
-                <div class="precio_lista"> $ <%= new Intl.NumberFormat("es-CO").format(products[i].price)  %></div>
-                <div class="descripcion_lista"><%=products[i].description%></div>
-                <% if (user?.type==1) { %>
-                    <div class="botones_admin">
-                        <a href="/admin/productos/editar/<%=products[i].id%>"><button class="button-edit">Editar</button></a>
-                        <% if (products[i].rawInfo != null) { %>
-                            <a href="/admin/productos/editar-info/<%=products[i].rawInfo%>"><button class="button-edit">Editar mas info</button></a>
+            <div class='lista_productos'>
+                <img class='imagen_lista_productos' src="/images/products/<%= products[i].image2 %>">
+                <div class="titulo_precio_descripcion">
+                    <div class="nombre_lista"><a
+                            href="/productos/<%= products[i].categories.parent_slug %>/<%= products[i].categories.slug %>/<%= products[i].slug %>">
+                            <%=products[i].name%>
+                        </a></div>
+                    <div class="precio_lista"> $ <%= new Intl.NumberFormat("es-CO").format(products[i].price) %>
+                    </div>
+                    <div class="descripcion_lista">
+                        <%=products[i].description%>
+                    </div>
+                    <% if (user?.type==1) { %>
+                        <div class="botones_admin">
+                            <a href="/admin/productos/editar/<%=products[i].id%>"><button
+                                    class="button-edit">Editar</button></a>
+                            <% if (products[i].rawInfo !=null) { %>
+                                <a href="/admin/productos/editar-info/<%=products[i].rawInfo%>"><button
+                                        class="button-edit">Editar mas info</button></a>
+                                <% } %>
+                        </div>
                         <% } %>
-                      </div>
-                <% } %>
-            </div>
-            <button id="myBtn" class="button-list"  
-            data-id = <%=products[i].id%>  
-            data-price = <%=products[i].price%> 
-            data-name= "<%=products[i].name%>"  
-            data-image= "<%=products[i].image2%>" 
-            data-hasedition= <%=products[i].hasEdition%> 
-            data-edition= "<%=products[i].edition%>"
-            data-category=<%=products[i].category%>
-            data-userid=<%=user?.id%>
-            >Agregar al carrito</button>
-
-
-        </div>
-        <% } %>
-
-        <div>
-            <ul class="pagination">
-                <li><a href="#">«</a></li>
-            <% for( let index = 0; index < pagesNumber; index++ ) { %>
-                
-                  <% if (queryString != null && queryString != undefined) { %>
-                    <li><a class="<% if (index+1 == page) { %>
-                        active
-                        <% } %>" 
-    
-                    href="/productos?page=<%= index+1 %>"><%=index+1%> </a></li>
-                  <% } %>
-                  
-
-                  <% if (parentCategory == null || parentCategory == undefined) { %>
-                    <li><a class="<% if (index+1 == page) { %>
-                        active
-                  <% } %>" 
-    
-                  href="/productos?page=<%= index+1 %>"><%=index+1%> </a></li>
-                  <% } %>
-                  
-                 
-                  <% if (parentCategory != null && parentCategory != undefined && (childCategory == null || childCategory == undefined)) { %>
-                    <li><a class="<% if (index+1 == page) { %>
-                        active
-                  <% } %>" 
-    
-                     href="/productos/<%=parentCategory%>?page=<%= index+1 %>"><%=index+1%> </a></li>
-                  <% } %>
-
-                  <% if (childCategory != null && childCategory != undefined) { %>
-                    <li><a class="<% if (index+1 == page) { %>
-                        active
-                  <% } %>" 
-    
-                     href="/productos/<%=parentCategory%>/<%=childCategory%>?page=<%= index+1 %>"><%=index+1%> </a></li>
-                  <% } %>
-
-            <% } %>
-                <li><a href="#">»</a></li>
-            </ul>
-
-        </div>
-
-        <!-- The Modal -->
-        <div id="myModal" class="modal">
-
-            <!-- Modal content -->
-            <div class="modal-content">
-            <span class="close">&times;</span>
-        
-            <div class="bulletStore bulletStoreThree">
-                <img src="/images/iconHelp.svg" alt="">
-                <div class="BulletInfoWrapper">
-                    <h4>Producto añadido exitosamente!</h4>
-                  
-                    <a class="linkNormal" href="/carrito-de-compras">Ir al carrito</a>
                 </div>
+                <button id="myBtn" class="button-list" data-id=<%=products[i].id%>
+                    data-price = <%=products[i].price%>
+                        data-name= "<%=products[i].name%>"
+                            data-image= "<%=products[i].image2%>"
+                                data-hasedition= <%=products[i].hasEdition%>
+                                    data-edition= "<%=products[i].edition%>"
+                                        data-category=<%=products[i].category%>
+                                            data-userid=<%=user?.id%>
+                                                >Agregar al carrito</button>
+
+
             </div>
-            </div>
-        
-        </div>
+            <% } %>
+
+                <div>
+                    <ul class="pagination">
+                        <li><a href="#">«</a></li>
+                        <% for( let index=0; index < pagesNumber; index++ ) { %>
+
+                            <% if (queryString !=null && queryString !=undefined) { %>
+                                <li><a class="<% if (index+1 == page) { %>
+                        active
+                        <% } %>" href="/productos?page=<%= index+1 %>">
+                                        <%=index+1%>
+                                    </a></li>
+                                <% } %>
+
+
+                                    <% if (parentCategory==null || parentCategory==undefined) { %>
+                                        <li><a class="<% if (index+1 == page) { %>
+                        active
+                  <% } %>" href="/productos?page=<%= index+1 %>">
+                                                <%=index+1%>
+                                            </a></li>
+                                        <% } %>
+
+
+                                            <% if (parentCategory !=null && parentCategory !=undefined &&
+                                                (childCategory==null || childCategory==undefined)) { %>
+                                                <li><a class="<% if (index+1 == page) { %>
+                        active
+                  <% } %>" href="/productos/<%=parentCategory%>?page=<%= index+1 %>">
+                                                        <%=index+1%>
+                                                    </a></li>
+                                                <% } %>
+
+                                                    <% if (childCategory !=null && childCategory !=undefined) { %>
+                                                        <li><a class="<% if (index+1 == page) { %>
+                        active
+                  <% } %>" href="/productos/<%=parentCategory%>/<%=childCategory%>?page=<%= index+1 %>">
+                                                                <%=index+1%>
+                                                            </a></li>
+                                                        <% } %>
+
+                                                            <% } %>
+                                                                <li><a href="#">»</a></li>
+                    </ul>
+
+                </div>
+
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+
+                        <div class="bulletStore bulletStoreThree">
+                            <img src="/images/iconHelp.svg" alt="">
+                            <div class="BulletInfoWrapper">
+                                <h4>Producto añadido exitosamente!</h4>
+
+                                <a class="linkNormal" href="/carrito-de-compras">Ir al carrito</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
 
     </main>
 
