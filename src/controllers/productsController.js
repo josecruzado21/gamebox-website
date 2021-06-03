@@ -379,9 +379,6 @@ let productsController = {
                 }else{
                     console.log(count)
                     console.log(pagesNumber)
-                    console.log('c');
-                    console.log(prds);
-                    console.log(queryString)
                     res.render('pages/products/productList', {
                         title: title, 
                         products:prds,
@@ -1045,8 +1042,6 @@ let productsController = {
          nest:true,
          replacements: { oferta: valor}
        }).then(prds => {
-         console.log(prds);
-         console.log(valor);
         res.render('pages/products/productList', {
           title: title, 
           products:prds,
