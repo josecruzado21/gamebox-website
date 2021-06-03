@@ -73,8 +73,23 @@
               <p class="gameTitle"><%= product.name %></p>
               <p class="thumbPlatform"><%=product.categories.name %></p>
               <p class="gamePrice">$ <%= new Intl.NumberFormat("es-CO").format(product.price)  %></p>
-              <a class="cartBtnThumb" href="#">Añadir al carrito</a>
+            
+              <button id="myBtnHome" class="cartBtnThumb" 
+              data-id = <%=product.id%>  
+              data-price = <%=product.price%> 
+              data-name= "<%=product.name%>"  
+              data-image= "<%=product.image2%>" 
+              data-hasedition= <%=product.hasEdition%> 
+              data-edition= "<%=product.edition%>"
+              data-category=<%=product.category%>
+              data-userid=<%=user?.id%>
+              
+              >Añadir al carrito</button>
             </div>
+
+
+ 
+
           </li>
          <% }) %>
          
@@ -206,6 +221,25 @@
     </div>
     </a>
 
+        <!-- The Modal -->
+        <div id="myModal" class="modal">
+
+          <!-- Modal content -->
+          <div class="modal-content">
+          <span class="close">&times;</span>
+      
+          <div class="bulletStore bulletStoreThree">
+              <img src="/images/iconHelp.svg" alt="">
+              <div class="BulletInfoWrapper">
+                  <h4>Producto añadido exitosamente!</h4>
+
+                  <a class="linkNormal" href="/carrito-de-compras">Ir al carrito</a>
+              </div>
+          </div>
+          </div>
+      
+      </div>
+
   </div>
 
   <footer>
@@ -214,6 +248,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@glidejs/glide"></script>
   <script src="/js/sliders.js"></script>
+  <script type="module" src="/js/productListHome.js"></script>
+  <script type="module" src="/js/cartLogic.js"></script>
 </body>
 
 </html>

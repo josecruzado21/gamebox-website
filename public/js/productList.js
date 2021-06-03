@@ -1,4 +1,5 @@
 const addToCartButtons = document.querySelectorAll('.button-list');
+const addToCartButtonsHome = document.querySelectorAll('.cartBtnThumb');
 const cartCount = document.querySelector('#cartCount');
 import { cart } from './cartLogic.js'
 
@@ -6,8 +7,6 @@ import { cart } from './cartLogic.js'
 
 var cookieArr = document.cookie.split(";");
 
-console.log("cookies");
-console.log(cookieArr);
 
 addToCartButtons.forEach(function (currentBtn) {
     currentBtn.addEventListener("click", function (e) {
@@ -45,6 +44,8 @@ addToCartButtons.forEach(function (currentBtn) {
 // Get the modal
 var modal = document.getElementById("myModal");
 
+
+
 // Get the button that opens the modal
 var btn = document.getElementById("myBtn");
 
@@ -55,6 +56,7 @@ var span = document.getElementsByClassName("close")[0];
 btn.onclick = function() {
   modal.style.display = "block";
 }
+
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
