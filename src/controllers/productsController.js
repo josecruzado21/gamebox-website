@@ -184,7 +184,7 @@ let productsController = {
                  if(prds == null || prds == undefined || prds.length < 1){
                    res.render('pages/products/productNotFound', {
                        'title': 'Sin resultados',
-                       'description':'Lo sentimos no encontramos productos',
+                       'description':'Por el momento no tenemos el producto que buscas.',
                        user:req.session.userLogged,
                        parentCategory: parentCategory,
                    })
@@ -273,7 +273,7 @@ let productsController = {
               if(prds == null || prds == undefined || prds.length < 1){
                 res.render('pages/products/productNotFound', {
                     'title': 'Sin resultados',
-                    'description':'Lo sentimos no encontramos productos',
+                    'description':'Por el momento no tenemos el producto que buscas.',
                     user:req.session.userLogged,
                     parentCategory: parentCategory
                 })
@@ -372,7 +372,7 @@ let productsController = {
                  if(prds == null || prds == undefined || prds.length < 1){
                     res.render('pages/products/productNotFound', {
                         'title': 'Sin resultados',
-                        'description':'Lo sentimos no encontramos productos',
+                        'description':'Por el momento no tenemos el producto que buscas.',
                         user:req.session.userLogged,
                         parentCategory: parentCategory
                     })
@@ -472,7 +472,7 @@ let productsController = {
                          if(prds == null || prds == undefined || prds.length < 1){
                             res.render('pages/products/productNotFound', {
                                 'title': 'Sin resultados',
-                                'description':'Lo sentimos no encontramos productos',
+                                'description':'Por el momento no tenemos el producto que buscas.',
                                 user:req.session.userLogged,
                                 parentCategory: parentCategory
                             })
