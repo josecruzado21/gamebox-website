@@ -18,16 +18,18 @@
     <div class="glideHeroHome">
       <div class="glide__track" data-glide-el="track">
         <ul class="glide__slides">
+
+         <% productsBanner.forEach(product => { %>
           <li class="glide__slide">
 
-            <div class="backgroundBannerWrapper bannerOne">&nbsp;</div>
+            <div class="backgroundBannerWrapper bannerOne"  style="background: url( '/images/products/<%= product.bannerImage %>' ) center center no-repeat; background-size: cover; position: relative;">&nbsp;</div>
 
             <div class="infoBannerWrapper">
               <div>
-                <p class="bannerName">Resident Evil Village</p>
-                <h2 class="bannerTitle">Continua con la historia de Ethan Winters</h2>
-                <p class="available">PS4, PS5, Xbox One, Xbox Serie S</p>
-                <p class="price">$195.000</p>
+                <p class="bannerName"><%=product.name %></p>
+                <h2 class="bannerTitle"><%=product.description %></h2>
+                <p class="available"><%=product.categories.name %></p>
+                <p class="price"><%=product.price %></p>
               </div>
               <div>
                 <a href="#" class="btn-secondary detailBanner">Ver detallles</a>
@@ -35,51 +37,8 @@
               </a>
 
           </li>
-          <li class="glide__slide">
-            <div class="backgroundBannerWrapper bannerTwo">&nbsp;</div>
-
-            <div class="infoBannerWrapper">
-              <div>
-                <p class="bannerName">It takes two</p>
-                <h2 class="bannerTitle">Busca un compañero y juntos pónganse en la piel de May y Cody</h2>
-                <p class="available">Xbox One, PlayStation 4, PlayStation 5, PC (Microsoft Windows), Xbox Series</p>
-                <p class="price">$210.000</p>
-              </div>
-              <div>
-                <a href="#" class="btn-secondary detailBanner">Ver detallles</a>
-              </div>
-              </a>
-          </li>
-          <li class="glide__slide">
-            <div class="backgroundBannerWrapper bannerThree">&nbsp;</div>
-
-            <div class="infoBannerWrapper">
-              <div>
-                <p class="bannerName">Horizon Forbidden West</p>
-                <h2 class="bannerTitle">La historia de Aloy continua en una America futurista al este</h2>
-                <p class="available">PlayStation 4, PlayStation 5</p>
-                <p class="price">$189.900</p>
-              </div>
-              <div>
-                <a href="#" class="btn-secondary detailBanner">Reservalo ahora</a>
-              </div>
-              </a>
-          </li>
-          <li class="glide__slide">
-            <div class="backgroundBannerWrapper bannerFour">&nbsp;</div>
-
-            <div class="infoBannerWrapper">
-              <div>
-                <p class="bannerName">Halo Infinite</p>
-                <h2 class="bannerTitle">Master Chief esta de vuelta</h2>
-                <p class="available">Xbox One, PC (Microsoft Windows), Xbox Series</p>
-                <p class="price">$209.900</p>
-              </div>
-              <div>
-                <a href="#" class="btn-secondary detailBanner">Reservalo ahora</a>
-              </div>
-              </a>
-          </li>
+         <% }) %>
+         
         </ul>
       </div>
 
@@ -89,10 +48,11 @@
       </div>
 
       <div class="glide__bullets" data-glide-el="controls[nav]">
-        <button class="glide__bullet" data-glide-dir="=0">Resident Evil Village</button>
-        <button class="glide__bullet" data-glide-dir="=1">It takes two</button>
-        <button class="glide__bullet" data-glide-dir="=2">Horizon Forbbiden west</button>
-        <button class="glide__bullet" data-glide-dir="=3">Halo Infinite</button>
+        <% for( let index = 0; index < productsBanner.length; index++ ) { %>
+          <button class="glide__bullet" data-glide-dir="=0"><%=productsBanner[index].name %></button>
+     
+        <% } %>
+     
       </div>
     </div>
 
