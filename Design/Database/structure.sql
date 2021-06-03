@@ -34,6 +34,7 @@ CREATE TABLE `Products` (
 	`price` DECIMAL NOT NULL,
 	`image1` varchar(500) NOT NULL DEFAULT 'image1.jpg',
 	`image2` varchar(500) DEFAULT 'image2.jpg',
+	`bannerImage` varchar(500),
 	`category` INT NOT NULL,
 	`hasEdition` INT NOT NULL DEFAULT 0,
 	`edition` varchar(500),
@@ -79,7 +80,7 @@ CREATE TABLE `ShoppingCartProducts` (
 CREATE TABLE `RawInfo` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`synopsis` TEXT NOT NULL,
-	`launchDate` DATETIME NOT NULL,
+	`launchDate` DATETIME,
 	`metacritic` INT,
 	`metacriticUrl` varchar(500),
 	`rating` varchar(500) NOT NULL,

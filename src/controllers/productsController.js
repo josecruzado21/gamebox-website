@@ -550,9 +550,11 @@ let productsController = {
        let files = req.files;
        console.log(files);
        let mainImage = files.find((f) => f.fieldname == "mainImage");
-       console.log(mainImage);
+//console.log(mainImage);
        let secondImage = files.find((f) => f.fieldname == "secondImage");
-       console.log(secondImage);
+  //     console.log(secondImage);
+
+       let bannerImage = files.find((f) => f.fieldname == "bannerImage");
 
        let errors = validationResult(req);
        //let editionArr = req.body.edition.split(',')
@@ -675,6 +677,9 @@ let productsController = {
 
          let esrb = 99;
 
+         if(rawDetails.esrb_rating != null ||rawDetails.esrb_rating != undefined ){
+
+         
          switch (rawDetails.esrb_rating.name) {
            case "Everyone":
              esrb = "Todos";
@@ -695,8 +700,12 @@ let productsController = {
              esrb = "Sin clasificación";
              break;
            default:
+            esrb = "Sin clasificación";
              break;
          }
+        }else{
+          esrb = "Sin clasificación";
+        }
 
          let newRawId = null;
 
@@ -735,6 +744,7 @@ let productsController = {
                 price: Number(req.body.price),
                 image1: mainImage.originalname,
                 image2: secondImage.originalname,
+                bannerImage: bannerImage.originalname,
                 category: req.body.subcategory,
                 hasEdition: req.body.hasEdition,
                 homeTags: req.body.homeTags,
@@ -757,6 +767,7 @@ let productsController = {
                 price: Number(req.body.price),
                 image1: mainImage.originalname,
                 image2: secondImage.originalname,
+                bannerImage: bannerImage.originalname,
                 category: req.body.subcategory,
                 hasEdition: req.body.hasEdition,
                 edition: req.body.edition,
@@ -788,6 +799,7 @@ let productsController = {
            price: Number(req.body.price),
            image1: mainImage.originalname,
            image2: secondImage.originalname,
+           bannerImage: bannerImage.originalname,
            category: req.body.subcategory,
            hasEdition: req.body.hasEdition,
            edition: req.body.edition,
@@ -878,14 +890,23 @@ let productsController = {
 
         let errors = validationResult(req);
 
-        if (req.body.mainImage==undefined || req.body.secondImage==undefined){
+        let mainImage = null;
+        let secondImage = null;
+        let bannerImage = null;
+
+        if(req.body.bannerImage!=undefined && req.body.bannerImage!=null){
+          bannerImage = req.body.bannerImage;
+        }
+
+        if (req.body.mainImage==undefined || req.body.secondImage==null){
             mainImage = productFound.image1
             secondImage = productFound.image2
+
         } else{
             console.log(files);
-            let mainImage = files.find(f=>f.fieldname == 'mainImage').originalname
+             mainImage = files.find(f=>f.fieldname == 'mainImage').originalname
             console.log(mainImage)
-            let secondImage = files.find(f=>f.fieldname == 'secondImage').originalname
+             secondImage = files.find(f=>f.fieldname == 'secondImage').originalname
             console.log(secondImage)
         }
         
@@ -899,6 +920,7 @@ let productsController = {
             'price':  Number(req.body.price),
             'image1': mainImage,
             'image2': secondImage,
+             'bannerImage':bannerImage,
             'category': req.body.subcategory,
             'hasEdition': req.body.hasEdition,
             'edition': editionArr,
@@ -929,6 +951,7 @@ let productsController = {
             price:  Number(req.body.price),
             image1: mainImage.originalname,
             image2: secondImage.originalname,
+            bannerImage:bannerImage,
             category: req.body.subcategory,
             hasEdition: req.body.hasEdition,
             homeTags: req.body.homeTags,

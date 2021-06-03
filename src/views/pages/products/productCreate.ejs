@@ -140,7 +140,7 @@
                     <% } %>
                     <div class="input-wrapper">
 
-                        <label for="mainImage">Imagen principal</label>
+                        <label for="mainImage">Imagen principal (Superior)</label>
 
                         <input type="file"
                             id="mainImage" name="mainImage" value="<%= product?.mainImage %>"
@@ -158,12 +158,23 @@
                             <%= errorImage  %>
                         </p>
                     <% } %>
+
                     <div class="input-wrapper">
 
-                        <label for="secondImage">Imagen Secundaria</label>
+                        <label for="secondImage">Imagen Secundaria (Portada Juego)</label>
 
                         <input type="file"
                             id="secondImage" name="secondImage"
+                            accept="image/*">
+    
+                    </div>
+
+                    <div class="input-wrapper">
+
+                        <label for="bannerImage">Imagen banner</label>
+
+                        <input type="file"
+                            id="bannerImage" name="bannerImage"
                             accept="image/*">
     
                     </div>

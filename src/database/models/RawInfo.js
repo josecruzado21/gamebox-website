@@ -13,7 +13,7 @@ module.exports = (sequelize, dataTypes) => {
         }, 
         launchDate: {
             type: dataTypes.DATE,                        
-            allowNull: false
+            allowNull: true
         },
         metacritic: {
             type: dataTypes.INTEGER,
