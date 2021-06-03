@@ -13,6 +13,10 @@ module.exports = (sequelize, dataTypes) => {
             type: dataTypes.STRING(500),
             allowNull: false
         },
+        slug: {
+            type: dataTypes.STRING(500),
+            allowNull: false
+        },
         parent_id: {
             type: dataTypes.INTEGER,
             allowNull: true,

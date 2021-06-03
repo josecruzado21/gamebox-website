@@ -14,7 +14,11 @@ const mainController = {
             include: [{
                 model:Category,
                 as : 'categories',
-         
+                include: [{
+                    model:Category,
+                    as : 'parentCategory',
+                    
+                } ],
             } ],
             where: {
                 homeTags: {
@@ -29,13 +33,13 @@ const mainController = {
             .then(products => {
                 console.log("products banner")
               console.log(products)
-             // res.json(products)
+            //  res.json(products)
 
               res.render('pages/index', 
               {
                   'title': title,
                   'user' : req.session.userLogged,
-                  productsBanner:products
+                   productsBanner:products
               });
 
             })

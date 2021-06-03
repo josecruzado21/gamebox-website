@@ -32,7 +32,7 @@
                 <p class="price"><%=product.price %></p>
               </div>
               <div>
-                <a href="#" class="btn-secondary detailBanner">Ver detallles</a>
+                <a href="/productos/<%=product.categories.parentCategory.slug %>/<%=product.categories.slug %>/<%=product.slug %>" class="btn-secondary detailBanner">Ver detallles</a>
               </div>
               </a>
 
@@ -48,11 +48,11 @@
       </div>
 
       <div class="glide__bullets" data-glide-el="controls[nav]">
-        <% for( let index = 0; index < productsBanner.length; index++ ) { %>
-          <button class="glide__bullet" data-glide-dir="=0"><%=productsBanner[index].name %></button>
-     
-        <% } %>
-     
+
+          <button class="glide__bullet" data-glide-dir="=0"><%=productsBanner[0].name %></button>
+          <button class="glide__bullet" data-glide-dir="=1"><%=productsBanner[1].name %></button>
+          <button class="glide__bullet" data-glide-dir="=2"><%=productsBanner[2].name %></button>
+          <button class="glide__bullet" data-glide-dir="=3"><%=productsBanner[3].name %></button>
       </div>
     </div>
 
