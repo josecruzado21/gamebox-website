@@ -1,0 +1,156 @@
+// Slide Home
+.glide__slides {
+    margin: 0;
+}
+
+.bannerOne {
+    background: url('/images/re8-banner-responsive.png') center center no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.bannerTwo {
+    background: url('/images/it-takes-two.jpeg') center center no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.bannerThree {
+    background: url('/images/horizon-forbidden-west.jpeg') center center no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.bannerFour {
+    background: url('/images/hallo-infinite.jpeg') center center no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.glide__slide {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    width: 100%;
+
+    @include respond-to('tablet') {
+        flex-direction: row;
+        align-content: space-between;
+        position: inherit;
+    }
+}
+
+.backgroundBannerWrapper {
+    display: block;
+    height: 400px;
+    width: 100%;
+
+    @include respond-to('tablet') {
+        width: 60%;
+    }
+
+    @include respond-to('desktop') {
+        width: 70%;
+    }
+}
+
+.infoBannerWrapper {
+    background-color: $red;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+
+    @include respond-to('tablet') {
+        width: 40%;
+    }
+
+    @include respond-to('desktop') {
+        width: 30%;
+    }
+
+
+    .bannerName {
+        background-color: $darkBlue;
+        border-radius: 25px;
+        color: $white;
+        font-size: .9em;
+        font-weight: bold;
+        left: 16px;
+        margin: 0;
+        padding: 0;
+        padding: 12px 16px;
+        position: absolute;
+        top: 24px;
+    }
+
+    .bannerTitle {
+        font-family: $secondary-font;
+        font-size: 1.8em;
+        font-weight: bold;
+        margin: 0;
+        padding: 0;
+    }
+
+    .available,
+    .price,
+    .detailBanner {
+        display: none;
+    }
+
+    @include respond-to('tablet') {
+        .available {
+            display: block;
+            font-size: .8em;
+        }
+
+        .price {
+            display: block;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .detailBanner {
+            display: block;
+            max-width: 300px;
+            padding: 16px;
+            width: 100%;
+        }
+    }
+
+}
+
+.controls {
+    display: none;
+}
+
+.glide__bullets {
+    display: none;
+
+    @include respond-to('tablet') {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        max-width: 1440px;
+        margin: -32px auto 0;
+        padding: 0 24px;
+        
+        .glide__bullet {
+            all: unset;
+            background-color: $darkBlue;
+            border-radius: 0;
+            color: $white;
+            cursor: pointer;
+            padding: 24px 0;
+            text-align: center;
+            width: 25%;
+            transition: all 400ms;
+            z-index: 1;
+        }
+
+        .glide__bullet--active {
+            background-color: $red !important;
+            border-top: 4px solid $lightBlue;
+        }
+    }
+}

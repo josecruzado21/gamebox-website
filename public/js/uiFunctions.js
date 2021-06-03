@@ -72,6 +72,5 @@ window.addEventListener('load', function () {
 
         let fileInput = document.getElementById('image');
         fileInput.addEventListener('change', loader);
-
     }
 })

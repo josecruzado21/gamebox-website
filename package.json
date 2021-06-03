@@ -4,6 +4,7 @@
   "description": "GameBox es un e-commerce especializado en la venta de productos de *gaming*. La oferta de este comercio se centrará en productos electrónicos y no electrónicos que aquellos interesados en los videojuegos necesitan para practicar este pasatiempo.",
   "main": "app.js",
   "dependencies": {
+    "@glidejs/glide": "^3.4.1",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
     "ejs": "^3.1.5",
